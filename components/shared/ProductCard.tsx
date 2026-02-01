@@ -23,7 +23,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       }}
       className="group relative overflow-hidden rounded-2xl bg-white p-4 shadow-sm transition-shadow duration-300 hover:shadow-lg"
     >
-      <div className="relative aspect-[4/5] w-full overflow-hidden rounded-xl bg-surface">
+      <div className="relative aspect-4/5 w-full overflow-hidden rounded-xl bg-surface">
         <Image
           src={product.imageUrl || "/images/placeholder-furniture.jpg"}
           alt={product.name}

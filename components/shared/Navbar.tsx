@@ -45,7 +45,7 @@ export default function Navbar() {
                   initial: { scaleX: 0, opacity: 0 },
                 }}
                 initial="initial"
-                className="absolute -bottom-1 left-0 h-[2px] w-full origin-left bg-accent"
+                className="absolute -bottom-1 left-0 h-0.5 w-full origin-left bg-accent"
               />
             </motion.div>
           ))}
@@ -55,7 +55,7 @@ export default function Navbar() {
           <Link href="/cart" className="relative text-primary/80 transition hover:text-primary">
             <ShoppingBag className="h-5 w-5" />
             {itemCount > 0 && (
-              <span className="absolute -right-2 -top-2 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-accent px-1 text-[0.6rem] font-semibold text-primary">
+              <span className="absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[0.6rem] font-semibold text-primary">
                 {itemCount}
               </span>
             )}

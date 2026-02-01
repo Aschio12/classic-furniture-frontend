@@ -10,9 +10,13 @@ import { type Product } from "@/components/shared/ProductCard";
 
 const categories = ["All", "Living Room", "Bedroom", "Dining", "Office"];
 
+type ProductWithCategory = Product & {
+  category?: string;
+};
+
 export default function ShopPage() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ProductWithCategory[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<ProductWithCategory[]>([]);
   const [activeCategory, setActiveCategory] = useState("All");
   const [loading, setLoading] = useState(true);
 

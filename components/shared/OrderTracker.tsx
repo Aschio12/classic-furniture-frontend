@@ -24,13 +24,7 @@ const steps = [
 ];
 
 export default function OrderTracker({ status }: OrderTrackerProps) {
-  const currentIndex = steps.findIndex((step) => step.status === status);
-  // If status is not in the list (e.g., Pending, Cancelled), handle mostly logic:
-  // For Pending: index -1. For others, treat as partial.
-  // Here we map exact status match.
-  // Note: Backend might return 'Pending' or 'Payout Failed' which are not in the display timeline.
-  // We'll treat Pending as index -1 (no steps done).
-
+  // Logic to determine active step index
   const activeIndex =
     status === "Completed" ? 3 : steps.findIndex((s) => s.status === status);
 
