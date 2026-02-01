@@ -2,12 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle2, ShieldCheck, Truck } from "lucide-react";
 
 import api from "@/lib/axios";
 import { useCartStore } from "@/store/cartStore";
-import { useAuthStore } from "@/store/useAuthStore";
 
 const hubs = [
   { name: "Addis Ababa", label: "Central Hub", tag: "Fastest Pickup" },
@@ -20,7 +18,6 @@ const hubs = [
 export default function CheckoutPage() {
   const router = useRouter();
   const { items, clearCart } = useCartStore();
-  const { user } = useAuthStore();
 
   const [selectedHub, setSelectedHub] = useState("");
   const [loading, setLoading] = useState(false);
@@ -63,7 +60,7 @@ export default function CheckoutPage() {
       // 3. Clear cart and redirect
       clearCart();
       router.push(checkoutUrl);
-    } catch (err) {
+    } catch {
       setError("Payment setup failed. Please try again.");
       setLoading(false);
     }
