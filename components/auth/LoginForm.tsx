@@ -3,28 +3,64 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Loader2 } from "lucide-react";
 import { useAuthStore } from "@/store/useAuthStore";
 
 export default function LoginForm() {
   const router = useRouter();
-  const { login, isLoading, error } = useAuthStore();
+  const { login, isLoading, error, user } = useAuthStore();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isExiting, setIsExiting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await login({ email, password });
-      router.push("/");
+      
+      // Get the latest user role from store (or we can assume logic here if login returns role, but store updates async)
+      // Since login is async and updates store, we can access useAuthStore.getState().user immediately after
+      const currentUser = useAuthStore.getState().user;
+      const role = currentUser?.role || "user";
+      
+      setIsExiting(true); // Trigger fade out animation
+
+      // Wait for animation before pushing route (e.g. 1s)
+      setTimeout(() => {
+        if (role === 'hub_manager') {
+            router.push('/dashboard/hub-manager');
+        } else if (role === 'admin') {
+            router.push('/admin');
+        } else {
+            router.push('/shop');
+        }
+      }, 1000);
+
     } catch {
       // Error is handled by store
     }
   };
 
   return (
-    <div className="w-full max-w-md space-y-8 rounded-2xl bg-white p-10 shadow-xl shadow-primary/5">
+    <>
+      {/* Oily Transition Overlay */}
+      <AnimatePresence>
+        {isExiting && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }} // Soft liquid ease
+            className="fixed inset-0 z-50 flex items-center justify-center bg-white"
+            style={{ pointerEvents: 'none' }} // Ensure clicks go through if stuck but visible
+          >
+             {/* Optional: Add a subtle ripple or just pure clean fade to white/target bg */}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="w-full max-w-md space-y-8 rounded-2xl bg-white p-10 shadow-xl shadow-primary/5">
       <div className="text-center">
         <h2 className="text-3xl font-light tracking-tight text-primary">Welcome Back</h2>
         <p className="mt-2 text-sm text-primary/60">Sign in to your account</p>
