@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, Loader2 } from "lucide-react";
 import {
@@ -31,15 +31,7 @@ export default function VerificationModal({
   const [status, setStatus] = useState<"idle" | "processing" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
-  useEffect(() => {
-    if (!isOpen) {
-      setOtp("");
-      setStatus("idle");
-      setErrorMessage("");
-    }
-  }, [isOpen]);
-
-  const handleVerification = useCallback(async () => {
+  const handleVerification = useCallback(async (code?: string) => {
     setStatus("processing");
     try {
       // Assuming '0000' is the mock authorized code if not using real backend validation yet,
@@ -54,7 +46,7 @@ export default function VerificationModal({
       
       await api.put(`/orders/hub/complete`, { 
         orderId, 
-        verificationCode: otp // Passing OTP if backend checks it
+        verificationCode: code || otp // Passing OTP if backend checks it
       });
 
       setStatus("success");
@@ -71,14 +63,22 @@ export default function VerificationModal({
     }
   }, [otp, orderId, onSuccess, onClose]);
 
-  useEffect(() => {
-    if (otp.length === 4) {
-      handleVerification();
+  const handleOtpChange = (value: string) => {
+    setOtp(value);
+    if (value.length === 4) {
+      handleVerification(value);
     }
-  }, [otp, handleVerification]);
+  };
+
+  const handleClose = () => {
+     setOtp("");
+     setStatus("idle");
+     setErrorMessage("");
+     onClose();
+  };
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
       <DialogContent className="max-w-md overflow-hidden rounded-3xl border-0 bg-white/80 p-0 shadow-2xl backdrop-blur-xl sm:rounded-3xl">
         <AnimatePresence mode="wait">
           {status === "success" ? (
@@ -135,7 +135,7 @@ export default function VerificationModal({
                 <InputOTP
                   maxLength={4}
                   value={otp}
-                  onChange={setOtp}
+                  onChange={handleOtpChange}
                   disabled={status === "processing"}
                 >
                   <InputOTPGroup className="gap-3">

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Clock, Package } from "lucide-react";
+import { Clock } from "lucide-react";
 import { useAuthStore } from "@/store/useAuthStore";
 import api from "@/lib/axios";
 import VerificationModal from "./VerificationModal";
