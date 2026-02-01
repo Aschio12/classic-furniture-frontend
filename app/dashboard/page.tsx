@@ -10,11 +10,8 @@ import {
   LogOut, 
   ShoppingBag,
   PlusCircle,
-  QrCode,
   LayoutDashboard,
-  AlertCircle
 } from "lucide-react";
-import { motion } from "framer-motion";
 
 import { useAuthStore } from "@/store/useAuthStore";
 import api from "@/lib/axios";
@@ -39,11 +36,6 @@ export default function DashboardPage() {
   const { user, logout, token } = useAuthStore();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
-  
-  // Hub Manager State
-  const [verifyCode, setVerifyCode] = useState("");
-  const [verificationStatus, setVerificationStatus] = useState<"idle" | "success" | "error">("idle");
-  const [verifyMsg, setVerifyMsg] = useState("");
 
   useEffect(() => {
     if (!token) {
@@ -69,6 +61,11 @@ export default function DashboardPage() {
     }
 
     if (user) fetchData();
+    
+    // Auto-redirect Hub Manager
+    if (user?.role === "hub_manager") {
+      router.push("/dashboard/hub-manager");
+    }
   }, [user, token, router]);
 
   const handleHubVerification = async () => {
@@ -175,53 +172,11 @@ export default function DashboardPage() {
             </div>
           )}
 
-          {/* HUB MANAGER VIEW */}
+          {/* HUB MANAGER VIEW - Redirect or Render New Component if inline */}
           {user.role === "hub_manager" && (
-            <div className="grid gap-8 lg:grid-cols-3">
-                <div className="lg:col-span-2 space-y-6">
-                    <h2 className="text-xl font-medium text-primary">Pending Deliveries</h2>
-                    <div className="space-y-4">
-                        {loading ? <LoadingSkeleton /> : orders.map(order => (
-                             <div key={order._id} className="flex items-center justify-between p-4 bg-white rounded-xl shadow-sm">
-                                <div>
-                                    <p className="font-medium text-primary">Order #{order._id.slice(-6)}</p>
-                                    <p className="text-sm text-primary/60">{order.status}</p>
-                                </div>
-                                <span className="px-3 py-1 text-xs font-medium bg-amber-100 text-amber-700 rounded-full">
-                                    {order.status}
-                                </span>
-                             </div>
-                        ))}
-                    </div>
-                </div>
-
-                <div className="h-fit rounded-2xl bg-white p-6 shadow-sm">
-                    <h2 className="mb-4 text-lg font-medium text-primary flex items-center gap-2">
-                        <QrCode className="h-5 w-5" />
-                        Verify Pickup
-                    </h2>
-                    <div className="space-y-4">
-                        <input 
-                            type="text" 
-                            placeholder="Enter Verification Code"
-                            value={verifyCode}
-                            onChange={(e) => setVerifyCode(e.target.value)}
-                            className="w-full rounded-lg border border-primary/10 bg-[#F9F9FB] p-3 text-sm focus:border-primary focus:outline-none"
-                        />
-                         <button 
-                            onClick={handleHubVerification}
-                            className="w-full rounded-lg bg-primary py-3 text-sm font-medium text-white hover:bg-primary/90"
-                         >
-                            Verify Delivery
-                         </button>
-                         {verificationStatus === "error" && (
-                             <p className="flex items-center gap-2 text-sm text-red-500">
-                                 <AlertCircle className="h-4 w-4" /> {verifyMsg}
-                             </p>
-                         )}
-                    </div>
-                </div>
-            </div>
+             <div className="rounded-2xl bg-white p-8 shadow-sm">
+                <p>Redirecting to Hub Dashboard...</p>
+             </div>
           )}
 
           {/* BUYER / SELLER ORDER LIST */}
