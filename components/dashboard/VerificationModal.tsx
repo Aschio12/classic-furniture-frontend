@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, Loader2 } from "lucide-react";
+import { Check } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -34,26 +34,16 @@ export default function VerificationModal({
   const handleVerification = useCallback(async (code?: string) => {
     setStatus("processing");
     try {
-      // Assuming '0000' is the mock authorized code if not using real backend validation yet,
-      // or we just call the endpoint.
-      // NOTE: User asked to call POST /api/orders/:id/complete but previously we found 
-      // PUT /api/orders/hub/complete taking orderId. 
-      // Let's try the one strictly requested or the logical match.
-      // Based on previous search, endpoint was PUT /api/orders/hub/complete.
-      // However, prompt asks to call POST /api/orders/:id/complete logic.
-      // I will use the endpoint I see in my backend scan earlier or standard one.
-      // Let's stick to the PUT /api/orders/hub/complete with orderId as constructed before.
-      
-      await api.put(`/orders/hub/complete`, { 
+      await api.patch(`/orders/hub/complete`, { 
         orderId, 
-        verificationCode: code || otp // Passing OTP if backend checks it
+        verificationCode: code || otp 
       });
 
       setStatus("success");
       setTimeout(() => {
         onSuccess();
         onClose();
-      }, 2500); 
+      }, 3000); 
 
     } catch (error) {
       console.error(error);
@@ -103,7 +93,7 @@ export default function VerificationModal({
                 transition={{ delay: 0.2 }}
                 className="mb-2 text-2xl font-light text-primary"
               >
-                Payout Released
+                Success!
               </motion.h3>
               <motion.p
                 initial={{ opacity: 0 }}
@@ -111,7 +101,7 @@ export default function VerificationModal({
                 transition={{ delay: 0.3 }}
                 className="text-sm text-primary/60"
               >
-                Order completed & funds sent to seller.
+                Payout Released to Seller & Order Completed.
               </motion.p>
             </motion.div>
           ) : (
@@ -148,9 +138,12 @@ export default function VerificationModal({
               </div>
 
               {status === "processing" ? (
-                <div className="flex items-center gap-2 text-sm font-medium text-primary/70">
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  Processing Payout...
+                <div className="flex flex-col items-center gap-4">
+                  <div className="relative h-12 w-12">
+                    <div className="absolute h-full w-full animate-spin rounded-full border-2 border-primary/10 border-t-primary" />
+                    <div className="absolute top-1/2 left-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary" />
+                  </div>
+                  <span className="text-sm font-medium tracking-wide text-primary/70">Processing Payout...</span>
                 </div>
               ) : status === "error" ? (
                 <p className="text-sm font-medium text-red-500">{errorMessage}</p>
