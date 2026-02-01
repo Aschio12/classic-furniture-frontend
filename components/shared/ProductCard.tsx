@@ -15,6 +15,12 @@ type ProductCardProps = {
 };
 
 export default function ProductCard({ product }: ProductCardProps) {
+  // Ensure we have a valid image source or fallback
+  const imageSrc =
+    product.imageUrl && product.imageUrl.trim().startsWith("http")
+      ? product.imageUrl
+      : "/images/placeholder-furniture.jpg";
+
   return (
     <motion.article
       variants={{
@@ -25,7 +31,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     >
       <div className="relative aspect-4/5 w-full overflow-hidden rounded-xl bg-surface">
         <Image
-          src={product.imageUrl || "/images/placeholder-furniture.jpg"}
+          src={imageSrc}
           alt={product.name}
           fill
           className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
