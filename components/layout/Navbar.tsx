@@ -39,7 +39,7 @@ export default function Navbar() {
                 {link.label}
               </Link>
               <motion.span
-                className="absolute -bottom-1 left-1/2 h-[1px] w-0 -translate-x-1/2 bg-accent"
+                className="absolute -bottom-1 left-1/2 h-px w-0 -translate-x-1/2 bg-accent"
                 whileHover={{ width: "100%" }}
                 transition={{ type: "spring", stiffness: 200, damping: 18 }}
               />
@@ -55,7 +55,7 @@ export default function Navbar() {
           <Link href="/cart" className="relative text-primary/80 transition hover:text-primary">
             <ShoppingBag className="h-5 w-5" />
             {itemCount > 0 && (
-              <span className="absolute -right-2 -top-2 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-accent px-1 text-[0.6rem] font-semibold text-primary">
+              <span className="absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[0.6rem] font-semibold text-primary">
                 {itemCount}
               </span>
             )}

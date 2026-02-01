@@ -68,31 +68,6 @@ export default function DashboardPage() {
     }
   }, [user, token, router]);
 
-  const handleHubVerification = async () => {
-    if (!verifyCode) return;
-    setVerificationStatus("idle");
-    try {
-        // Assuming verify code is the Order ID or a specific code. 
-        // Based on backend route /orders/hub/complete, it expects { orderId, verificationCode }
-        // Let's assume the manager enters the code and we need the order ID.
-        // Actually, usually you scan a code or enter a code that *identifies* the order.
-        // For this UI, let's keep it simple: generic placeholder verification.
-        // Since I don't see a "verify by code only" endpoint, I might have to select an order first.
-        // I'll make the input "Verify Order Delivery" and ask for Order ID for now, 
-        // to match the backend expectation or just mock the success for the UI requirement.
-        
-        // Let's mock the UI interaction for "Verification Code" as requested, 
-        // or actually implement it if I had the endpoint. The backend route /orders/hub/complete 
-        // needs orderId AND code.
-        
-        setVerificationStatus("error");
-        setVerifyMsg("Please select an order to verify first.");
-    } catch {
-        setVerificationStatus("error");
-        setVerifyMsg("Verification failed.");
-    }
-  };
-
   const handleLogout = async () => {
     await logout();
     router.push("/login");

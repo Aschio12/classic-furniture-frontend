@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
-import { Check, Clock, X } from "lucide-react";
+import { motion } from "framer-motion";
+import { Clock, Package } from "lucide-react";
 import { useAuthStore } from "@/store/useAuthStore";
 import api from "@/lib/axios";
+import VerificationModal from "./VerificationModal";
 
 // --- Types ---
 interface Product {
@@ -67,21 +68,10 @@ export default function HubDashboardComp() {
     fetchHubOrders();
   }, []);
 
-  const handleVerifyHandover = async () => {
-    if (!selectedOrder) return;
-    try {
-      // Call backend to complete order
-      await api.put(`/orders/hub/complete`, { 
-          orderId: selectedOrder._id,
-          // verificationCode // If needed later
-      });
-
-      // Update local state
+  const handleSuccess = () => {
+    if (selectedOrder) {
       setOrders((prev) => prev.filter((o) => o._id !== selectedOrder._id));
       setSelectedOrder(null);
-    } catch (error) {
-      console.error("Verification failed", error);
-      alert("Verification failed. Please try again.");
     }
   };
 
@@ -183,68 +173,14 @@ export default function HubDashboardComp() {
       </div>
 
       {/* --- Verification Modal --- */}
-      <AnimatePresence>
-        {selectedOrder && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setSelectedOrder(null)}
-              className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-            />
-
-            {/* Modal Content */}
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              className="relative w-full max-w-md overflow-hidden rounded-3xl bg-white shadow-2xl"
-            >
-              {/* Header Image */}
-              <div className="relative h-32 bg-primary">
-                <div className="absolute inset-0 bg-[url('/bg-pattern.png')] opacity-10" />
-                <button
-                  onClick={() => setSelectedOrder(null)}
-                  className="absolute right-4 top-4 rounded-full bg-white/10 p-2 text-white hover:bg-white/20"
-                >
-                  <X className="h-5 w-5" />
-                </button>
-                <div className="absolute -bottom-10 left-1/2 flex h-20 w-20 -translate-x-1/2 items-center justify-center rounded-full border-4 border-white bg-green-500 text-white shadow-lg">
-                  <Check className="h-10 w-10" />
-                </div>
-              </div>
-
-              <div className="px-8 pb-8 pt-14 text-center">
-                <h3 className="mb-2 text-2xl font-light text-primary">
-                  Confirm Handover
-                </h3>
-                <p className="mb-8 text-sm text-primary/60">
-                  Are you sure you want to release this order to 
-                  <span className="font-semibold text-primary"> {selectedOrder.buyer?.name}</span>?
-                  This action cannot be undone.
-                </p>
-
-                <div className="grid grid-cols-2 gap-3">
-                  <button
-                    onClick={() => setSelectedOrder(null)}
-                    className="rounded-xl border border-gray-200 py-3 text-sm font-medium transition-colors hover:bg-gray-50"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={handleVerifyHandover}
-                    className="rounded-xl bg-primary py-3 text-sm font-medium text-white shadow-lg shadow-primary/20 transition-transform active:scale-95"
-                  >
-                    Confirm Release
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+      {selectedOrder && (
+        <VerificationModal
+          isOpen={!!selectedOrder}
+          onClose={() => setSelectedOrder(null)}
+          orderId={selectedOrder._id}
+          onSuccess={handleSuccess}
+        />
+      )}
     </div>
   );
 }

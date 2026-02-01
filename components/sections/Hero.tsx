@@ -37,7 +37,7 @@ export default function Hero() {
           initial={{ scale: 1.02 }}
           animate={{ scale: 1.08 }}
           transition={{ duration: 5, ease: "easeOut" }}
-          className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl"
+          className="relative aspect-4/5 w-full overflow-hidden rounded-3xl"
         >
           <Image
             src="/images/hero-furniture.jpg"

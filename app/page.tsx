@@ -47,7 +47,7 @@ export default function Home() {
             <h2 className="text-3xl font-thin tracking-widest text-primary md:text-4xl">
               New Arrivals
             </h2>
-            <div className="mt-4 h-[1px] w-24 bg-accent" />
+            <div className="mt-4 h-px w-24 bg-accent" />
           </motion.div>
 
           <Link

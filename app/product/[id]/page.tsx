@@ -44,7 +44,7 @@ export default function ProductDetailPage() {
         if (active) {
           setProduct(found || null);
         }
-      } catch (err) {
+      } catch {
         if (active) setError("Failed to load product.");
       }
     };
@@ -95,7 +95,7 @@ export default function ProductDetailPage() {
       }
 
       throw new Error("Payment initialization failed");
-    } catch (err) {
+    } catch {
       setError("Unable to start checkout. Please try again.");
     } finally {
       setLoading(false);
@@ -106,7 +106,7 @@ export default function ProductDetailPage() {
     <section className="bg-background px-6 py-16 sm:px-10 lg:px-16">
       <div className="mx-auto grid w-full max-w-6xl gap-12 lg:grid-cols-2">
         <div className="space-y-6">
-          <div className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl bg-surface">
+          <div className="relative aspect-4/5 w-full overflow-hidden rounded-3xl bg-surface">
             <Image
               src={gallery[activeImage]}
               alt={product?.name || "Luxury furniture"}
