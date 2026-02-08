@@ -28,17 +28,23 @@ export const wakeUpServer = async () => {
 
     for (let i = 0; i < MAX_RETRIES; i++) {
         try {
-            // Hit the root endpoint to wake up the Render instance
-            await axios.get(`${BASE_URL}/`, {
+            // Hit the health endpoint to wake up the Render instance
+            await axios.get(`${BASE_URL}/api/health`, {
                 timeout: 5000 // Timeout for the ping itself
             });
             
             // If successful, we are done
             setIsServerWaking(false);
+            console.log("Server is awake and responding!");
             return true;
         } catch (error) {
             const err = error as AxiosError;
             console.log(`Wake-up attempt ${i + 1}/${MAX_RETRIES} failed.`);
+            console.error("Wake-up Error Details:", err.message);
+            if (err.response) {
+                console.error("Status:", err.response.status);
+                // console.error("Data:", err.response.data); // Optional: log data if needed
+            }
             
             // If it's a network error (connection closed) or 503 (Service Unavailable/Starting)
             if (!err.response || err.response.status === 503 || err.code === "ERR_NETWORK" || err.code === "ECONNABORTED") {
@@ -47,6 +53,7 @@ export const wakeUpServer = async () => {
                 continue; // Try again
             } else {
                 // If it's another error (like 404, 500 but connected), consider it awake enough to try requests
+                // Or if it's CORS, we might want to stop retrying and show error
                 setIsServerWaking(false);
                 return false; 
             }
