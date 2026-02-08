@@ -44,8 +44,8 @@ export default function LoginForm() {
     <>
       {/* Shining Progress Bar (Authentication State) */}
       {isLoading && (
-        <div className="fixed top-0 left-0 z-[100] h-1 w-full overflow-hidden bg-transparent">
-             <div className="h-full w-full animate-[shine_1.5s_infinite] bg-gradient-to-r from-transparent via-white/80 to-transparent" />
+        <div className="fixed top-0 left-0 z-100 h-1 w-full overflow-hidden bg-transparent">
+             <div className="h-full w-full animate-[shine_1.5s_infinite] bg-linear-to-r from-transparent via-white/80 to-transparent" />
         </div>
       )}
 
@@ -57,7 +57,7 @@ export default function LoginForm() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }} // Soft liquid ease
-            className="fixed inset-0 z-[200] flex items-center justify-center bg-neutral-950"
+            className="fixed inset-0 z-200 flex items-center justify-center bg-neutral-950"
             style={{ pointerEvents: 'auto' }} // Block interaction during transition
           >
              <Loader2 className="h-12 w-12 animate-spin text-[#d4af37]" />
