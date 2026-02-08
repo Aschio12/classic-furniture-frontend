@@ -29,14 +29,17 @@ export default function Hero() {
   
   // Handle mounting state to prevent hydration mismatches
   useEffect(() => {
-      setParticles([...Array(3)].map(() => ({
-          x: Math.random() * 100,
-          y: Math.random() * 100,
-          scale: Math.random() * 0.5 + 0.5,
-          duration: 20 + Math.random() * 10,
-          size: Math.random() * 4 + 2
-      })));
-      const timer = setTimeout(() => setMounted(true), 0);
+      // Initializing inside setTimeout to avoid synchronous setState warning and ensure hydration match
+      const timer = setTimeout(() => {
+        setParticles([...Array(3)].map(() => ({
+            x: Math.random() * 100,
+            y: Math.random() * 100,
+            scale: Math.random() * 0.5 + 0.5,
+            duration: 20 + Math.random() * 10,
+            size: Math.random() * 4 + 2
+        })));
+        setMounted(true);
+      }, 0);
       return () => clearTimeout(timer);
   }, []);
 
@@ -88,7 +91,7 @@ export default function Hero() {
            Creates a localized spot of high saturation/brightness where the user looks
        */}
       <motion.div
-        className="pointer-events-none absolute z-10 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-60 mix-blend-overlay"
+        className="pointer-events-none absolute z-10 h-150 w-150 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-60 mix-blend-overlay"
         style={{
             left: smoothX,
             top: smoothY,
@@ -166,7 +169,7 @@ export default function Hero() {
                 className="group relative inline-flex items-center justify-center overflow-hidden rounded-full border border-neutral-900 bg-transparent px-10 py-4 text-sm font-medium uppercase tracking-widest text-neutral-900 transition-all duration-500 hover:bg-neutral-900 hover:text-white"
               >
                 <span className="relative z-10">View Collection</span>
-                 <div className="absolute inset-0 -translate-x-full animate-[shine_3s_infinite] bg-linear-to-r from-transparent via-white/20 to-transparent" />
+                 <div className="absolute inset-0 -translate-x-full animate-shine bg-linear-to-r from-transparent via-white/20 to-transparent" />
               </Link>
             </motion.div>
           </div>
