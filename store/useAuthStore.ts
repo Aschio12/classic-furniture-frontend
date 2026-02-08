@@ -1,6 +1,7 @@
 import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 import type { AxiosError } from "axios";
-import api from "@/lib/axios";
+import apiClient from "@/lib/apiClient";
 
 export type AuthUser = {
   id: string;
@@ -17,49 +18,68 @@ type LoginPayload = {
 type AuthState = {
   user: AuthUser | null;
   token: string | null;
+  isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
   setUser: (user: AuthUser | null) => void;
   setToken: (token: string | null) => void;
   clearAuth: () => void;
   login: (payload: LoginPayload) => Promise<void>;
-  logout: () => Promise<void>;
+  logout: () => void;
 };
 
-export const useAuthStore = create<AuthState>((set, get) => ({
-  user: null,
-  token: null,
-  isLoading: false,
-  error: null,
-  setUser: (user) => set({ user }),
-  setToken: (token) => set({ token }),
-  clearAuth: () => set({ user: null, token: null, error: null }),
-  login: async (payload) => {
-    set({ isLoading: true, error: null });
-    try {
-      const response = await api.post("/auth/login", payload);
-      const token = response.data?.token ?? null;
-      const role = response.data?.role ?? "user";
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set) => ({
+      user: null,
+      token: null,
+      isAuthenticated: false,
+      isLoading: false,
+      error: null,
 
-      set({ token, user: token ? { id: "", name: "", email: payload.email, role } : null });
-    } catch (err) {
-      const axiosError = err as AxiosError<{ message?: string }>;
-      set({ error: axiosError.response?.data?.message || "Login failed" });
-      throw err;
-    } finally {
-      set({ isLoading: false });
+      setUser: (user) => set({ user, isAuthenticated: !!user }),
+      setToken: (token) => set({ token, isAuthenticated: !!token }),
+      
+      clearAuth: () => set({ user: null, token: null, isAuthenticated: false, error: null }),
+
+      login: async (payload) => {
+        set({ isLoading: true, error: null });
+        try {
+          const response = await apiClient.post("/auth/login", payload);
+          const token = response.data?.token ?? null;
+          const role = response.data?.role ?? "user";
+          
+          if (token) {
+              set({ 
+                  token, 
+                  user: { id: "temp-id", name: "User", email: payload.email, role }, 
+                  isAuthenticated: true,
+                  error: null
+              });
+          }
+        } catch (err) {
+          const axiosError = err as AxiosError<{ message?: string }>;
+          set({ error: axiosError.response?.data?.message || "Login failed", isAuthenticated: false });
+          throw err;
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+
+      logout: () => {
+          set({ user: null, token: null, isAuthenticated: false, error: null });
+          localStorage.removeItem("auth-storage"); // Ensure clean slate
+          window.location.href = "/"; // Force redirect to Landing Page
+      },
+    }),
+    {
+      name: "auth-storage", // content is saved to localStorage under this key
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({ 
+          user: state.user, 
+          token: state.token, 
+          isAuthenticated: state.isAuthenticated 
+      }), // Only persist these fields
     }
-  },
-  logout: async () => {
-    set({ isLoading: true, error: null });
-    try {
-      await api.get("/auth/logout");
-      get().clearAuth();
-    } catch (err) {
-      set({ error: "Logout failed" });
-      throw err;
-    } finally {
-      set({ isLoading: false });
-    }
-  },
-}));
+  )
+);
