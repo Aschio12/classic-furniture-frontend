@@ -39,10 +39,10 @@ export default function ServerAwakeLoader({ children }: { children: React.ReactN
                 clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)", // Wipes UP
                 transition: { duration: 1.2, ease: [0.76, 0, 0.24, 1] } 
             }}
-            className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-white"
+            className="fixed inset-0 z-100 flex flex-col items-center justify-center bg-white"
           >
             {/* Minimalist Background Pattern */}
-            <div className="absolute inset-0 z-0 opacity-10 bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:20px_20px]" />
+            <div className="absolute inset-0 z-0 opacity-10 bg-[radial-gradient(#000_1px,transparent_1px)] bg-size-[20px_20px]" />
             
             <div className="relative z-10 flex flex-col items-center">
                 
