@@ -182,20 +182,20 @@ export default function Home() {
 
                      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <GalleryItem 
-                            img="https://images.unsplash.com/photo-1618220179428-22790b461013?q=80&w=2670&auto=format&fit=crop"
+                            img="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?q=80&w=2000&auto=format&fit=crop"
                             title="The Royal Sofa"
                             category="Living Room"
                             delay={0.1}
                         />
                         <GalleryItem 
-                            img="https://images.unsplash.com/photo-1574621100236-d25a649d09f2?q=80&w=2669&auto=format&fit=crop"
+                            img="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=2000&auto=format&fit=crop"
                             title="Empire Dining"
                             category="Dining Hall"
                             delay={0.3}
                             className="md:translate-y-12" // Stagger layout
                         />
                         <GalleryItem 
-                            img="https://images.unsplash.com/photo-1617325247661-675ab4b6db22?q=80&w=2670&auto=format&fit=crop"
+                            img="https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=2000&auto=format&fit=crop"
                             title="Serenity Suite"
                             category="Bedroom"
                             delay={0.5}
