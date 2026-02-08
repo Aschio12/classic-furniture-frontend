@@ -24,16 +24,16 @@ export default function LoginForm() {
       
       setIsExiting(true); // Trigger fade out animation
 
-      // Wait for animation before pushing route (e.g. 1s)
+      // Wait for animation before pushing route
       setTimeout(() => {
         if (role === 'hub_manager') {
-            router.push('/dashboard/hub');
+            router.push('/dashboard/hub-manager');
         } else if (role === 'admin') {
             router.push('/admin');
         } else {
             router.push('/shop');
         }
-      }, 1000);
+      }, 800);
 
     } catch {
       // Error is handled by store
@@ -57,10 +57,10 @@ export default function LoginForm() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }} // Soft liquid ease
-            className="fixed inset-0 z-50 flex items-center justify-center bg-white"
-            style={{ pointerEvents: 'none' }} // Ensure clicks go through if stuck but visible
+            className="fixed inset-0 z-[200] flex items-center justify-center bg-neutral-950"
+            style={{ pointerEvents: 'auto' }} // Block interaction during transition
           >
-             {/* Optional: Add a subtle ripple or just pure clean fade to white/target bg */}
+             <Loader2 className="h-12 w-12 animate-spin text-[#d4af37]" />
           </motion.div>
         )}
       </AnimatePresence>

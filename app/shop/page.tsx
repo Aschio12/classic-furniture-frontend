@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { SlidersHorizontal, Loader2 } from "lucide-react";
 
 import api from "@/lib/axios";
+import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import ProductGrid from "@/components/shared/ProductGrid";
 import { type Product } from "@/components/shared/ProductCard";
 
@@ -14,7 +15,7 @@ type ProductWithCategory = Product & {
   category?: string;
 };
 
-export default function ShopPage() {
+function ShopContent() {
   const [products, setProducts] = useState<ProductWithCategory[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<ProductWithCategory[]>([]);
   const [activeCategory, setActiveCategory] = useState("All");
@@ -135,5 +136,13 @@ export default function ShopPage() {
         )}
       </div>
     </main>
+  );
+}
+
+export default function ShopPage() {
+  return (
+    <ProtectedRoute allowedRoles={['user', 'admin', 'hub_manager', 'seller']}>
+      <ShopContent />
+    </ProtectedRoute>
   );
 }
