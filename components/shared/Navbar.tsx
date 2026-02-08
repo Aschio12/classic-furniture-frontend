@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { Bell, ShoppingBag, UserCircle } from "lucide-react";
 
@@ -27,38 +28,41 @@ const navLinks = [
 ];
 
 export default function Navbar() {
+  const pathname = usePathname();
   const { user } = useAuthStore();
   const { itemCount } = useCartStore();
   const { unreadCount } = useNotificationStore();
 
+  const isLandingPage = pathname === "/";
+  // Show nav links only if we are user OR if we are NOT on the landing page
+  const showNavLinks = !isLandingPage || !!user;
+
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-primary/10 bg-surface/70 backdrop-blur-xl">
-      <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4 sm:px-6">
-        <Link href="/" className="text-lg font-semibold tracking-[0.3em] text-primary">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-white/70 backdrop-blur-md">
+      <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-6">
+        <Link href="/" className="text-xl font-bold tracking-[0.2em] text-neutral-900">
           LUXECRAFT
         </Link>
         
-        <Link href="/" className="text-lg font-semibold tracking-[0.3em] text-primary">
-          LUXECRAFT
-        </Link>
-        
-        <nav className="hidden items-center gap-8 text-sm font-medium text-primary/80 md:flex">
-          {navLinks.map((link) => (
-            <motion.div key={link.href} whileHover="hover" className="relative">
-              <Link href={link.href} className="transition-colors hover:text-primary">
-                {link.label}
-              </Link>
-              <motion.span
-                variants={{
-                  hover: { scaleX: 1, opacity: 1 },
-                  initial: { scaleX: 0, opacity: 0 },
-                }}
-                initial="initial"
-                className="absolute -bottom-1 left-0 h-0.5 w-full origin-left bg-accent"
-              />
-            </motion.div>
-          ))}
-        </nav>
+        {showNavLinks && (
+          <nav className="hidden items-center gap-8 text-sm font-medium text-neutral-600 md:flex">
+            {navLinks.map((link) => (
+              <motion.div key={link.href} whileHover="hover" className="relative">
+                <Link href={link.href} className="transition-colors hover:text-neutral-900">
+                  {link.label}
+                </Link>
+                <motion.span
+                  variants={{
+                    hover: { scaleX: 1, opacity: 1 },
+                    initial: { scaleX: 0, opacity: 0 },
+                  }}
+                  initial="initial"
+                  className="absolute -bottom-1 left-0 h-0.5 w-full origin-left bg-neutral-900"
+                />
+              </motion.div>
+            ))}
+          </nav>
+        )}
 
         <div className="flex items-center gap-4">
           {user ? (
