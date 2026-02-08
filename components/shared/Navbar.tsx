@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Bell, ShoppingBag, UserCircle } from "lucide-react";
 
 import {
@@ -34,11 +34,25 @@ export default function Navbar() {
   const { unreadCount } = useNotificationStore();
 
   const isLandingPage = pathname === "/";
+  
+  // Luxury Scroll logic: On landing page, start invisible and fade in as user scrolls down
+  const { scrollY } = useScroll();
+  const navOpacity = useTransform(scrollY, [0, 400], [0, 1]);
+  const navY = useTransform(scrollY, [0, 400], [-20, 0]);
+  const navPointerEvents = useTransform(scrollY, (y) => y < 200 ? "none" : "auto");
+
   // Show nav links only if we are user OR if we are NOT on the landing page
   const showNavLinks = !isLandingPage || !!user;
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-white/70 backdrop-blur-md">
+    <motion.header 
+      style={{ 
+        opacity: isLandingPage ? navOpacity : 1, 
+        y: isLandingPage ? navY : 0,
+        pointerEvents: isLandingPage ? navPointerEvents : "auto"
+      }}
+      className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-white/70 backdrop-blur-md"
+    >
       <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-6">
         <Link href="/" className="text-xl font-bold tracking-[0.2em] text-neutral-900">
           LUXECRAFT
