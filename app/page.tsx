@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { 
     motion, 
@@ -10,15 +9,15 @@ import {
     useTransform, 
     useSpring, 
     useMotionValue,
-    useInView
 } from "framer-motion";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useServerStore } from "@/store/useServerStore";
 import LoginForm from "@/components/auth/LoginForm";
 import RegisterForm from "@/components/auth/RegisterForm";
 import ServerStatus from "@/components/shared/ServerStatus";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/components/ui/dialog";
 import { ChevronDown, Loader2 } from "lucide-react";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import PageTransition from "@/components/shared/PageTransition";
 
 export default function Home() {
@@ -109,7 +108,7 @@ export default function Home() {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 1 }}
-                    className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/80 backdrop-blur-md"
+                    className="fixed inset-0 z-100 flex flex-col items-center justify-center bg-black/80 backdrop-blur-md"
                 >
                     {/* Background Texture */}
                     <div className="absolute inset-0 z-0 opacity-40">
@@ -134,7 +133,7 @@ export default function Home() {
             )}
 
             {/* --- Global Light Spot (Specular Highlight) --- */}
-            <div className="fixed inset-0 z-[60] pointer-events-none mix-blend-overlay">
+            <div className="fixed inset-0 z-60 pointer-events-none mix-blend-overlay">
                 <motion.div 
                     className="absolute inset-0"
                     style={{ background: spotGradient }}
@@ -162,12 +161,12 @@ export default function Home() {
                     />
                     
                     {/* Cinematic overlays */}
-                    <div className="absolute inset-0 z-[1] bg-gradient-to-b from-black/40 via-transparent to-black/90 mix-blend-multiply" />
-                    <div className="absolute inset-0 z-[2] bg-neutral-900/10 mix-blend-overlay" />
+                    <div className="absolute inset-0 z-1 bg-linear-to-b from-black/40 via-transparent to-black/90 mix-blend-multiply" />
+                    <div className="absolute inset-0 z-2 bg-neutral-900/10 mix-blend-overlay" />
                 </motion.div>
                 
                 {/* Oily Noise */}
-                <div className="absolute inset-0 z-[3] pointer-events-none opacity-20 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+                <div className="absolute inset-0 z-3 pointer-events-none opacity-20 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
             </div>
 
             {/* ================= SECTION 1: HERO ================= */}
@@ -247,7 +246,7 @@ export default function Home() {
                     viewport={{ once: true }}
                     className="relative w-full max-w-3xl overflow-hidden rounded-2xl border border-white/20 bg-white/5 backdrop-blur-xl shadow-[0_0_40px_-5px_rgba(255,255,255,0.1)] p-1"
                  >
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+                    <div className="absolute inset-0 bg-linear-to-br from-white/10 to-transparent pointer-events-none" />
                     
                     <div className="relative flex flex-col md:flex-row items-center justify-between p-8 gap-8">
                         <div className="text-left space-y-2">
@@ -263,6 +262,9 @@ export default function Home() {
                                     </button>
                                 </DialogTrigger>
                                 <DialogContent className="border-neutral-800 bg-white/10 backdrop-blur-3xl text-white sm:rounded-2xl">
+                                    <VisuallyHidden>
+                                        <DialogTitle>Log In</DialogTitle>
+                                    </VisuallyHidden>
                                     <LoginForm />
                                 </DialogContent>
                             </Dialog>
@@ -274,6 +276,9 @@ export default function Home() {
                                     </button>
                                 </DialogTrigger>
                                 <DialogContent className="border-neutral-800 bg-white/10 backdrop-blur-3xl text-white sm:rounded-2xl">
+                                    <VisuallyHidden>
+                                        <DialogTitle>Sign Up</DialogTitle>
+                                    </VisuallyHidden>
                                     <RegisterForm />
                                 </DialogContent>
                             </Dialog>
@@ -298,25 +303,26 @@ function GalleryItem({ img, title, category, delay, className = "" }: { img: str
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.8, delay, ease: "easeOut" }}
-            className={`group relative h-[500px] w-full overflow-hidden rounded-md border border-white/10 ${className}`}
+            className={`group relative h-125 w-full overflow-hidden rounded-md border border-white/10 ${className}`}
         >
             {/* Image Layer */}
             <div className="absolute inset-0 transition-transform duration-700 group-hover:scale-110">
-                <img 
+                <Image 
                     src={img} 
                     alt={title} 
-                    className="h-full w-full object-cover"
+                    fill
+                    className="object-cover"
                 />
             </div>
 
             {/* Glossy Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-60" />
+            <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-60" />
 
             {/* Content Layer (Floats up on hover) */}
             <div className="absolute bottom-0 left-0 w-full p-8 translate-y-4 transition-transform duration-500 group-hover:translate-y-0">
                 <p className="mb-2 text-xs font-bold uppercase tracking-widest text-[#d4af37]">{category}</p>
                 <h3 className="text-2xl font-serif text-white">{title}</h3>
-                <div className="mt-4 h-[1px] w-0 bg-white transition-all duration-500 group-hover:w-full" />
+                <div className="mt-4 h-px w-0 bg-white transition-all duration-500 group-hover:w-full" />
             </div>
         </motion.div>
     );
