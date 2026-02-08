@@ -67,16 +67,61 @@ export default function Hero() {
       <div 
         className="absolute inset-0 z-10 bg-linear-to-r from-neutral-50/60 via-white/5 to-transparent"
         style={{
-             // High saturation and contrast create the 'wet/oily' deep color look
-             // Minimal blur keeps it sharp and glossy
-             backdropFilter: "saturate(1.6) contrast(1.1) brightness(1.05)"
+             backdropFilter: "saturate(1.4) contrast(1.1) brightness(1.05)"
         }}
       />
       
-      {/* Subtle Golden Morning Shine */}
+      {/* Subtle Golden Morning Shine Fixed Layer */}
       <div 
         className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_top_right,rgba(255,245,230,0.3)_0%,transparent_60%)] mix-blend-overlay"
       />
+
+       {/* Interactive 'Liquid Light' Cursor Follower 
+           Creates a localized spot of high saturation/brightness where the user looks
+       */}
+      <motion.div
+        className="pointer-events-none absolute z-10 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-60 mix-blend-overlay"
+        style={{
+            left: smoothX,
+            top: smoothY,
+            background: "radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.2) 40%, transparent 70%)",
+            filter: "blur(40px)",
+        }}
+      />
+      
+      {/* Film Grain Texture -> Adds 'Cinematic/Analog' expensive feel */}
+      <div className="pointer-events-none absolute inset-0 z-10 opacity-[0.03]"
+           style={{
+               backgroundImage: "url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuNjUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2UpIiBvcGFjaXR5PSIxIi8+PC9zdmc+')",
+           }}
+      />
+
+      {/* Floating Dust Particles - Subtle Morning Atmosphere */}
+      {[...Array(3)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute z-10 rounded-full bg-white/40 blur-[1px]"
+            initial={{ 
+                x: Math.random() * 100 + "%", 
+                y: Math.random() * 100 + "%", 
+                scale: Math.random() * 0.5 + 0.5 
+            }}
+            animate={{ 
+                y: [0, -100, 0], 
+                x: [0, 50, 0],
+                opacity: [0, 0.8, 0] 
+            }}
+            transition={{
+                duration: 20 + Math.random() * 10,
+                repeat: Infinity,
+                ease: "linear"
+            }}
+            style={{
+                width: Math.random() * 4 + 2 + "px",
+                height: Math.random() * 4 + 2 + "px",
+            }}
+          />
+      ))}
 
       {/* Content */}
       <div className="relative z-20 flex h-full items-center justify-start pb-10 md:pb-0 md:pl-20">
