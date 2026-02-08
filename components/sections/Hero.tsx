@@ -5,6 +5,9 @@ import Link from "next/link";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useState, useRef, useEffect } from "react";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import LoginForm from "@/components/auth/LoginForm";
+import RegisterForm from "@/components/auth/RegisterForm";
 
 export default function Hero() {
   const { user } = useAuthStore();
@@ -133,17 +136,31 @@ export default function Hero() {
                 />
 
                 <div className="relative z-10 space-y-4">
-                    <Link href="/auth/login" className="relative block w-full overflow-hidden rounded-xl bg-black px-6 py-4 text-center text-sm font-medium uppercase tracking-widest text-white transition-transform hover:scale-[1.02] active:scale-[0.98]">
-                        <span className="relative z-10">Sign In</span>
-                        {/* Shine Animation */}
-                        <div className="absolute inset-0 -translate-x-full animate-[shine_3s_infinite] bg-linear-to-r from-transparent via-white/20 to-transparent" />
-                    </Link>
+                    <Dialog>
+                        <DialogTrigger asChild>
+                            <button className="relative block w-full overflow-hidden rounded-xl bg-black px-6 py-4 text-center text-sm font-medium uppercase tracking-widest text-white transition-transform hover:scale-[1.02] active:scale-[0.98]">
+                                <span className="relative z-10">Sign In</span>
+                                {/* Shine Animation */}
+                                <div className="absolute inset-0 -translate-x-full animate-[shine_3s_infinite] bg-linear-to-r from-transparent via-white/20 to-transparent" />
+                            </button>
+                        </DialogTrigger>
+                        <DialogContent className="max-w-md border-0 bg-transparent p-0 shadow-none">
+                            <LoginForm />
+                        </DialogContent>
+                    </Dialog>
 
-                    <Link href="/auth/register" className="relative block w-full overflow-hidden rounded-xl border border-white/40 bg-white/10 px-6 py-4 text-center text-sm font-medium uppercase tracking-widest text-white backdrop-blur-sm transition-all hover:bg-white hover:text-black">
-                         <span className="relative z-10">Create Account</span>
-                         {/* Shine Animation Delayed */}
-                         <div className="absolute inset-0 -translate-x-full animate-[shine_3s_infinite_1.5s] bg-linear-to-r from-transparent via-white/20 to-transparent" />
-                    </Link>
+                    <Dialog>
+                        <DialogTrigger asChild>
+                            <button className="relative block w-full overflow-hidden rounded-xl border border-white/40 bg-white/10 px-6 py-4 text-center text-sm font-medium uppercase tracking-widest text-white backdrop-blur-sm transition-all hover:bg-white hover:text-black">
+                                <span className="relative z-10">Create Account</span>
+                                {/* Shine Animation Delayed */}
+                                <div className="absolute inset-0 -translate-x-full animate-[shine_3s_infinite_1.5s] bg-linear-to-r from-transparent via-white/20 to-transparent" />
+                            </button>
+                        </DialogTrigger>
+                         <DialogContent className="max-w-md border-0 bg-transparent p-0 shadow-none">
+                            <RegisterForm />
+                        </DialogContent>
+                    </Dialog>
                 </div>
             </motion.div>
           </div>
