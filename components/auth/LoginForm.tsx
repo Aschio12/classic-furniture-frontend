@@ -9,7 +9,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 
 export default function LoginForm() {
   const router = useRouter();
-  const { login, isLoading, error, user } = useAuthStore();
+  const { login, isLoading, error } = useAuthStore();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isExiting, setIsExiting] = useState(false);

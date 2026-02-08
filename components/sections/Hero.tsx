@@ -2,13 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useState, useEffect } from "react";
 
 export default function Hero() {
   const { user } = useAuthStore();
   const [mounted, setMounted] = useState(false);
+  const [particles, setParticles] = useState<{ x: number; y: number; scale: number; duration: number; size: number }[]>([]);
 
   // --- Interactive 'Liquid Light' Logic ---
   const mouseX = useMotionValue(0);
@@ -28,6 +29,13 @@ export default function Hero() {
   
   // Handle mounting state to prevent hydration mismatches
   useEffect(() => {
+      setParticles([...Array(3)].map(() => ({
+          x: Math.random() * 100,
+          y: Math.random() * 100,
+          scale: Math.random() * 0.5 + 0.5,
+          duration: 20 + Math.random() * 10,
+          size: Math.random() * 4 + 2
+      })));
       const timer = setTimeout(() => setMounted(true), 0);
       return () => clearTimeout(timer);
   }, []);
@@ -97,14 +105,14 @@ export default function Hero() {
       />
 
       {/* Floating Dust Particles - Subtle Morning Atmosphere */}
-      {[...Array(3)].map((_, i) => (
+      {particles.map((p, i) => (
           <motion.div
             key={i}
             className="absolute z-10 rounded-full bg-white/40 blur-[1px]"
             initial={{ 
-                x: Math.random() * 100 + "%", 
-                y: Math.random() * 100 + "%", 
-                scale: Math.random() * 0.5 + 0.5 
+                x: p.x + "%", 
+                y: p.y + "%", 
+                scale: p.scale 
             }}
             animate={{ 
                 y: [0, -100, 0], 
@@ -112,13 +120,13 @@ export default function Hero() {
                 opacity: [0, 0.8, 0] 
             }}
             transition={{
-                duration: 20 + Math.random() * 10,
+                duration: p.duration,
                 repeat: Infinity,
                 ease: "linear"
             }}
             style={{
-                width: Math.random() * 4 + 2 + "px",
-                height: Math.random() * 4 + 2 + "px",
+                width: p.size + "px",
+                height: p.size + "px",
             }}
           />
       ))}

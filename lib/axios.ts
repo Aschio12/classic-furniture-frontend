@@ -23,7 +23,7 @@ export const wakeUpServer = async () => {
         // We use a separate axios call to avoid the /api prefix of the instance
         await axios.get(`${BASE_URL}/`);
         return true;
-    } catch (error) {
+    } catch {
         // Even if it fails (e.g. 404), if we get a response, it's awake.
         // But if it's a network error, it might be down or sleeping hard.
         console.log("Ping attempt finished"); 
