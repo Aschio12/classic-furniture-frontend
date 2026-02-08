@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -26,8 +26,8 @@ export default function Home() {
     const [isRedirecting, setIsRedirecting] = useState(false);
     
     // Scroll Parallax Hooks
-    const containerRef = useRef<HTMLDivElement>(null);
-    const { scrollYProgress } = useScroll({ target: containerRef });
+    // Using window scroll by default since we are animating the whole page body
+    const { scrollYProgress } = useScroll();
 
     // Header Animations (Moves UP and Fades OUT)
     const headerY = useTransform(scrollYProgress, [0, 0.3], [0, -100]);
@@ -73,7 +73,6 @@ export default function Home() {
 
     return (
         <main 
-            ref={containerRef} 
             className="relative h-[200vh] w-full bg-neutral-950 text-white overflow-x-hidden"
             onMouseMove={handleMouseMove}
         >
