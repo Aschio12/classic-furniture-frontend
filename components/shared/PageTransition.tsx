@@ -10,7 +10,7 @@ export default function PageTransition({ isActive }: PageTransitionProps) {
   if (!isActive) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] pointer-events-none">
+    <div className="fixed inset-0 z-100 pointer-events-none">
       {/* The Wave */}
       <motion.div
         initial={{ y: "100%" }}
@@ -29,7 +29,7 @@ export default function PageTransition({ isActive }: PageTransitionProps) {
         </motion.div>
         
         {/* Oily Topper */}
-        <div className="absolute top-0 h-32 w-full -translate-y-full bg-gradient-to-t from-black to-transparent opacity-50" />
+        <div className="absolute top-0 h-32 w-full -translate-y-full bg-linear-to-t from-black to-transparent opacity-50" />
       </motion.div>
     </div>
   );
