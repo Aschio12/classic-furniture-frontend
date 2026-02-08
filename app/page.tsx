@@ -26,17 +26,19 @@ export default function Home() {
     const [isRedirecting, setIsRedirecting] = useState(false);
     
     // Scroll Parallax Hooks
-    // Using window scroll by default since we are animating the whole page body
-    const { scrollYProgress } = useScroll();
+    // Using window scroll (pixels) for more robust initial load state
+    const { scrollY } = useScroll();
 
     // Header Animations (Moves UP and Fades OUT)
-    const headerY = useTransform(scrollYProgress, [0, 0.3], [0, -100]);
-    const headerOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0]);
+    // 0px to 300px scroll range
+    const headerY = useTransform(scrollY, [0, 300], [0, -100]);
+    const headerOpacity = useTransform(scrollY, [0, 300], [1, 0]);
 
     // Auth Card Animations (Moves UP from bottom and Fades IN)
-    const authY = useTransform(scrollYProgress, [0.1, 0.4], [100, 0]);
-    const authOpacity = useTransform(scrollYProgress, [0.1, 0.4], [0, 1]);
-    const authScale = useTransform(scrollYProgress, [0.1, 0.4], [0.9, 1]);
+    // 200px to 500px scroll range
+    const authY = useTransform(scrollY, [200, 500], [100, 0]);
+    const authOpacity = useTransform(scrollY, [200, 500], [0, 1]);
+    const authScale = useTransform(scrollY, [200, 500], [0.9, 1]);
 
     // Mouse Physics for Subtle Parallax
     const mouseX = useMotionValue(0);
