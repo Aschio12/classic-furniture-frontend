@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { Bell, ShoppingBag, UserCircle } from "lucide-react";
 
@@ -12,10 +13,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { usePathname } from "next/navigation";
-import { useAuthStore } from "@/store/useAuthStore";
 import { useCartStore } from "@/store/cartStore";
 import { useNotificationStore } from "@/store/notificationStore";
+import { useAuthStore } from "@/store/useAuthStore";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -30,9 +30,9 @@ export default function Navbar() {
   const { itemCount } = useCartStore();
   const { unreadCount } = useNotificationStore();
 
-  // Hide cart, notifications, and profile on landing page ("/") if user is NOT logged in
   const isLandingPage = pathname === "/";
-  const hideExtras = isLandingPage && !user;
+  // Hide nav items if on landing page and not logged in (Intro Mode)
+  const showNav = !isLandingPage || !!user;
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-primary/10 bg-surface/70 backdrop-blur-xl">
@@ -40,7 +40,9 @@ export default function Navbar() {
         <Link href="/" className="text-lg font-semibold tracking-[0.3em] text-primary">
           LUXECRAFT
         </Link>
-
+        
+        {showNav && (
+            <>
         <nav className="hidden items-center gap-8 text-sm font-medium text-primary/80 md:flex">
           {navLinks.map((link) => (
             <motion.div key={link.href} whileHover="hover" className="relative">
@@ -60,44 +62,42 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-4">
-          {!hideExtras && (
-            <>
-              <Link href="/cart" className="relative text-primary/80 transition hover:text-primary">
-                <ShoppingBag className="h-5 w-5" />
-                {itemCount > 0 && (
-                  <span className="absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[0.6rem] font-semibold text-primary">
-                    {itemCount}
-                  </span>
-                )}
-              </Link>
+          <Link href="/cart" className="relative text-primary/80 transition hover:text-primary">
+            <ShoppingBag className="h-5 w-5" />
+            {itemCount > 0 && (
+              <span className="absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[0.6rem] font-semibold text-primary">
+                {itemCount}
+              </span>
+            )}
+          </Link>
 
-              <Link href="/notifications" className="relative text-primary/80 transition hover:text-primary">
-                <Bell className="h-5 w-5" />
-                {unreadCount > 0 && (
-                  <span className="absolute -right-1 -top-1 h-2 w-2 rounded-full bg-red-500" />
-                )}
-              </Link>
+          <Link href="/notifications" className="relative text-primary/80 transition hover:text-primary">
+            <Bell className="h-5 w-5" />
+            {unreadCount > 0 && (
+              <span className="absolute -right-1 -top-1 h-2 w-2 rounded-full bg-red-500" />
+            )}
+          </Link>
 
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button className="flex items-center gap-2 rounded-full border border-primary/10 bg-white/50 px-3 py-1.5 text-sm text-primary/80 shadow-sm transition hover:text-primary">
-                    <UserCircle className="h-5 w-5" />
-                    <span className="hidden sm:inline">Profile</span>
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>Account</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>My Profile</DropdownMenuItem>
-                  <DropdownMenuItem>Orders</DropdownMenuItem>
-                  <DropdownMenuItem>Settings</DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem className="text-red-600">Sign Out</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </>
-          )}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="flex items-center gap-2 rounded-full border border-primary/10 bg-white/50 px-3 py-1.5 text-sm text-primary/80 shadow-sm transition hover:text-primary">
+                <UserCircle className="h-5 w-5" />
+                <span className="hidden sm:inline">Profile</span>
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>My Profile</DropdownMenuItem>
+              <DropdownMenuItem>Orders</DropdownMenuItem>
+              <DropdownMenuItem>Settings</DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="text-red-600">Sign Out</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
+        </>
+        )}
       </div>
     </header>
   );
