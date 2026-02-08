@@ -68,7 +68,7 @@ export default function RegisterForm() {
         <motion.div 
            initial={{ width: 0 }}
            animate={{ width: "100px" }}
-           className="h-0.5 bg-gradient-to-r from-transparent via-[#d4af37] to-transparent"
+           className="h-0.5 bg-linear-to-r from-transparent via-[#d4af37] to-transparent"
         />
       </div>
     )
@@ -78,8 +78,8 @@ export default function RegisterForm() {
     <div className="w-full max-w-md space-y-8 p-4">
       {/* Shining Progress Bar (Authentication State) */}
       {isLoading && (
-        <div className="fixed top-0 left-0 z-[100] h-1 w-full overflow-hidden bg-transparent">
-             <div className="h-full w-full animate-[shine_1.5s_infinite] bg-gradient-to-r from-transparent via-white/80 to-transparent" />
+        <div className="fixed top-0 left-0 z-100 h-1 w-full overflow-hidden bg-transparent">
+             <div className="h-full w-full animate-[shine_1.5s_infinite] bg-linear-to-r from-transparent via-white/80 to-transparent" />
         </div>
       )}
 
