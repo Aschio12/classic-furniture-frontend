@@ -13,7 +13,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/components/ui/dialog";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useCartStore } from "@/store/cartStore";
 import { useNotificationStore } from "@/store/notificationStore";
 import { useAuthStore } from "@/store/useAuthStore";
@@ -124,6 +125,9 @@ export default function Navbar() {
                     </button>
                   </DialogTrigger>
                   <DialogContent className="max-w-md border border-white/20 bg-black/60 backdrop-blur-xl p-0 shadow-2xl">
+                    <VisuallyHidden>
+                        <DialogTitle>Sign In</DialogTitle>
+                    </VisuallyHidden>
                     <LoginForm />
                   </DialogContent>
                 </Dialog>
@@ -135,6 +139,9 @@ export default function Navbar() {
                     </button>
                   </DialogTrigger>
                   <DialogContent className="max-w-md border border-white/20 bg-black/60 backdrop-blur-xl p-0 shadow-2xl">
+                    <VisuallyHidden>
+                        <DialogTitle>Create Account</DialogTitle>
+                    </VisuallyHidden>
                     <RegisterForm />
                   </DialogContent>
                 </Dialog>
