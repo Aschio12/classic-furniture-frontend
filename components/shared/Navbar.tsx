@@ -123,7 +123,7 @@ export default function Navbar() {
                       Sign In
                     </button>
                   </DialogTrigger>
-                  <DialogContent className="max-w-md border-0 bg-transparent p-0 shadow-none">
+                  <DialogContent className="max-w-md border border-white/20 bg-black/60 backdrop-blur-xl p-0 shadow-2xl">
                     <LoginForm />
                   </DialogContent>
                 </Dialog>
@@ -134,7 +134,7 @@ export default function Navbar() {
                       Create Account
                     </button>
                   </DialogTrigger>
-                  <DialogContent className="max-w-md border-0 bg-transparent p-0 shadow-none">
+                  <DialogContent className="max-w-md border border-white/20 bg-black/60 backdrop-blur-xl p-0 shadow-2xl">
                     <RegisterForm />
                   </DialogContent>
                 </Dialog>
