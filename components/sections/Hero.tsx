@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useState, useEffect } from "react";
 
@@ -10,6 +10,22 @@ export default function Hero() {
   const { user } = useAuthStore();
   const [mounted, setMounted] = useState(false);
 
+  // --- Interactive 'Liquid Light' Logic ---
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  // Smooth out the mouse movement for a 'viscous/oily' feel
+  const springConfig = { damping: 25, stiffness: 100, mass: 0.5 }; // Slightly heavy/smooth
+  const smoothX = useSpring(mouseX, springConfig);
+  const smoothY = useSpring(mouseY, springConfig);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    // We want coordinates relative to window or center, 
+    // but straight clientX/Y works for fixed overlay tracking
+    mouseX.set(e.clientX);
+    mouseY.set(e.clientY);
+  };
+  
   // Handle mounting state to prevent hydration mismatches
   useEffect(() => {
       const timer = setTimeout(() => setMounted(true), 0);
@@ -20,7 +36,10 @@ export default function Hero() {
   if (!mounted) return null;
 
   return (
-    <section className="relative h-screen w-full overflow-hidden bg-white">
+    <section 
+      className="relative h-screen w-full overflow-hidden bg-white"
+      onMouseMove={handleMouseMove}
+    >
       {/* 
         Background Image with 'Slow-Pan' effect.
       */}
@@ -44,12 +63,19 @@ export default function Hero() {
         />
       </motion.div>
 
-      {/* The 'Oily' Effect Overlay - Adjusted for Morning Vibe */}
+      {/* The 'Oily' Effect Overlay - Adjusted for Glossy/Wet Morning Vibe */}
       <div 
-        className="absolute inset-0 z-10 bg-linear-to-r from-white/80 via-white/20 to-transparent" 
+        className="absolute inset-0 z-10 bg-linear-to-r from-neutral-50/60 via-white/5 to-transparent"
         style={{
-             backdropFilter: "brightness(1.05) saturate(1.1) blur(1px)"
+             // High saturation and contrast create the 'wet/oily' deep color look
+             // Minimal blur keeps it sharp and glossy
+             backdropFilter: "saturate(1.6) contrast(1.1) brightness(1.05)"
         }}
+      />
+      
+      {/* Subtle Golden Morning Shine */}
+      <div 
+        className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_top_right,rgba(255,245,230,0.3)_0%,transparent_60%)] mix-blend-overlay"
       />
 
       {/* Content */}
