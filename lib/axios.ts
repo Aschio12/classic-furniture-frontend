@@ -39,11 +39,10 @@ export const wakeUpServer = async () => {
             return true;
         } catch (error) {
             const err = error as AxiosError;
-            console.log(`Wake-up attempt ${i + 1}/${MAX_RETRIES} failed.`);
-            console.error("Wake-up Error Details:", err.message);
+            
+            console.warn(`Wake-up attempt ${i + 1}/${MAX_RETRIES} failed: ${err.message}`);
             if (err.response) {
-                console.error("Status:", err.response.status);
-                // console.error("Data:", err.response.data); // Optional: log data if needed
+                console.warn("Status:", err.response.status);
             }
             
             // If it's a network error (connection closed) or 503 (Service Unavailable/Starting)
