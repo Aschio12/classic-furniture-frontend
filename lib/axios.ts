@@ -1,11 +1,15 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useAuthStore } from "@/store/useAuthStore";
+import { useServerStore } from "@/store/useServerStore";
 
 const BASE_URL = "https://classic-furniture-backend.onrender.com";
 
 const api = axios.create({
   baseURL: `${BASE_URL}/api`,
-  withCredentials: true, // Enabled for potential cookie support
+  withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
 api.interceptors.request.use((config) => {
@@ -18,17 +22,40 @@ api.interceptors.request.use((config) => {
 });
 
 export const wakeUpServer = async () => {
-    try {
-        // Hit the root endpoint to wake up the Render instance
-        // We use a separate axios call to avoid the /api prefix of the instance
-        await axios.get(`${BASE_URL}/`);
-        return true;
-    } catch {
-        // Even if it fails (e.g. 404), if we get a response, it's awake.
-        // But if it's a network error, it might be down or sleeping hard.
-        console.log("Ping attempt finished"); 
-        return true; 
+    const { setIsServerWaking } = useServerStore.getState();
+    const MAX_RETRIES = 10;
+    const RETRY_DELAY = 5000; // 5 seconds
+
+    for (let i = 0; i < MAX_RETRIES; i++) {
+        try {
+            // Hit the root endpoint to wake up the Render instance
+            await axios.get(`${BASE_URL}/`, {
+                timeout: 5000 // Timeout for the ping itself
+            });
+            
+            // If successful, we are done
+            setIsServerWaking(false);
+            return true;
+        } catch (error) {
+            const err = error as AxiosError;
+            console.log(`Wake-up attempt ${i + 1}/${MAX_RETRIES} failed.`);
+            
+            // If it's a network error (connection closed) or 503 (Service Unavailable/Starting)
+            if (!err.response || err.response.status === 503 || err.code === "ERR_NETWORK" || err.code === "ECONNABORTED") {
+                setIsServerWaking(true); // Show loading overlay
+                await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
+                continue; // Try again
+            } else {
+                // If it's another error (like 404, 500 but connected), consider it awake enough to try requests
+                setIsServerWaking(false);
+                return false; 
+            }
+        }
     }
+    
+    // If we run out of retries
+    setIsServerWaking(false); 
+    return false;
 };
 
 export default api;

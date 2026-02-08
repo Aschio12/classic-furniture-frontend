@@ -13,16 +13,18 @@ import {
     useInView
 } from "framer-motion";
 import { useAuthStore } from "@/store/useAuthStore";
+import { useServerStore } from "@/store/useServerStore";
 import LoginForm from "@/components/auth/LoginForm";
 import RegisterForm from "@/components/auth/RegisterForm";
 import ServerStatus from "@/components/shared/ServerStatus";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Loader2 } from "lucide-react";
 import PageTransition from "@/components/shared/PageTransition";
 
 export default function Home() {
     const router = useRouter();
     const { user, isLoading: authLoading } = useAuthStore();
+    const { isServerWaking } = useServerStore();
     const [mounted, setMounted] = useState(false);
     const [isRedirecting, setIsRedirecting] = useState(false);
     
@@ -99,6 +101,37 @@ export default function Home() {
         >
             <PageTransition isActive={isRedirecting} />
             <ServerStatus />
+
+            {/* --- Server Waking Overlay --- */}
+            {isServerWaking && (
+                <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 1 }}
+                    className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/80 backdrop-blur-md"
+                >
+                    {/* Background Texture */}
+                    <div className="absolute inset-0 z-0 opacity-40">
+                         <Image
+                            src="https://images.unsplash.com/photo-1600607687652-9b927df4563e?q=80&w=2670&auto=format&fit=crop"
+                            alt="Loading Details"
+                            fill
+                            className="object-cover blur-xl grayscale"
+                        />
+                    </div>
+                    
+                    <div className="relative z-10 flex flex-col items-center gap-6">
+                        <Loader2 className="h-16 w-16 animate-spin text-[#d4af37]" />
+                        <div className="text-center space-y-2">
+                             <h2 className="text-2xl font-serif text-white tracking-widest">LUXECRAFT</h2>
+                             <p className="text-[#d4af37] text-sm uppercase tracking-[0.2em] animate-pulse">
+                                Preparing the Showroom... The server is waking up.
+                             </p>
+                        </div>
+                    </div>
+                </motion.div>
+            )}
 
             {/* --- Global Light Spot (Specular Highlight) --- */}
             <div className="fixed inset-0 z-[60] pointer-events-none mix-blend-overlay">

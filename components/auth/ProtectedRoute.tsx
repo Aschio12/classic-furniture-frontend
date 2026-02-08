@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/useAuthStore";
 import { Loader2 } from "lucide-react";
@@ -13,7 +13,6 @@ interface ProtectedRouteProps {
 export default function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
     const router = useRouter();
     const { user, isAuthenticated, isLoading: authLoading } = useAuthStore();
-    const [isAuthorized, setIsAuthorized] = useState(false);
 
     useEffect(() => {
         // If still loading auth state from persistence, wait
@@ -33,14 +32,14 @@ export default function ProtectedRoute({ children, allowedRoles }: ProtectedRout
                 return;
             }
         }
-
-        // authorized
-        setIsAuthorized(true);
-
     }, [user, isAuthenticated, authLoading, allowedRoles, router]);
 
+    // Derived authorization state (avoiding useState/useEffect sync issues)
+    const isAuthorized = !authLoading && isAuthenticated && user && 
+        (!allowedRoles || allowedRoles.length === 0 || allowedRoles.includes(user.role));
+
     // Show loading state while checking
-    if (authLoading || !isAuthorized) {
+    if (!isAuthorized) {
         return (
             <div className="flex h-screen w-full items-center justify-center bg-black text-white">
                 <Loader2 className="h-10 w-10 animate-spin text-[#d4af37]" />
