@@ -17,11 +17,13 @@ import LoginForm from "@/components/auth/LoginForm";
 import RegisterForm from "@/components/auth/RegisterForm";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ChevronDown } from "lucide-react";
+import PageTransition from "@/components/shared/PageTransition";
 
 export default function Home() {
     const router = useRouter();
     const { user, isLoading: authLoading } = useAuthStore();
     const [mounted, setMounted] = useState(false);
+    const [isRedirecting, setIsRedirecting] = useState(false);
     
     // Scroll Parallax Hooks
     const containerRef = useRef<HTMLDivElement>(null);
@@ -56,11 +58,13 @@ export default function Home() {
 
     useEffect(() => {
         if (user && !authLoading) {
+            setIsRedirecting(true);
+            // Wait for the "Wave" to cover the screen (approx 600ms) before pushing route
             const timer = setTimeout(() => {
                 if (user.role === 'hub_manager') router.push('/dashboard/hub-manager');
                 else if (user.role === 'admin') router.push('/admin');
                 else router.push('/shop');
-            }, 1000);
+            }, 800); 
             return () => clearTimeout(timer);
         }
     }, [user, authLoading, router]);
@@ -73,6 +77,8 @@ export default function Home() {
             className="relative h-[200vh] w-full bg-neutral-950 text-white overflow-x-hidden"
             onMouseMove={handleMouseMove}
         >
+            <PageTransition isActive={isRedirecting} />
+
             {/* --- Fixed Cinematic Background --- */}
             <div className="fixed inset-0 z-0 overflow-hidden">
                 <motion.div 
