@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -8,13 +8,14 @@ import {
     motion, 
     useScroll, 
     useTransform, 
-    AnimatePresence,
     useSpring, 
-    useMotionValue 
+    useMotionValue,
+    useInView
 } from "framer-motion";
 import { useAuthStore } from "@/store/useAuthStore";
 import LoginForm from "@/components/auth/LoginForm";
 import RegisterForm from "@/components/auth/RegisterForm";
+import ServerStatus from "@/components/shared/ServerStatus";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ChevronDown } from "lucide-react";
 import PageTransition from "@/components/shared/PageTransition";
@@ -25,53 +26,48 @@ export default function Home() {
     const [mounted, setMounted] = useState(false);
     const [isRedirecting, setIsRedirecting] = useState(false);
     
-    // Scroll Parallax Hooks
-    // Using window scroll (pixels) for more robust initial load state
+    // --- Scroll & Parallax ---
     const { scrollY } = useScroll();
+    
+    // Background Transforms (Desaturate & Blur on scroll)
+    const bgFilter = useTransform(scrollY, [0, 800], ["saturate(1.4) blur(0px)", "saturate(0) blur(10px)"]);
+    const bgScale = useTransform(scrollY, [0, 800], [1, 1.1]);
+    const bgOpacity = useTransform(scrollY, [0, 800], [0.8, 0.4]);
 
-    // Header Animations (Moves UP and Fades OUT)
-    // 0px to 300px scroll range
-    const headerY = useTransform(scrollY, [0, 300], [0, -100]);
-    const headerOpacity = useTransform(scrollY, [0, 300], [1, 0]);
-    const headerBlur = useTransform(scrollY, [0, 300], ["blur(0px)", "blur(10px)"]);
+    // Hero Text Transforms (Fade out)
+    const heroOpacity = useTransform(scrollY, [0, 400], [1, 0]);
+    const heroY = useTransform(scrollY, [0, 400], [0, -100]);
 
-    // Auth Card Animations (Moves UP from bottom and Fades IN)
-    // 200px to 500px scroll range
-    const authY = useTransform(scrollY, [200, 500], [100, 0]);
-    const authOpacity = useTransform(scrollY, [200, 500], [0, 1]);
-    const authScale = useTransform(scrollY, [200, 500], [0.9, 1]);
-
-    // Background Animations
-    const bgScale = useTransform(scrollY, [0, 800], [1, 1.05]);
-
-    // Mouse Physics & Light Flare
+    // --- Mouse Physics (The Shine) ---
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
+    
+    // Smooth mouse for background parallax
     const springConfig = { damping: 30, stiffness: 200, mass: 0.5 };
     const springX = useSpring(mouseX, springConfig);
     const springY = useSpring(mouseY, springConfig);
 
-    // Light Flare Gradient center point (percent 0-100)
-    const flareX = useMotionValue(50);
-    const flareY = useMotionValue(50);
+    // Raw mouse for Light Spot (instant reaction)
+    const spotX = useMotionValue(0);
+    const spotY = useMotionValue(0);
 
     const handleMouseMove = (e: React.MouseEvent) => {
         const { clientX, clientY } = e;
         const { innerWidth, innerHeight } = window;
         
-        // Parallax values
+        // Parallax (Centered 0)
         mouseX.set((clientX - innerWidth / 2) / 50); 
         mouseY.set((clientY - innerHeight / 2) / 50);
 
-        // Flare values (percentage)
-        flareX.set((clientX / innerWidth) * 100);
-        flareY.set((clientY / innerHeight) * 100);
+        // Light Spot (Absolute)
+        spotX.set(clientX);
+        spotY.set(clientY);
     };
 
-    // Transform motion values to CSS string for gradient
-    const flareGradient = useTransform(
-        [flareX, flareY],
-        ([x, y]) => `radial-gradient(circle at ${x}% ${y}%, rgba(255,255,255,0.15) 0%, transparent 50%)`
+    // Light Spot Gradient
+    const spotGradient = useTransform(
+        [spotX, spotY],
+        ([x, y]) => `radial-gradient(600px circle at ${x}px ${y}px, rgba(255,255,255,0.15), transparent 40%)`
     );
 
     useEffect(() => {
@@ -82,14 +78,11 @@ export default function Home() {
     useEffect(() => {
         if (user && !authLoading) {
             const animTimer = setTimeout(() => setIsRedirecting(true), 0);
-
-            // Wait for the "Wave" to cover the screen (approx 600ms) before pushing route
             const redirectTimer = setTimeout(() => {
                 if (user.role === 'hub_manager') router.push('/dashboard/hub-manager');
                 else if (user.role === 'admin') router.push('/admin');
                 else router.push('/shop');
             }, 800); 
-            
             return () => {
                 clearTimeout(animTimer);
                 clearTimeout(redirectTimer);
@@ -101,95 +94,139 @@ export default function Home() {
 
     return (
         <main 
-            className="relative h-[200vh] w-full bg-neutral-950 text-white overflow-x-hidden"
+            className="relative w-full bg-neutral-950 text-white overflow-x-hidden"
             onMouseMove={handleMouseMove}
         >
             <PageTransition isActive={isRedirecting} />
+            <ServerStatus />
+
+            {/* --- Global Light Spot (Specular Highlight) --- */}
+            <div className="fixed inset-0 z-[60] pointer-events-none mix-blend-overlay">
+                <motion.div 
+                    className="absolute inset-0"
+                    style={{ background: spotGradient }}
+                />
+            </div>
 
             {/* --- Fixed Cinematic Background --- */}
-            <div className="fixed inset-0 z-0 overflow-hidden">
+            <div className="fixed inset-0 z-0 overflow-hidden h-screen">
                 <motion.div 
                     className="relative h-full w-full"
                     style={{ 
                         x: springX, 
                         y: springY, 
-                        scale: bgScale
+                        scale: bgScale,
+                        opacity: bgOpacity,
+                        filter: bgFilter
                     }}
                 >
                     <Image
                         src="https://images.unsplash.com/photo-1600607687652-9b927df4563e?q=80&w=2670&auto=format&fit=crop"
-                        alt="Background"
+                        alt="Classic Furniture Salon"
                         fill
-                        className="object-cover opacity-80"
+                        className="object-cover"
                         priority
                     />
                     
-                    {/* Morning Glow Overlay */}
-                    <div 
-                        className="absolute inset-0 z-[1]"
-                        style={{ backdropFilter: "saturate(1.4) brightness(1.1)" }}
-                    />
-                    
-                    {/* Interactive Light Flare */}
-                    <motion.div 
-                        className="absolute inset-0 z-[2] mix-blend-overlay"
-                        style={{ background: flareGradient }}
-                    />
-
-                    {/* Cinematic Gradient Overlays */}
-                    <div className="absolute inset-0 z-[3] bg-gradient-to-b from-black/30 via-transparent to-black/80 mix-blend-multiply" />
-                    <div className="absolute inset-0 z-[4] bg-neutral-900/20 mix-blend-overlay" />
+                    {/* Cinematic overlays */}
+                    <div className="absolute inset-0 z-[1] bg-gradient-to-b from-black/40 via-transparent to-black/90 mix-blend-multiply" />
+                    <div className="absolute inset-0 z-[2] bg-neutral-900/10 mix-blend-overlay" />
                 </motion.div>
                 
-                {/* Oily Atmosphere Overlay */}
-                <div className="absolute inset-0 z-[5] pointer-events-none mix-blend-overlay opacity-30 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+                {/* Oily Noise */}
+                <div className="absolute inset-0 z-[3] pointer-events-none opacity-20 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
             </div>
 
-            {/* --- Screen 1: The Hook (Header) --- */}
-            <div className="relative z-10 flex h-screen w-full flex-col items-center justify-center pt-20">
+            {/* ================= SECTION 1: HERO ================= */}
+            <section className="relative z-10 flex h-screen w-full flex-col items-center justify-center pt-20">
                 <motion.div 
-                    style={{ y: headerY, opacity: headerOpacity, filter: headerBlur }}
-                    className="flex flex-col items-center text-center space-y-6"
+                    style={{ y: heroY, opacity: heroOpacity }}
+                    className="flex flex-col items-center text-center space-y-8 px-4"
                 >
-                    <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl tracking-widest text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.3)]">
-                        Elegance Defined.
-                        <span className="block mt-4 text-3xl md:text-5xl lg:text-6xl text-white/90">
-                            Security Guaranteed.
-                        </span>
+                    <h1 className="font-serif text-5xl md:text-7xl lg:text-9xl tracking-tight text-white drop-shadow-2xl">
+                        LUXECRAFT
                     </h1>
+                    <div className="space-y-4">
+                        <p className="text-xl md:text-2xl font-light tracking-widest text-white/90 uppercase">
+                            Where Luxury Furniture Meets 
+                        </p>
+                        <p className="text-xl md:text-2xl font-semibold tracking-widest text-[#d4af37] uppercase">
+                            Institutional Security
+                        </p>
+                    </div>
                 </motion.div>
 
-                {/* Scroll Indicator */}
                 <motion.div 
-                    style={{ opacity: headerOpacity }}
+                    style={{ opacity: heroOpacity }}
                     animate={{ y: [0, 10, 0] }}
                     transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                     className="absolute bottom-12 flex flex-col items-center gap-2"
                 >
-                    <span className="text-[10px] uppercase tracking-widest text-white/50">Details Below</span>
+                    <span className="text-[10px] uppercase tracking-widest text-white/50">Explore The Platform</span>
                     <ChevronDown className="h-6 w-6 text-white/50" />
                 </motion.div>
-            </div>
+            </section>
 
-            {/* --- Screen 2: The Action (Auth Card) --- */}
-            <div className="relative z-10 flex h-screen w-full items-center justify-center pointer-events-none"> 
-                {/* pointer-events-none on wrapper so clicks pass through if empty, but child enables them */}
-                <motion.div 
-                    style={{ y: authY, opacity: authOpacity, scale: authScale }}
-                    className="pointer-events-auto relative w-full max-w-md p-8"
-                >
-                    {/* Glassmorphism Auth Container - Shining Glass */}
-                    <div className="relative overflow-hidden rounded-3xl border border-white/40 bg-white/20 backdrop-blur-2xl shadow-2xl p-10">
-                        {/* Obsidian Button Style */}
-                        <div className="flex flex-col gap-5">
+            {/* ================= SECTION 2: CURATED GALLERY ================= */}
+            <section className="relative z-10 min-h-screen py-20 px-6 bg-transparent">
+                <div className="mx-auto max-w-7xl">
+                     <motion.div 
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-center mb-16 space-y-4"
+                     >
+                        <h2 className="text-3xl md:text-5xl font-serif text-white">Curated Gallery</h2>
+                        <p className="text-white/60 tracking-widest text-sm uppercase">A Glimpse of the Collection</p>
+                     </motion.div>
+
+                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <GalleryItem 
+                            img="https://images.unsplash.com/photo-1618220179428-22790b461013?q=80&w=2670&auto=format&fit=crop"
+                            title="The Royal Sofa"
+                            category="Living Room"
+                            delay={0.1}
+                        />
+                        <GalleryItem 
+                            img="https://images.unsplash.com/photo-1574621100236-d25a649d09f2?q=80&w=2669&auto=format&fit=crop"
+                            title="Empire Dining"
+                            category="Dining Hall"
+                            delay={0.3}
+                            className="md:translate-y-12" // Stagger layout
+                        />
+                        <GalleryItem 
+                            img="https://images.unsplash.com/photo-1617325247661-675ab4b6db22?q=80&w=2670&auto=format&fit=crop"
+                            title="Serenity Suite"
+                            category="Bedroom"
+                            delay={0.5}
+                        />
+                     </div>
+                </div>
+            </section>
+
+            {/* ================= SECTION 3: AUTH (ACCESS PANEL) ================= */}
+            <section className="relative z-10 py-32 flex flex-col items-center justify-end min-h-[50vh]">
+                
+                 {/* Glass Panel */}
+                 <motion.div 
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="relative w-full max-w-3xl overflow-hidden rounded-2xl border border-white/20 bg-white/5 backdrop-blur-xl shadow-[0_0_40px_-5px_rgba(255,255,255,0.1)] p-1"
+                 >
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+                    
+                    <div className="relative flex flex-col md:flex-row items-center justify-between p-8 gap-8">
+                        <div className="text-left space-y-2">
+                             <h2 className="text-2xl font-serif text-white">The Collection Access</h2>
+                             <p className="text-white/50 text-xs tracking-[0.2em] uppercase">Members Only • Secure Gateway</p>
+                        </div>
+
+                        <div className="flex items-center gap-4">
                             <Dialog>
                                 <DialogTrigger asChild>
-                                    <button className="group relative w-full overflow-hidden rounded-xl bg-black px-8 py-5 text-sm font-medium uppercase tracking-[0.2em] text-white shadow-lg transition-all hover:shadow-white/10 hover:scale-[1.01]">
-                                        <span className="relative z-10">Enter Showroom</span>
-                                        {/* Glossy Reflection */}
-                                        <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-                                        {/* Light Sweep */}
-                                        <div className="absolute inset-0 -translate-x-full animate-[shine_2s_infinite] bg-linear-to-r from-transparent via-white/20 to-transparent" />
+                                    <button className="px-6 py-3 text-sm font-bold tracking-widest text-black bg-white rounded-lg hover:bg-neutral-200 transition-colors uppercase">
+                                        Log In
                                     </button>
                                 </DialogTrigger>
                                 <DialogContent className="border-neutral-800 bg-white/10 backdrop-blur-3xl text-white sm:rounded-2xl">
@@ -197,31 +234,57 @@ export default function Home() {
                                 </DialogContent>
                             </Dialog>
 
-                            <Dialog>
+                             <Dialog>
                                 <DialogTrigger asChild>
-                                    <button className="group relative w-full overflow-hidden rounded-xl border border-white/30 bg-white/10 px-8 py-5 text-sm font-medium uppercase tracking-[0.2em] text-white/90 shadow-lg transition-all hover:bg-white/20 hover:scale-[1.01]">
-                                        <span className="relative z-10">Request Access</span>
-                                         {/* Light Sweep */}
-                                        <div className="absolute inset-0 -translate-x-full group-hover:animate-[shine_1s_ease-out] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+                                    <button className="px-6 py-3 text-sm font-medium tracking-widest text-white border border-white/30 rounded-lg hover:bg-white/10 transition-colors uppercase">
+                                        Sign Up
                                     </button>
                                 </DialogTrigger>
                                 <DialogContent className="border-neutral-800 bg-white/10 backdrop-blur-3xl text-white sm:rounded-2xl">
                                     <RegisterForm />
                                 </DialogContent>
                             </Dialog>
-
-                            <div className="my-2 h-px w-full bg-gradient-to-r from-transparent via-white/30 to-transparent" />
-                            
-                            <Link 
-                                href="/shop"
-                                className="text-center text-xs font-semibold tracking-widest text-white/70 transition-colors hover:text-white"
-                            >
-                                CONTINUE AS GUEST
-                            </Link>
                         </div>
                     </div>
-                </motion.div>
-            </div>
+                 </motion.div>
+                 
+                 <div className="mt-12 text-white/20 text-[10px] tracking-widest uppercase">
+                    Classic Furniture © {new Date().getFullYear()} • Secure Escrow System
+                 </div>
+            </section>
         </main>
+    );
+}
+
+
+// Sub-Component for Gallery
+function GalleryItem({ img, title, category, delay, className = "" }: { img: string, title: string, category: string, delay: number, className?: string }) {
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 100 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.8, delay, ease: "easeOut" }}
+            className={`group relative h-[500px] w-full overflow-hidden rounded-md border border-white/10 ${className}`}
+        >
+            {/* Image Layer */}
+            <div className="absolute inset-0 transition-transform duration-700 group-hover:scale-110">
+                <img 
+                    src={img} 
+                    alt={title} 
+                    className="h-full w-full object-cover"
+                />
+            </div>
+
+            {/* Glossy Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-60" />
+
+            {/* Content Layer (Floats up on hover) */}
+            <div className="absolute bottom-0 left-0 w-full p-8 translate-y-4 transition-transform duration-500 group-hover:translate-y-0">
+                <p className="mb-2 text-xs font-bold uppercase tracking-widest text-[#d4af37]">{category}</p>
+                <h3 className="text-2xl font-serif text-white">{title}</h3>
+                <div className="mt-4 h-[1px] w-0 bg-white transition-all duration-500 group-hover:w-full" />
+            </div>
+        </motion.div>
     );
 }

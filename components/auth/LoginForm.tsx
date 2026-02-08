@@ -19,8 +19,6 @@ export default function LoginForm() {
     try {
       await login({ email, password });
       
-      // Get the latest user role from store (or we can assume logic here if login returns role, but store updates async)
-      // Since login is async and updates store, we can access useAuthStore.getState().user immediately after
       const currentUser = useAuthStore.getState().user;
       const role = currentUser?.role || "user";
       
@@ -29,7 +27,7 @@ export default function LoginForm() {
       // Wait for animation before pushing route (e.g. 1s)
       setTimeout(() => {
         if (role === 'hub_manager') {
-            router.push('/dashboard/hub-manager');
+            router.push('/dashboard/hub');
         } else if (role === 'admin') {
             router.push('/admin');
         } else {
@@ -44,6 +42,13 @@ export default function LoginForm() {
 
   return (
     <>
+      {/* Shining Progress Bar (Authentication State) */}
+      {isLoading && (
+        <div className="fixed top-0 left-0 z-[100] h-1 w-full overflow-hidden bg-transparent">
+             <div className="h-full w-full animate-[shine_1.5s_infinite] bg-gradient-to-r from-transparent via-white/80 to-transparent" />
+        </div>
+      )}
+
       {/* Oily Transition Overlay */}
       <AnimatePresence>
         {isExiting && (

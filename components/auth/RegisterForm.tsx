@@ -12,6 +12,7 @@ export default function RegisterForm() {
   const router = useRouter();
   const { login } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(false);
   const [error, setError] = useState("");
 
   const [formData, setFormData] = useState({
@@ -26,25 +27,62 @@ export default function RegisterForm() {
     setError("");
 
     try {
-      // 1. Register
+      // 1. Register with backend (Role-Blind: backend assigns default role 'user')
       await api.post("/auth/register", formData);
       
       // 2. Auto Login
       await login({ email: formData.email, password: formData.password });
       
-      router.push("/");
+      // 3. Smart Redirect Logic
+      const currentUser = useAuthStore.getState().user;
+      const role = currentUser?.role || "user";
+      
+      setShowWelcome(true);
+      
+      setTimeout(() => {
+        if (role === 'hub_manager') router.push('/dashboard/hub');
+        else if (role === 'admin') router.push('/admin');
+        else router.push('/shop');
+      }, 1500);
+
     } catch (err: unknown) {
       const typedError = err as { response?: { data?: { message?: string } } };
       setError(
         typedError.response?.data?.message || "Registration failed. Please try again."
       );
-    } finally {
       setIsLoading(false);
     }
   };
 
+  if (showWelcome) {
+    return (
+      <div className="flex flex-col items-center justify-center space-y-4 py-10 text-center text-white">
+        <motion.div
+           initial={{ scale: 0.8, opacity: 0 }}
+           animate={{ scale: 1, opacity: 1 }}
+           transition={{ duration: 0.5 }}
+        >
+           <h2 className="text-3xl font-serif tracking-widest text-[#d4af37]">Welcome</h2>
+           <p className="mt-2 text-sm text-white/60 tracking-wider">ENTERING SHOWROOM</p>
+        </motion.div>
+        <motion.div 
+           initial={{ width: 0 }}
+           animate={{ width: "100px" }}
+           className="h-0.5 bg-gradient-to-r from-transparent via-[#d4af37] to-transparent"
+        />
+      </div>
+    )
+  }
+
   return (
     <div className="w-full max-w-md space-y-8 p-4">
+      {/* Shining Progress Bar (Authentication State) */}
+      {isLoading && (
+        <div className="fixed top-0 left-0 z-[100] h-1 w-full overflow-hidden bg-transparent">
+             <div className="h-full w-full animate-[shine_1.5s_infinite] bg-gradient-to-r from-transparent via-white/80 to-transparent" />
+        </div>
+      )}
+
       <div className="text-center">
         <h2 className="text-3xl font-light tracking-tight text-white">Create Account</h2>
         <p className="mt-2 text-sm text-white/60">Join our exclusive community</p>
@@ -54,6 +92,7 @@ export default function RegisterForm() {
         <div className="space-y-2">
             <label htmlFor="name" className="text-sm font-medium text-white/80">
                 Full Name
+
             </label>
             <input
                 id="name"
