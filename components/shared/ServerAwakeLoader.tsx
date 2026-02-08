@@ -15,7 +15,7 @@ export default function ServerAwakeLoader({ children }: { children: React.ReactN
       // Add a minimum delay for the animation to be seen/feel premium
       setTimeout(() => {
         setIsAwake(true);
-      }, 1500); 
+      }, 2500); 
     };
 
     checkServer();
@@ -23,7 +23,7 @@ export default function ServerAwakeLoader({ children }: { children: React.ReactN
     // If it takes longer than 3 seconds, show a reassuring message
     const timer = setTimeout(() => {
       setShowLongWaitMessage(true);
-    }, 3000);
+    }, 4000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -33,67 +33,66 @@ export default function ServerAwakeLoader({ children }: { children: React.ReactN
       <AnimatePresence mode="wait">
         {!isAwake && (
           <motion.div
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0, transition: { duration: 0.8, ease: "easeInOut" } }}
-            className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-neutral-50"
+            key="server-loader"
+            initial={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)" }}
+            exit={{ 
+                clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)", // Wipes UP
+                transition: { duration: 1.2, ease: [0.76, 0, 0.24, 1] } 
+            }}
+            className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-white"
           >
-            {/* Oily Background Effects */}
-            <div 
-                className="absolute inset-0 z-0 bg-linear-to-br from-white via-neutral-100 to-neutral-50" 
-            />
-             <div 
-                className="absolute inset-0 z-0 bg-linear-to-r from-transparent via-white/40 to-transparent opacity-50"
-                style={{ backdropFilter: "blur(40px)" }}
-            />
+            {/* Minimalist Background Pattern */}
+            <div className="absolute inset-0 z-0 opacity-10 bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:20px_20px]" />
+            
+            <div className="relative z-10 flex flex-col items-center">
+                
+                {/* Elegant Line Drawing Animation */}
+                <div className="relative h-32 w-32 mb-8">
+                    <svg viewBox="0 0 100 100" className="h-full w-full stroke-neutral-900 fill-none stroke-[1.5] overflow-visible">
+                        <motion.path
+                            d="M25 75V40C25 25 35 20 50 20C65 20 75 25 75 40V75M25 55H75" // Abstract modernist chair
+                            initial={{ pathLength: 0, opacity: 0 }}
+                            animate={{ pathLength: 1, opacity: 1 }}
+                            transition={{ 
+                                duration: 2, 
+                                ease: "easeInOut", 
+                                repeat: Infinity, 
+                                repeatType: "reverse",
+                                repeatDelay: 0.5 
+                            }}
+                        />
+                         {/* Floor Reflection Line */}
+                        <motion.path 
+                             d="M20 85H80"
+                             className="stroke-neutral-300"
+                             initial={{ scaleX: 0 }}
+                             animate={{ scaleX: 1 }}
+                             transition={{ duration: 1.5, delay: 0.5 }}
+                        />
+                    </svg>
+                </div>
 
-            <div className="relative z-10 flex flex-col items-center gap-8">
-                {/* Logo or Brand Element */}
                 <motion.h1 
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="text-2xl font-bold tracking-[0.3em] text-neutral-900"
+                    transition={{ delay: 0.3 }}
+                    className="text-lg font-light tracking-[0.4em] text-neutral-900"
                 >
-                    LUXECRAFT
+                    ATELIER
                 </motion.h1>
 
-                {/* Luxury Spinner */}
-                <div className="relative h-16 w-16">
-                    <motion.span
-                        className="absolute inset-0 rounded-full border border-neutral-200"
-                        initial={{ scale: 0.8, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                    />
-                    <motion.span
-                        className="absolute inset-0 rounded-full border-t-2 border-neutral-900"
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-                    />
-                    <motion.span
-                        className="absolute inset-2 rounded-full border-b-2 border-neutral-400"
-                        animate={{ rotate: -360 }}
-                        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                    />
-                </div>
-
-                <motion.div 
-                    className="flex flex-col items-center gap-2 text-center"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.5 }}
-                >
-                    <p className="text-sm font-medium uppercase tracking-widest text-neutral-500">
-                        Secure Connection...
-                    </p>
+                <AnimatePresence>
                     {showLongWaitMessage && (
                         <motion.p 
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            className="text-xs text-neutral-400"
+                            exit={{ opacity: 0 }}
+                            className="absolute -bottom-12 text-[10px] uppercase tracking-widest text-neutral-400"
                         >
-                            Waking up secure server... this may take a moment.
+                            Preparing the showroom...
                         </motion.p>
                     )}
-                </motion.div>
+                </AnimatePresence>
             </div>
           </motion.div>
         )}
