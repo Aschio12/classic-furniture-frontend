@@ -16,10 +16,14 @@ type ProductCardProps = {
 
 export default function ProductCard({ product }: ProductCardProps) {
   // Ensure we have a valid image source or fallback
-  const imageSrc =
-    product.imageUrl && product.imageUrl.trim().startsWith("http")
-      ? product.imageUrl
-      : "/images/placeholder-furniture.jpg";
+  // Handle "example.com" from seed data forcefully by swapping it with a niceUnsplash image
+  const isValidUrl = product.imageUrl && 
+                     product.imageUrl.trim().startsWith("http") && 
+                     !product.imageUrl.includes("example.com");
+
+  const imageSrc = isValidUrl 
+      ? product.imageUrl! 
+      : "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=800&auto=format&fit=crop"; 
 
   return (
     <motion.article

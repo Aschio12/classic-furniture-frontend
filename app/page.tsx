@@ -25,7 +25,7 @@ export default function Home() {
     const { user, isLoading: authLoading } = useAuthStore();
     const { isServerWaking } = useServerStore();
     const [mounted, setMounted] = useState(false);
-    const [isRedirecting, setIsRedirecting] = useState(false);
+    // const [isRedirecting, setIsRedirecting] = useState(false); // No longer auto-redirecting
     
     // --- Scroll & Parallax ---
     const { scrollY } = useScroll();
@@ -76,21 +76,8 @@ export default function Home() {
         return () => clearTimeout(timer);
     }, []);
 
-    useEffect(() => {
-        if (user && !authLoading) {
-            const animTimer = setTimeout(() => setIsRedirecting(true), 0);
-            const redirectTimer = setTimeout(() => {
-                if (user.role === 'hub_manager') router.push('/dashboard/hub-manager');
-                else if (user.role === 'admin') router.push('/admin');
-                else router.push('/shop');
-            }, 800); 
-            return () => {
-                clearTimeout(animTimer);
-                clearTimeout(redirectTimer);
-            };
-        }
-    }, [user, authLoading, router]);
-
+    // Removed Auto-Redirect Effect to allow users to land on the home page first
+    
     if (!mounted) return null;
 
     return (
@@ -98,7 +85,7 @@ export default function Home() {
             className="relative w-full bg-neutral-950 text-white overflow-x-hidden"
             onMouseMove={handleMouseMove}
         >
-            <PageTransition isActive={isRedirecting} />
+            {/* PageTransition removed as we are not redirecting automatically */ }
             <ServerStatus />
 
             {/* --- Server Waking Overlay --- */}
@@ -255,33 +242,44 @@ export default function Home() {
                         </div>
 
                         <div className="flex items-center gap-4">
-                            <Dialog>
-                                <DialogTrigger asChild>
-                                    <button className="px-6 py-3 text-sm font-bold tracking-widest text-black bg-white rounded-lg hover:bg-neutral-200 transition-colors uppercase">
-                                        Log In
-                                    </button>
-                                </DialogTrigger>
-                                <DialogContent className="border-neutral-800 bg-white/10 backdrop-blur-3xl text-white sm:rounded-2xl">
-                                    <VisuallyHidden>
-                                        <DialogTitle>Log In</DialogTitle>
-                                    </VisuallyHidden>
-                                    <LoginForm />
-                                </DialogContent>
-                            </Dialog>
+                            {user ? (
+                                <button 
+                                    onClick={() => router.push('/shop')}
+                                    className="px-6 py-3 text-sm font-bold tracking-widest text-black bg-white rounded-lg hover:bg-neutral-200 transition-colors uppercase"
+                                >
+                                    Enter Showroom
+                                </button>
+                            ) : (
+                                <>
+                                    <Dialog>
+                                        <DialogTrigger asChild>
+                                            <button className="px-6 py-3 text-sm font-bold tracking-widest text-black bg-white rounded-lg hover:bg-neutral-200 transition-colors uppercase">
+                                                Log In
+                                            </button>
+                                        </DialogTrigger>
+                                        <DialogContent className="border-neutral-800 bg-white/10 backdrop-blur-3xl text-white sm:rounded-2xl">
+                                            <VisuallyHidden>
+                                                <DialogTitle>Log In</DialogTitle>
+                                            </VisuallyHidden>
+                                            <LoginForm />
+                                        </DialogContent>
+                                    </Dialog>
 
-                             <Dialog>
-                                <DialogTrigger asChild>
-                                    <button className="px-6 py-3 text-sm font-medium tracking-widest text-white border border-white/30 rounded-lg hover:bg-white/10 transition-colors uppercase">
-                                        Sign Up
-                                    </button>
-                                </DialogTrigger>
-                                <DialogContent className="border-neutral-800 bg-white/10 backdrop-blur-3xl text-white sm:rounded-2xl">
-                                    <VisuallyHidden>
-                                        <DialogTitle>Sign Up</DialogTitle>
-                                    </VisuallyHidden>
-                                    <RegisterForm />
-                                </DialogContent>
-                            </Dialog>
+                                    <Dialog>
+                                        <DialogTrigger asChild>
+                                            <button className="px-6 py-3 text-sm font-medium tracking-widest text-white border border-white/30 rounded-lg hover:bg-white/10 transition-colors uppercase">
+                                                Sign Up
+                                            </button>
+                                        </DialogTrigger>
+                                        <DialogContent className="border-neutral-800 bg-white/10 backdrop-blur-3xl text-white sm:rounded-2xl">
+                                            <VisuallyHidden>
+                                                <DialogTitle>Create Account</DialogTitle>
+                                            </VisuallyHidden>
+                                            <RegisterForm />
+                                        </DialogContent>
+                                    </Dialog>
+                                </>
+                            )}
                         </div>
                     </div>
                  </motion.div>
