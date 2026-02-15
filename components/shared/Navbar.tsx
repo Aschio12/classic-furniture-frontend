@@ -35,6 +35,10 @@ export default function Navbar() {
   const { unreadCount } = useNotificationStore();
 
   const isLandingPage = pathname === "/";
+
+  if (isLandingPage && !user) {
+    return null;
+  }
   
   // Luxury Scroll logic: On landing page, start invisible and fade in as user scrolls down
   const { scrollY } = useScroll();
