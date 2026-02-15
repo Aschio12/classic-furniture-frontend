@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { SlidersHorizontal, Loader2 } from "lucide-react";
 
 import api from "@/lib/axios";
-import ProtectedRoute from "@/components/auth/ProtectedRoute";
+import MainLayout from "@/components/shared/MainLayout";
 import ProductGrid from "@/components/shared/ProductGrid";
 import { type Product } from "@/components/shared/ProductCard";
 
@@ -141,8 +141,8 @@ function ShopContent() {
 
 export default function ShopPage() {
   return (
-    <ProtectedRoute allowedRoles={['user', 'admin', 'hub_manager', 'seller']}>
+    <MainLayout>
       <ShopContent />
-    </ProtectedRoute>
+    </MainLayout>
   );
 }

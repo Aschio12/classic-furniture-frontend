@@ -6,6 +6,7 @@ import { Loader2, Package } from "lucide-react";
 
 import api from "@/lib/axios";
 import OrderTracker from "@/components/shared/OrderTracker";
+import MainLayout from "@/components/shared/MainLayout";
 
 interface Order {
   _id: string;
@@ -63,8 +64,9 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
   }
 
   return (
-    <main className="min-h-screen bg-[#F9F9FB] pb-20 pt-24">
-      <div className="mx-auto max-w-5xl px-4 sm:px-6">
+    <MainLayout>
+      <main className="min-h-screen bg-[#F9F9FB] pb-20">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6">
         <div className="mb-10 text-center">
           <h1 className="text-3xl font-light tracking-tight text-primary">Order Status</h1>
           <p className="mt-2 text-primary/60">Tracking ID: {order._id}</p>
@@ -140,7 +142,8 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
             </div>
           </div>
         </div>
-      </div>
-    </main>
+        </div>
+      </main>
+    </MainLayout>
   );
 }

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/shared/Navbar";
 import ServerAwakeLoader from "@/components/shared/ServerAwakeLoader";
 
 const geistSans = Geist({
@@ -35,8 +34,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} bg-surface text-primary antialiased`}
       >
         <ServerAwakeLoader>
-          <Navbar />
-          <main className="pt-20">{children}</main>
+          {children}
         </ServerAwakeLoader>
       </body>
     </html>
