@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { 
-    motion, 
+    motion,
+    AnimatePresence,
     useScroll, 
     useTransform, 
     useSpring, 
@@ -16,16 +16,12 @@ import LoginForm from "@/components/auth/LoginForm";
 import RegisterForm from "@/components/auth/RegisterForm";
 import ServerStatus from "@/components/shared/ServerStatus";
 import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/components/ui/dialog";
-import { ChevronDown, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import PageTransition from "@/components/shared/PageTransition";
-
 export default function Home() {
-    const router = useRouter();
-    const { user, isLoading: authLoading } = useAuthStore();
+    const { isAuthenticated } = useAuthStore();
     const { isServerWaking } = useServerStore();
     const [mounted, setMounted] = useState(false);
-    // const [isRedirecting, setIsRedirecting] = useState(false); // No longer auto-redirecting
     
     // --- Scroll & Parallax ---
     const { scrollY } = useScroll();
@@ -34,10 +30,6 @@ export default function Home() {
     const bgFilter = useTransform(scrollY, [0, 800], ["saturate(1.4) blur(0px)", "saturate(0) blur(10px)"]);
     const bgScale = useTransform(scrollY, [0, 800], [1, 1.1]);
     const bgOpacity = useTransform(scrollY, [0, 800], [0.8, 0.4]);
-
-    // Hero Text Transforms (Fade out)
-    const heroOpacity = useTransform(scrollY, [0, 400], [1, 0]);
-    const heroY = useTransform(scrollY, [0, 400], [0, -100]);
 
     // --- Mouse Physics (The Shine) ---
     const mouseX = useMotionValue(0);
@@ -76,16 +68,15 @@ export default function Home() {
         return () => clearTimeout(timer);
     }, []);
 
-    // Removed Auto-Redirect Effect to allow users to land on the home page first
-    
-    if (!mounted) return null;
+    if (!mounted) {
+        return <main className="min-h-screen bg-neutral-950" />;
+    }
 
     return (
         <main 
             className="relative w-full bg-neutral-950 text-white overflow-x-hidden"
             onMouseMove={handleMouseMove}
         >
-            {/* PageTransition removed as we are not redirecting automatically */ }
             <ServerStatus />
 
             {/* --- Server Waking Overlay --- */}
@@ -156,101 +147,74 @@ export default function Home() {
                 <div className="absolute inset-0 z-3 pointer-events-none opacity-20 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
             </div>
 
-            {/* ================= SECTION 1: HERO ================= */}
-            <section className="relative z-10 flex h-screen w-full flex-col items-center justify-center pt-20">
-                <motion.div 
-                    style={{ y: heroY, opacity: heroOpacity }}
-                    className="flex flex-col items-center text-center space-y-8 px-4"
-                >
-                    <h1 className="font-serif text-5xl md:text-7xl lg:text-9xl tracking-tight text-white drop-shadow-2xl">
-                        LUXECRAFT
-                    </h1>
-                    <div className="space-y-4">
-                        <p className="text-xl md:text-2xl font-light tracking-widest text-white/90 uppercase">
-                            Where Luxury Furniture Meets 
-                        </p>
-                        <p className="text-xl md:text-2xl font-semibold tracking-widest text-[#d4af37] uppercase">
-                            Institutional Security
-                        </p>
-                    </div>
-                </motion.div>
+            <AnimatePresence mode="wait">
+                {isAuthenticated ? (
+                    <motion.section
+                        key="dashboard"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.35, ease: "easeOut" }}
+                        className="relative z-10 min-h-screen py-24 px-6 bg-transparent"
+                    >
+                        <div className="mx-auto max-w-7xl">
+                            <motion.div 
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                className="text-center mb-16 space-y-4"
+                            >
+                                <h2 className="text-3xl md:text-5xl font-serif text-white">Curated Gallery</h2>
+                                <p className="text-white/60 tracking-widest text-sm uppercase">A Glimpse of the Collection</p>
+                            </motion.div>
 
-                <motion.div 
-                    style={{ opacity: heroOpacity }}
-                    animate={{ y: [0, 10, 0] }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute bottom-12 flex flex-col items-center gap-2"
-                >
-                    <span className="text-[10px] uppercase tracking-widest text-white/50">Explore The Platform</span>
-                    <ChevronDown className="h-6 w-6 text-white/50" />
-                </motion.div>
-            </section>
-
-            {/* ================= SECTION 2: CURATED GALLERY ================= */}
-            <section className="relative z-10 min-h-screen py-20 px-6 bg-transparent">
-                <div className="mx-auto max-w-7xl">
-                     <motion.div 
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="text-center mb-16 space-y-4"
-                     >
-                        <h2 className="text-3xl md:text-5xl font-serif text-white">Curated Gallery</h2>
-                        <p className="text-white/60 tracking-widest text-sm uppercase">A Glimpse of the Collection</p>
-                     </motion.div>
-
-                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <GalleryItem 
-                            img="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=2000&auto=format&fit=crop"
-                            title="The Royal Sofa"
-                            category="Living Room"
-                            delay={0.1}
-                        />
-                        <GalleryItem 
-                            img="https://images.unsplash.com/photo-1617806118233-18e1de247200?q=80&w=2000&auto=format&fit=crop"
-                            title="Empire Dining"
-                            category="Dining Hall"
-                            delay={0.3}
-                            className="md:translate-y-12" // Stagger layout
-                        />
-                        <GalleryItem 
-                            img="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?q=80&w=2000&auto=format&fit=crop"
-                            title="Serenity Suite"
-                            category="Bedroom"
-                            delay={0.5}
-                        />
-                     </div>
-                </div>
-            </section>
-
-            {/* ================= SECTION 3: AUTH (ACCESS PANEL) ================= */}
-            <section className="relative z-10 py-32 flex flex-col items-center justify-end min-h-[50vh]">
-                
-                 {/* Glass Panel */}
-                 <motion.div 
-                    initial={{ opacity: 0, y: 50 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    className="relative w-full max-w-3xl overflow-hidden rounded-2xl border border-white/20 bg-white/5 backdrop-blur-xl shadow-[0_0_40px_-5px_rgba(255,255,255,0.1)] p-1"
-                 >
-                    <div className="absolute inset-0 bg-linear-to-br from-white/10 to-transparent pointer-events-none" />
-                    
-                    <div className="relative flex flex-col md:flex-row items-center justify-between p-8 gap-8">
-                        <div className="text-left space-y-2">
-                             <h2 className="text-2xl font-serif text-white">The Collection Access</h2>
-                             <p className="text-white/50 text-xs tracking-[0.2em] uppercase">Members Only • Secure Gateway</p>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                <GalleryItem 
+                                    img="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=2000&auto=format&fit=crop"
+                                    title="The Royal Sofa"
+                                    category="Living Room"
+                                    delay={0.1}
+                                />
+                                <GalleryItem 
+                                    img="https://images.unsplash.com/photo-1617806118233-18e1de247200?q=80&w=2000&auto=format&fit=crop"
+                                    title="Empire Dining"
+                                    category="Dining Hall"
+                                    delay={0.3}
+                                    className="md:translate-y-12"
+                                />
+                                <GalleryItem 
+                                    img="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?q=80&w=2000&auto=format&fit=crop"
+                                    title="Serenity Suite"
+                                    category="Bedroom"
+                                    delay={0.5}
+                                />
+                            </div>
                         </div>
+                    </motion.section>
+                ) : (
+                    <motion.section
+                        key="landing"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.35, ease: "easeOut" }}
+                        className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6"
+                    >
+                        <motion.div 
+                            initial={{ opacity: 0, y: 50 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, ease: "easeOut" }}
+                            className="relative w-full max-w-3xl overflow-hidden rounded-2xl border border-white/20 bg-white/5 backdrop-blur-xl shadow-[0_0_40px_-5px_rgba(255,255,255,0.1)] p-1"
+                        >
+                            <div className="absolute inset-0 bg-linear-to-br from-white/10 to-transparent pointer-events-none" />
+                            
+                            <div className="relative flex flex-col md:flex-row items-center justify-between p-8 gap-8">
+                                <div className="text-left space-y-2">
+                                    <h2 className="text-2xl font-serif text-white">The Collection Access</h2>
+                                    <p className="text-white/50 text-xs tracking-[0.2em] uppercase">Members Only • Secure Gateway</p>
+                                </div>
 
-                        <div className="flex items-center gap-4">
-                            {user ? (
-                                <button 
-                                    onClick={() => router.push('/shop')}
-                                    className="px-6 py-3 text-sm font-bold tracking-widest text-black bg-white rounded-lg hover:bg-neutral-200 transition-colors uppercase"
-                                >
-                                    Enter Showroom
-                                </button>
-                            ) : (
-                                <>
+                                <div className="flex items-center gap-4">
                                     <Dialog>
                                         <DialogTrigger asChild>
                                             <button className="px-6 py-3 text-sm font-bold tracking-widest text-black bg-white rounded-lg hover:bg-neutral-200 transition-colors uppercase">
@@ -278,16 +242,12 @@ export default function Home() {
                                             <RegisterForm />
                                         </DialogContent>
                                     </Dialog>
-                                </>
-                            )}
-                        </div>
-                    </div>
-                 </motion.div>
-                 
-                 <div className="mt-12 text-white/20 text-[10px] tracking-widest uppercase">
-                    Classic Furniture © {new Date().getFullYear()} • Secure Escrow System
-                 </div>
-            </section>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </motion.section>
+                )}
+            </AnimatePresence>
         </main>
     );
 }
