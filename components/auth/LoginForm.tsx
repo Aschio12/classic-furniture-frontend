@@ -72,13 +72,12 @@ export default function LoginForm() {
 
       <div className="w-full max-w-md space-y-8 p-4">
       <div className="text-center">
-        <h2 className="text-3xl font-light tracking-tight text-white">Welcome Back</h2>
-        <p className="mt-2 text-sm text-white/60">Sign in to your account</p>
+        {/* Title removed or styled neutrally as it is often provided by parent container/dialog */}
       </div>
 
       <form className="space-y-6" onSubmit={handleSubmit}>
         <div className="space-y-2">
-          <label htmlFor="email" className="text-sm font-medium text-white/80">
+          <label htmlFor="email" className="text-sm font-medium text-neutral-700">
             Email
           </label>
           <input
@@ -86,7 +85,7 @@ export default function LoginForm() {
             type="email"
             required
             disabled={isSubmitting}
-            className="w-full border-b border-white/20 bg-transparent px-0 py-3 text-white transition-all focus:border-white focus:outline-none focus:ring-0 placeholder:text-white/20"
+            className="w-full border-b border-neutral-300 bg-transparent px-0 py-3 text-neutral-900 transition-all focus:border-neutral-900 focus:outline-none focus:ring-0 placeholder:text-neutral-400"
             placeholder="you@example.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -94,7 +93,7 @@ export default function LoginForm() {
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="password" className="text-sm font-medium text-white/80">
+          <label htmlFor="password" className="text-sm font-medium text-neutral-700">
             Password
           </label>
           <input
@@ -102,7 +101,7 @@ export default function LoginForm() {
             type="password"
             required
             disabled={isSubmitting}
-            className="w-full border-b border-white/20 bg-transparent px-0 py-3 text-white transition-all focus:border-white focus:outline-none focus:ring-0 placeholder:text-white/20"
+            className="w-full border-b border-neutral-300 bg-transparent px-0 py-3 text-neutral-900 transition-all focus:border-neutral-900 focus:outline-none focus:ring-0 placeholder:text-neutral-400"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -112,7 +111,7 @@ export default function LoginForm() {
           <motion.p
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center text-sm text-red-300"
+            className="text-center text-sm text-red-500"
           >
             {localError}
           </motion.p>
@@ -121,17 +120,23 @@ export default function LoginForm() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="group relative flex w-full items-center justify-center overflow-hidden rounded-xl bg-black py-4 text-sm font-medium text-white shadow-lg transition-all hover:shadow-white/10 disabled:opacity-70"
+          className="group relative flex w-full items-center justify-center overflow-visible rounded-xl bg-neutral-900 py-4 text-sm font-medium text-white shadow-2xl transition-all hover:scale-105 hover:bg-black disabled:opacity-70"
         >
-          <span className="relative z-10 uppercase tracking-widest">{isSubmitting ? <Loader2 className="h-5 w-5 animate-spin" /> : "ENTER"}</span>
-          {/* Constant Light Sweep */}
-          <div className="absolute inset-0 -translate-x-full animate-[shine_2s_infinite] bg-linear-to-r from-transparent via-white/20 to-transparent" />
+          {/* External Glow for "Crazy" Vibe */}
+          <div className="absolute inset-0 bg-neutral-900 blur-lg opacity-40 group-hover:opacity-70 transition-opacity duration-500" />
+          
+          <span className="relative z-10 uppercase tracking-[0.2em]">{isSubmitting ? <Loader2 className="h-5 w-5 animate-spin" /> : "Enter Sanctuary"}</span>
+          
+          {/* Intense Shine Animation */}
+          <div className="absolute inset-0 z-0 overflow-hidden rounded-xl">
+             <div className="absolute inset-0 -translate-x-full group-hover:animate-[shine_1s_infinite] bg-linear-to-r from-transparent via-white/40 to-transparent" />
+          </div>
         </button>
       </form>
 
-      <div className="text-center text-sm text-white/60">
+      <div className="text-center text-sm text-neutral-500">
         Don&apos;t have an account?{" "}
-        <Link href="/register" className="font-medium text-white hover:underline">
+        <Link href="/register" className="font-medium text-neutral-900 hover:underline">
           Sign up
         </Link>
       </div>
