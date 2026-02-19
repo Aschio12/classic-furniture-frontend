@@ -25,21 +25,21 @@ const FEATURED_ITEMS = [
         id: 1,
         title: "Velvet Sovereign",
         subtitle: "Tactile Opulence",
-        image: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=100&w=2670&auto=format&fit=crop", // Improved quality param
+        image: "https://images.unsplash.com/photo-1567538096635-e94ca81a3cdb?auto=format&fit=crop&q=80&w=1000", 
         description: "Woven comfort."
     },
     {
         id: 2,
         title: "Azure Dreaming",
         subtitle: "Coastal Serenity",
-        image: "https://images.unsplash.com/photo-1592078615290-033ee584e267?q=100&w=2564&auto=format&fit=crop", // Improved quality param
+        image: "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&q=80&w=1000", 
         description: "Symphony of joinery."
     },
     {
         id: 3,
         title: "Obsidian Echo",
         subtitle: "Midnight Minimalism",
-        image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=100&w=2694&auto=format&fit=crop", // Improved quality param
+        image: "https://images.unsplash.com/photo-1505693314120-0d443867891e?auto=format&fit=crop&q=80&w=1000", 
         description: "Formidable stone."
     }
 ];
@@ -97,12 +97,17 @@ export default function Home() {
         spotY.set(clientY);
     };
 
-    // Light Spot Gradient (Adapted for Light Theme - subtle iridescence)
+    // Light Spot Gradient (Adapted for Light Theme - Oily Iridescence)
     const spotGradient = useTransform(
         [spotX, spotY],
         (values: number[]) => {
             const [x, y] = values;
-            return `radial-gradient(800px circle at ${x}px ${y}px, rgba(255,215,0,0.15), transparent 50%)`;
+            // A larger, multi-stop gradient to mimic oil slick dispersion
+            return `radial-gradient(1000px circle at ${x}px ${y}px, 
+                rgba(255, 255, 255, 0.8) 0%,
+                rgba(240, 240, 255, 0.4) 20%,
+                rgba(255, 215, 0, 0.1) 40%,
+                transparent 70%)`;
         }
     );
 
@@ -112,9 +117,14 @@ export default function Home() {
 
     return (
         <main 
-            className="relative w-full bg-[#FAFAFA] text-neutral-900 overflow-x-hidden"
+            className="relative w-full bg-[#FAFAFA] text-neutral-900 overflow-x-hidden selection:bg-[#d4af37] selection:text-white"
             onMouseMove={handleMouseMove}
         >
+            {/* --- Global Fluid/Oily Overlay --- */}
+            <div className="fixed inset-0 pointer-events-none z-50 mix-blend-soft-light opacity-60">
+                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-150 contrast-150"></div>
+            </div>
+
             {/* --- Server Waking Overlay --- */}
             <AnimatePresence>
                 {isServerWaking && (
@@ -160,11 +170,11 @@ export default function Home() {
                     }}
                 >
                     <Image
-                        src="https://images.unsplash.com/photo-1629898569904-6c3425cb65dc?q=100&w=2696&auto=format&fit=crop" // Switching to an even cleaner, sharper image
+                        src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2000&auto=format&fit=crop" 
                         alt="Astonishing Luxury Salon"
                         fill
                         priority
-                        className="object-cover object-center brightness-105 saturate-[1.1]" // Boosted clarity, no blur
+                        className="object-cover object-center brightness-105 saturate-[1.1]" 
                         quality={100}
                     />
 
@@ -240,38 +250,55 @@ export default function Home() {
                             <div className="flex items-center gap-6 md:gap-8 pointer-events-auto">
                                 <Dialog>
                                     <DialogTrigger asChild>
-                                        <button className="text-xs md:text-sm font-medium tracking-widest uppercase hover:text-[#d4af37] transition-colors relative group">
-                                            Login
-                                            <span className="absolute -bottom-1 left-0 w-0 h-px bg-[#d4af37] group-hover:w-full transition-all duration-300" />
+                                        <button className="relative group overflow-hidden rounded-full px-8 py-2.5 transition-all duration-300 hover:scale-105">
+                                            <div className="absolute inset-0 bg-neutral-100 shadow-[inset_0_2px_4px_rgba(255,255,255,0.9),inset_0_-2px_4px_rgba(0,0,0,0.1)] transition-colors group-hover:bg-[#f3f3f3]" />
+                                            {/* Oily Sheen */}
+                                            <div className="absolute inset-0 bg-linear-to-tr from-white/80 via-transparent to-black/5 opacity-50 rounded-full" />
+                                            <span className="relative z-10 text-xs md:text-sm font-medium tracking-widest uppercase text-neutral-600 group-hover:text-black transition-colors">
+                                                Login
+                                            </span>
                                         </button>
                                     </DialogTrigger>
-                                    <DialogContent className="sm:max-w-md bg-white/90 border-neutral-200 text-neutral-900 backdrop-blur-xl shadow-2xl">
+                                    <DialogContent className="sm:max-w-md w-full border-0 bg-transparent p-0 shadow-none">
                                         <VisuallyHidden>
                                             <DialogTitle>Login</DialogTitle>
                                         </VisuallyHidden>
-                                        <div className="p-6">
-                                            <h2 className="text-2xl font-light mb-2 text-neutral-900">Welcome Back</h2>
-                                            <p className="text-neutral-500 text-sm mb-6">Enter your credentials to access the collection.</p>
-                                            <LoginForm />
+                                        <div className="relative overflow-hidden rounded-2xl bg-white p-8 shadow-2xl">
+                                            <div className="relative z-10">
+                                                <LoginForm />
+                                            </div>
                                         </div>
                                     </DialogContent>
                                 </Dialog>
 
                                 <Dialog>
                                     <DialogTrigger asChild>
-                                        <button className="text-xs md:text-sm font-medium tracking-widest uppercase border border-neutral-300 px-6 py-2 rounded-full hover:bg-neutral-900 hover:text-white hover:shadow-lg transition-all duration-300 backdrop-blur-sm relative overflow-hidden group/signup">
-                                            <span className="relative z-10">Sign Up</span>
-                                            <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover/signup:animate-shine" />
+                                        <button className="relative group overflow-hidden rounded-full px-8 py-2.5 shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_24px_rgba(212,175,55,0.2)]">
+                                            {/* Base Layer - Dark Onyx */}
+                                            <div className="absolute inset-0 bg-neutral-900" />
+                                            
+                                            {/* Liquid Gold Hover Layer */}
+                                            <div className="absolute inset-0 bg-linear-to-r from-[#d4af37] via-[#fcf6ba] to-[#d4af37] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                            
+                                            {/* Glass/Oil Highlight */}
+                                            <div className="absolute inset-0 bg-linear-to-b from-white/20 to-transparent pointer-events-none" />
+                                            
+                                            {/* Moving Shine */}
+                                            <div className="absolute inset-0 -translate-x-full group-hover:animate-[shine_1s_infinite] bg-linear-to-r from-transparent via-white/40 to-transparent z-20" />
+
+                                            <span className="relative z-10 text-xs md:text-sm font-bold tracking-widest uppercase text-white group-hover:text-neutral-900 transition-colors">
+                                                Sign Up
+                                            </span>
                                         </button>
                                     </DialogTrigger>
-                                    <DialogContent className="sm:max-w-md bg-white/90 border-neutral-200 text-neutral-900 backdrop-blur-xl shadow-2xl">
+                                    <DialogContent className="sm:max-w-md w-full border-0 bg-transparent p-0 shadow-none">
                                         <VisuallyHidden>
                                             <DialogTitle>Register</DialogTitle>
                                         </VisuallyHidden>
-                                        <div className="p-6">
-                                            <h2 className="text-2xl font-light mb-2 text-neutral-900">Join the Registry</h2>
-                                            <p className="text-neutral-500 text-sm mb-6">Create an account to view the full collection.</p>
-                                            <RegisterForm />
+                                        <div className="relative overflow-hidden rounded-2xl bg-white p-8 shadow-2xl">
+                                            <div className="relative z-10">
+                                                <RegisterForm />
+                                            </div>
                                         </div>
                                     </DialogContent>
                                 </Dialog>
