@@ -56,14 +56,14 @@ export default function RegisterForm() {
 
   if (showWelcome) {
     return (
-      <div className="flex flex-col items-center justify-center space-y-4 py-10 text-center text-white">
+      <div className="flex flex-col items-center justify-center space-y-4 py-10 text-center text-neutral-900">
         <motion.div
            initial={{ scale: 0.8, opacity: 0 }}
            animate={{ scale: 1, opacity: 1 }}
            transition={{ duration: 0.5 }}
         >
            <h2 className="text-3xl font-serif tracking-widest text-[#d4af37]">Welcome</h2>
-           <p className="mt-2 text-sm text-white/60 tracking-wider">ENTERING SHOWROOM</p>
+           <p className="mt-2 text-sm text-neutral-500 tracking-wider">ENTERING SHOWROOM</p>
         </motion.div>
         <motion.div 
            initial={{ width: 0 }}
@@ -79,27 +79,25 @@ export default function RegisterForm() {
       {/* Shining Progress Bar (Authentication State) */}
       {isLoading && (
         <div className="fixed top-0 left-0 z-100 h-1 w-full overflow-hidden bg-transparent">
-             <div className="h-full w-full animate-[shine_1.5s_infinite] bg-linear-to-r from-transparent via-white/80 to-transparent" />
+             <div className="h-full w-full animate-[shine_1.5s_infinite] bg-linear-to-r from-transparent via-[#d4af37] to-transparent" />
         </div>
       )}
 
       <div className="text-center">
-        <h2 className="text-3xl font-light tracking-tight text-white">Create Account</h2>
-        <p className="mt-2 text-sm text-white/60">Join our exclusive community</p>
+        {/* Title removed or styled neutrally as it is usually in the Dialog header */}
       </div>
 
       <form className="space-y-5" onSubmit={handleSubmit}>
         <div className="space-y-2">
-            <label htmlFor="name" className="text-sm font-medium text-white/80">
+            <label htmlFor="name" className="text-sm font-medium text-neutral-700">
                 Full Name
-
             </label>
             <input
                 id="name"
                 type="text"
                 required
                 disabled={isLoading}
-                className="w-full border-b border-white/20 bg-transparent px-0 py-3 text-white transition-all focus:border-white focus:outline-none focus:ring-0 placeholder:text-white/20"
+                className="w-full border-b border-neutral-300 bg-transparent px-0 py-3 text-neutral-900 transition-all focus:border-neutral-900 focus:outline-none focus:ring-0 placeholder:text-neutral-400"
                 placeholder="John Doe"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -107,7 +105,7 @@ export default function RegisterForm() {
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="email" className="text-sm font-medium text-white/80">
+          <label htmlFor="email" className="text-sm font-medium text-neutral-700">
             Email
           </label>
           <input
@@ -115,7 +113,7 @@ export default function RegisterForm() {
             type="email"
             required
             disabled={isLoading}
-            className="w-full border-b border-white/20 bg-transparent px-0 py-3 text-white transition-all focus:border-white focus:outline-none focus:ring-0 placeholder:text-white/20"
+            className="w-full border-b border-neutral-300 bg-transparent px-0 py-3 text-neutral-900 transition-all focus:border-neutral-900 focus:outline-none focus:ring-0 placeholder:text-neutral-400"
             placeholder="you@example.com"
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -123,7 +121,7 @@ export default function RegisterForm() {
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="password" className="text-sm font-medium text-white/80">
+          <label htmlFor="password" className="text-sm font-medium text-neutral-700">
             Password
           </label>
           <input
@@ -131,7 +129,7 @@ export default function RegisterForm() {
             type="password"
             required
             disabled={isLoading}
-            className="w-full border-b border-white/20 bg-transparent px-0 py-3 text-white transition-all focus:border-white focus:outline-none focus:ring-0 placeholder:text-white/20"
+            className="w-full border-b border-neutral-300 bg-transparent px-0 py-3 text-neutral-900 transition-all focus:border-neutral-900 focus:outline-none focus:ring-0 placeholder:text-neutral-400"
             value={formData.password}
             onChange={(e) => setFormData({ ...formData, password: e.target.value })}
           />
@@ -150,16 +148,23 @@ export default function RegisterForm() {
         <button
           type="submit"
           disabled={isLoading}
-          className="group relative flex w-full items-center justify-center overflow-hidden rounded-xl bg-black py-4 text-sm font-medium text-white shadow-lg transition-all hover:shadow-white/10 disabled:opacity-70"
+          className="group relative flex w-full items-center justify-center overflow-visible rounded-xl bg-neutral-900 py-4 text-sm font-medium text-white shadow-2xl transition-all hover:scale-105 hover:bg-black disabled:opacity-70"
         >
-          <span className="relative z-10 uppercase tracking-widest">{isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Request Access"}</span>
-           <div className="absolute inset-0 -translate-x-full animate-[shine_2s_infinite] bg-linear-to-r from-transparent via-white/20 to-transparent" />
+          {/* External Gold Glow for "Astonishing" Vibe */}
+          <div className="absolute inset-0 bg-[#d4af37] blur-lg opacity-20 group-hover:opacity-60 transition-opacity duration-500" />
+          
+          <span className="relative z-10 uppercase tracking-[0.2em]">{isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Request Exclusive Access"}</span>
+          
+           {/* Crazy Shine Animation */}
+           <div className="absolute inset-0 z-0 overflow-hidden rounded-xl">
+             <div className="absolute inset-0 -translate-x-full group-hover:animate-[shine_0.8s_infinite] bg-linear-to-r from-transparent via-[#d4af37]/60 to-transparent mix-blend-color-dodge" />
+           </div>
         </button>
       </form>
 
-      <div className="text-center text-sm text-white/60">
+      <div className="text-center text-sm text-neutral-500">
         Already have an account?{" "}
-        <Link href="/login" className="font-medium text-white hover:underline">
+        <Link href="/login" className="font-medium text-neutral-900 hover:underline">
           Sign in
         </Link>
       </div>
