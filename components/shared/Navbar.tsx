@@ -40,7 +40,7 @@ export default function Navbar() {
   const { scrollY } = useScroll();
   const navOpacity = useTransform(scrollY, [0, 400], [0, 1]);
   const navY = useTransform(scrollY, [0, 400], [-20, 0]);
-  const navPointerEvents = useTransform(scrollY, (y) => y < 200 ? "none" : "auto");
+  const navPointerEvents = useTransform(scrollY, (y: number) => y < 200 ? "none" : "auto");
 
   // Show nav links only if we are user OR if we are NOT on the landing page
   const showNavLinks = !isLandingPage || !!user;

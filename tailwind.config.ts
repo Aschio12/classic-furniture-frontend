@@ -12,6 +12,14 @@ const config: Config = {
         primary: "#1A1A1A",
         accent: "#D7C08C",
       },
+      animation: {
+        shine: "shine 1.5s infinite",
+      },
+      keyframes: {
+        shine: {
+          "100%": { left: "125%" },
+        },
+      },
     },
   },
   plugins: [],
