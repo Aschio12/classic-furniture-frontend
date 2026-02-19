@@ -12,12 +12,13 @@ import {
 } from "framer-motion";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useServerStore } from "@/store/useServerStore";
-import LoginForm from "@/components/auth/LoginForm";
 import RegisterForm from "@/components/auth/RegisterForm";
+import LoginForm from "@/components/auth/LoginForm";
 import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/components/ui/dialog";
 import { Loader2 } from "lucide-react";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import MainLayout from "@/components/shared/MainLayout";
+import Footer from "@/components/shared/Footer";
 
 const FEATURED_ITEMS = [
     {
@@ -114,13 +115,18 @@ export default function Home() {
         }
     );
 
+    // Auth Card Shine Gradient
+    const authShineGradient = useTransform(
+        [mouseX, mouseY],
+        (values: number[]) => {
+            const [x, y] = values;
+            return `radial-gradient(400px circle at ${x * 50 + 200}px ${y * 50 + 200}px, rgba(255,255,255,0.2), transparent 40%)`;
+        }
+    );
+
     if (!mounted) {
         return null;
     }
-
-    const scrollToAuth = () => {
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-    };
 
     return (
         <main 
@@ -162,7 +168,7 @@ export default function Home() {
             </AnimatePresence>
 
             {/* --- Fixed Cinematic Background --- */}
-            <div className="fixed inset-0 z-0 overflow-hidden h-screen">
+            <div className="fixed inset-0 z-0 overflow-hidden h-screen bg-black">
                 <motion.div 
                     className="relative h-full w-full"
                     style={{ 
@@ -173,28 +179,28 @@ export default function Home() {
                     }}
                 >
                     <Image
-                        src="https://images.unsplash.com/photo-1618220179428-22790b461013?q=80&w=2670&auto=format&fit=crop"
-                        alt="Morning Salon Luxury"
+                        src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?q=80&w=2592&auto=format&fit=crop"
+                        alt="Luxury Salon Interior"
                         fill
                         priority
                         sizes="100vw"
-                        className="object-cover object-center"
-                        quality={85}
+                        className="object-cover object-center scale-105"
+                        quality={90}
                     />
 
                     {/* Cinematic overlays */}
-                    <div className="absolute inset-0 z-1 bg-black/30" /> 
-                    <div className="absolute inset-0 z-2 bg-linear-to-b from-black/60 via-transparent to-black/90" />
+                    <div className="absolute inset-0 z-1 bg-black/40 mix-blend-multiply" /> 
+                    <div className="absolute inset-0 z-2 bg-linear-to-b from-black/70 via-transparent to-black/90" />
                     
-                    {/* The "Oily" Gradient Overlay */}
+                    {/* The "Oily" Shine Overlay - Enhanced */}
                     <motion.div 
-                        className="absolute inset-0 z-20 mix-blend-soft-light pointer-events-none"
+                        className="absolute inset-0 z-20 mix-blend-overlay pointer-events-none opacity-60"
                         style={{ background: spotGradient }}
                     />
                 </motion.div>
                 
-                {/* Oily Noise Texture */}
-                <div className="absolute inset-0 z-4 pointer-events-none opacity-[0.2] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay" />
+                {/* Oily Noise Texture - Reduced opacity for cleaner look */}
+                <div className="absolute inset-0 z-4 pointer-events-none opacity-[0.15] mix-blend-overlay filter contrast-150 brightness-150" />
             </div>
 
             <AnimatePresence mode="wait">
@@ -328,7 +334,7 @@ export default function Home() {
                                         <motion.div
                                             key={item.id}
                                             style={{ y: yTransform }}
-                                            className="group relative aspect-video md:aspect-[3/4] w-full bg-neutral-900 rounded-lg overflow-hidden transition-all duration-700 hover:z-30 hover:scale-105 shadow-2xl border border-white/10"
+                                            className="group relative aspect-video md:aspect-3/4 w-full bg-neutral-900 rounded-lg overflow-hidden transition-all duration-700 hover:z-30 hover:scale-105 shadow-2xl border border-white/10"
                                         >
                                             <div className="absolute inset-0 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1),transparent_60%)] mix-blend-overlay" />
                                             
@@ -393,13 +399,8 @@ export default function Home() {
 
                                     {/* Mouse Shine for Auth Card */}
                                     <motion.div 
-                                        className="absolute inset-0 pointer-events-none opacity-20 mix-blend-overlay"
-                                        style={{ 
-                                            background: useTransform(
-                                                [mouseX, mouseY],
-                                                ([x, y]) => `radial-gradient(400px circle at ${x * 50 + 200}px ${y * 50 + 200}px, rgba(255,255,255,0.4), transparent 40%)`
-                                            )
-                                        }}
+                                        className="absolute inset-0 pointer-events-none opacity-50 mix-blend-overlay"
+                                        style={{ background: authShineGradient }}
                                     />
 
                                     <div className="relative z-10 p-8 md:p-12">
