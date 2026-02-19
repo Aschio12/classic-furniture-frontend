@@ -67,18 +67,10 @@ export default function Home() {
     const heroY = useTransform(scrollY, [0, 400], [0, -100]);
 
     // Cards Section Transforms
-    const cardsSectionY = useTransform(scrollY, [200, 1200], [100, -100]);
-    const card1Y = useTransform(scrollY, [200, 1000], [50, -50]);
-    const card2Y = useTransform(scrollY, [200, 1000], [150, -150]);
-    const card3Y = useTransform(scrollY, [200, 1000], [250, -250]);
-
-    // Auth Section Transforms
-    const authOpacity = useTransform(scrollY, [800, 1200], [0, 1]);
-    const authY = useTransform(scrollY, [800, 1200], [100, 0]);
-
-    // Manifesto Transforms
-    const manifestoOpacity = useTransform(scrollY, [300, 600], [0, 1]);
-    const manifestoY = useTransform(scrollY, [300, 600], [50, 0]);
+    const cardsSectionY = useTransform(scrollY, [200, 1200], [100, -50]);
+    const card1Y = useTransform(scrollY, [200, 1000], [50, -20]);
+    const card2Y = useTransform(scrollY, [200, 1000], [150, -50]);
+    const card3Y = useTransform(scrollY, [200, 1000], [250, -80]);
 
     // --- Mouse Physics (The Shine) ---
     const mouseX = useMotionValue(0);
@@ -111,16 +103,7 @@ export default function Home() {
         [spotX, spotY],
         (values: number[]) => {
             const [x, y] = values;
-            return `radial-gradient(600px circle at ${x}px ${y}px, rgba(255,255,255,0.1), transparent 40%)`;
-        }
-    );
-
-    // Auth Card Shine Gradient
-    const authShineGradient = useTransform(
-        [mouseX, mouseY],
-        (values: number[]) => {
-            const [x, y] = values;
-            return `radial-gradient(400px circle at ${x * 50 + 200}px ${y * 50 + 200}px, rgba(255,255,255,0.2), transparent 40%)`;
+            return `radial-gradient(600px circle at ${x}px ${y}px, rgba(255,255,255,0.15), transparent 40%)`;
         }
     );
 
@@ -250,7 +233,7 @@ export default function Home() {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.5 }}
-                        className="relative z-10 w-full min-h-[300vh]"
+                        className="relative z-10 w-full min-h-[200vh]"
                     >
                         {/* --- Floating Navbar --- */}
                         <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-6 md:px-12 flex justify-between items-center mix-blend-difference text-white pointer-events-none">
@@ -363,66 +346,9 @@ export default function Home() {
                             </motion.div>
                          </div>
 
-                        {/* --- Manifesto Section (Moved to Bottom) --- */}
-                        <motion.div 
-                            style={{ opacity: manifestoOpacity, y: manifestoY }}
-                            className="relative z-20 py-32 px-6 flex flex-col items-center text-center w-full max-w-5xl mx-auto"
-                        >
-                            <h2 className="text-3xl md:text-5xl font-serif italic text-white/90 mb-12 leading-tight">
-                                &quot;Beauty is not just seen,<br/> it is felt in the silence of design.&quot;
-                            </h2>
-                            <div className="grid md:grid-cols-2 gap-12 text-left text-white/60 font-light tracking-wide text-sm md:text-base max-w-4xl border-t border-white/10 pt-12">
-                                <p>
-                                    We do not merely assemble furniture; we curate moments of stillness. 
-                                    Each curve is a deliberate breath, each texture a landscape of touch. 
-                                    <b>LuxeCraft</b> is an invitation to inhabit spaces that reflect your inner quietude.
-                                </p>
-                                <p>
-                                    In a world of noise, we offer the sanctuary of structure. 
-                                    Our pieces are born from the earth, shaped by hands compliant to 
-                                    tradition, and destined for homes that understand the luxury of time.
-                                </p>
-                            </div>
-                        </motion.div>
-
-
-                        {/* --- Auth Section (Triggers on Scroll) --- */}
-                        <div className="relative min-h-screen flex items-center justify-center pb-32">
-                            <motion.div 
-                                style={{ y: authY, opacity: authOpacity }}
-                                className="w-full max-w-md px-6 z-30"
-                            >
-                                <div className="relative overflow-hidden bg-black/40 backdrop-blur-2xl border border-white/10 rounded-3xl shadow-2xl ring-1 ring-white/5 group hover:bg-black/50 hover:shadow-[0_0_50px_-10px_rgba(255,255,255,0.15)] transition-all duration-500">
-                                    
-                                     {/* Card Shine Effect */}
-                                    <div className="absolute -inset-full top-0 block h-full w-1/2 -skew-x-12 bg-linear-to-r from-transparent to-white opacity-10 group-hover:animate-shine" />
-
-                                    {/* Mouse Shine for Auth Card */}
-                                    <motion.div 
-                                        className="absolute inset-0 pointer-events-none opacity-50 mix-blend-overlay"
-                                        style={{ background: authShineGradient }}
-                                    />
-
-                                    <div className="relative z-10 p-8 md:p-12">
-                                        <div className="flex flex-col items-center mb-8">
-                                            <div className="h-12 w-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mb-4 shadow-[0_0_20px_rgba(255,255,255,0.2)]">
-                                                <div className="h-1.5 w-1.5 rounded-full bg-[#d4af37] shadow-[0_0_10px_#d4af37]" />
-                                            </div>
-                                            <h2 className="text-2xl font-light text-white tracking-wide">Gatekeeper</h2>
-                                            <p className="text-white/30 text-[10px] uppercase tracking-widest mt-2">Restricted Access</p>
-                                        </div>
-
-                                        <LoginForm />
-
-                                        <div className="mt-8 pt-6 border-t border-white/5 text-center">
-                                            <span className="text-white/40 text-xs tracking-wide block mb-3">Exclusive Membership</span>
-                                            <p className="text-white/60 text-xs font-light italic">
-                                                By invitation or request only.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </motion.div>
+                        {/* --- Footer (Replaces Auth & Manifesto) --- */}
+                        <div className="relative z-50">
+                            <Footer />
                         </div>
                     </motion.section>
                 )}
