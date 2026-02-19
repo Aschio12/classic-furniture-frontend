@@ -250,11 +250,14 @@ export default function Home() {
                             <div className="flex items-center gap-6 md:gap-8 pointer-events-auto">
                                 <Dialog>
                                     <DialogTrigger asChild>
-                                        <button className="relative group overflow-hidden rounded-full px-8 py-2.5 transition-all duration-300 hover:scale-105">
-                                            <div className="absolute inset-0 bg-neutral-100 shadow-[inset_0_2px_4px_rgba(255,255,255,0.9),inset_0_-2px_4px_rgba(0,0,0,0.1)] transition-colors group-hover:bg-[#f3f3f3]" />
-                                            {/* Oily Sheen */}
-                                            <div className="absolute inset-0 bg-linear-to-tr from-white/80 via-transparent to-black/5 opacity-50 rounded-full" />
-                                            <span className="relative z-10 text-xs md:text-sm font-medium tracking-widest uppercase text-neutral-600 group-hover:text-black transition-colors">
+                                        <button className="relative group overflow-hidden rounded-full px-8 py-2.5 transition-all duration-300 hover:scale-105 active:scale-95">
+                                            {/* Base - Clear with hint of oil */}
+                                            <div className="absolute inset-0 bg-transparent group-hover:bg-white/50 transition-colors duration-500 rounded-full" />
+                                            
+                                            {/* Wet Surface Reflection - Top */}
+                                            <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                            
+                                            <span className="relative z-10 text-xs md:text-sm font-medium tracking-widest uppercase text-neutral-500 group-hover:text-black transition-colors duration-300">
                                                 Login
                                             </span>
                                         </button>
@@ -273,20 +276,24 @@ export default function Home() {
 
                                 <Dialog>
                                     <DialogTrigger asChild>
-                                        <button className="relative group overflow-hidden rounded-full px-8 py-2.5 shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_24px_rgba(212,175,55,0.2)]">
-                                            {/* Base Layer - Dark Onyx */}
-                                            <div className="absolute inset-0 bg-neutral-900" />
+                                        <button className="relative group overflow-hidden rounded-full px-8 py-2.5 transition-all duration-500 hover:scale-105 active:scale-95 shadow-[0_10px_20px_-5px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.2)]">
+                                            {/* Base - Liquid White */}
+                                            <div className="absolute inset-0 bg-white" />
                                             
-                                            {/* Liquid Gold Hover Layer */}
-                                            <div className="absolute inset-0 bg-linear-to-r from-[#d4af37] via-[#fcf6ba] to-[#d4af37] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                            {/* Oily Iridescence - Subtle */}
+                                            <div className="absolute inset-0 bg-linear-to-tr from-transparent via-neutral-100/50 to-transparent opacity-50" />
                                             
-                                            {/* Glass/Oil Highlight */}
-                                            <div className="absolute inset-0 bg-linear-to-b from-white/20 to-transparent pointer-events-none" />
-                                            
-                                            {/* Moving Shine */}
-                                            <div className="absolute inset-0 -translate-x-full group-hover:animate-[shine_1s_infinite] bg-linear-to-r from-transparent via-white/40 to-transparent z-20" />
+                                            {/* Wet Highlight - Top Edge */}
+                                            <div className="absolute inset-x-0 top-0 h-[40%] bg-white/90 blur-sm" />
+                                            <div className="absolute inset-x-2 top-0.5 h-[2px] bg-white rounded-full opacity-80" />
 
-                                            <span className="relative z-10 text-xs md:text-sm font-bold tracking-widest uppercase text-white group-hover:text-neutral-900 transition-colors">
+                                            {/* Bottom depth/shadow for volume */}
+                                            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/5 to-transparent" />
+                                            
+                                            {/* Hover: Oil Sheen Animation */}
+                                            <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/80 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out z-20" />
+
+                                            <span className="relative z-10 text-xs md:text-sm font-bold tracking-[0.2em] uppercase text-neutral-900 group-hover:text-black transition-colors">
                                                 Sign Up
                                             </span>
                                         </button>
@@ -334,7 +341,7 @@ export default function Home() {
                         </div>
 
                          {/* --- The Three Cards (Unified Float - High Visibility - 3D Tilt) --- */}
-                         <div className="relative z-20 min-h-[50vh] flex flex-col items-center justify-center px-6 md:px-12 py-24 overflow-visible bg-gradient-to-b from-transparent to-white/90">
+                         <div className="relative z-20 min-h-[50vh] flex flex-col items-center justify-center px-6 md:px-12 py-24 overflow-visible bg-linear-to-b from-transparent to-white/90">
                             <motion.div 
                                 style={{ y: cardsSectionY }}
                                 className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 max-w-7xl w-full perspective-[1000px]"
@@ -357,10 +364,10 @@ export default function Home() {
                                             // HOVER: Lifts up and shines
                                             whileHover={{ y: -20, rotateY: index === 0 ? 5 : index === 2 ? -5 : 0 }}
                                             
-                                            className="group relative aspect-[3/4] w-full bg-white rounded-none overflow-hidden hover:z-30 shadow-[0_15px_30px_rgba(0,0,0,0.08)] hover:shadow-[0_30px_60px_rgba(0,0,0,0.15)] transition-shadow duration-500 ease-out border border-neutral-100"
+                                            className="group relative aspect-3/4 w-full bg-white rounded-none overflow-hidden hover:z-30 shadow-[0_15px_30px_rgba(0,0,0,0.08)] hover:shadow-[0_30px_60px_rgba(0,0,0,0.15)] transition-shadow duration-500 ease-out border border-neutral-100"
                                         >
                                             {/* Oily Shine Effect on Hover - Subtle liquid sweep */}
-                                            <div className="absolute inset-0 z-20 opacity-0 group-hover:opacity-40 transition-opacity duration-700 pointer-events-none bg-[linear-gradient(120deg,transparent,rgba(255,255,255,0.6),transparent)] translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                                            <div className="absolute inset-0 z-20 opacity-0 group-hover:opacity-40 transition-opacity duration-700 pointer-events-none bg-[linear-gradient(120deg,transparent,rgba(255,255,255,0.6),transparent)] -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                                             
                                             <Image
                                                 src={item.image}
