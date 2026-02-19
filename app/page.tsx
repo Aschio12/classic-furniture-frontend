@@ -162,8 +162,8 @@ export default function Home() {
                     }}
                 >
                     <Image
-                        src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?q=80&w=2592&auto=format&fit=crop"
-                        alt="Luxury Salon Interior"
+                        src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=2694&auto=format&fit=crop"
+                        alt="Bright Luxury Furniture Salon"
                         fill
                         priority
                         sizes="100vw"
@@ -171,19 +171,18 @@ export default function Home() {
                         quality={90}
                     />
 
-                    {/* Cinematic overlays */}
-                    <div className="absolute inset-0 z-1 bg-black/40 mix-blend-multiply" /> 
-                    <div className="absolute inset-0 z-2 bg-linear-to-b from-black/70 via-transparent to-black/90" />
+                    <div className="absolute inset-0 z-1 bg-black/20" /> 
+                    <div className="absolute inset-0 z-2 bg-linear-to-b from-transparent via-transparent to-black/80" />
                     
-                    {/* The "Oily" Shine Overlay - Enhanced */}
+                    {/* The "Oily" Shine Overlay - Ultra Enhanced for Brightness */}
                     <motion.div 
-                        className="absolute inset-0 z-20 mix-blend-overlay pointer-events-none opacity-60"
+                        className="absolute inset-0 z-20 mix-blend-soft-light pointer-events-none opacity-80"
                         style={{ background: spotGradient }}
                     />
                 </motion.div>
                 
-                {/* Oily Noise Texture - Reduced opacity for cleaner look */}
-                <div className="absolute inset-0 z-4 pointer-events-none opacity-[0.15] mix-blend-overlay filter contrast-150 brightness-150" />
+                {/* Oily Noise Texture - Golden Hue */}
+                <div className="absolute inset-0 z-4 pointer-events-none opacity-[0.1] mix-blend-overlay bg-[#d4af37]" />
             </div>
 
             <AnimatePresence mode="wait">
@@ -286,27 +285,29 @@ export default function Home() {
                         <div className="relative h-screen flex flex-col items-center justify-center px-6">
                             <motion.div 
                                 style={{ opacity: heroOpacity, y: heroY }}
-                                className="flex flex-col items-center text-center space-y-8 z-20"
+                                className="flex flex-col items-center text-center space-y-6 z-20 mix-blend-overlay"
                             >
-                                <div className="h-px w-24 bg-white/50 mb-8" />
-                                
-                                <h1 className="text-6xl md:text-9xl font-thin tracking-tighter text-white drop-shadow-2xl">
-                                    <span className="block font-serif italic opacity-90">Morning</span>
-                                    <span className="block font-light mt-[-0.2em] uppercase tracking-widest opacity-80">Brightness</span>
+                                <h1 className="text-5xl md:text-8xl font-thin tracking-tighter text-white drop-shadow-2xl opacity-90">
+                                    <span className="block font-serif italic bg-clip-text text-transparent bg-linear-to-b from-white to-white/60">Luminous</span>
+                                    <span className="block font-light mt-[-0.2em] uppercase tracking-[0.2em] text-white/80">Living</span>
                                 </h1>
                                 
-                                <motion.div
-                                     animate={{ y: [0, 10, 0], opacity: [0.4, 1, 0.4] }}
-                                     transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-                                     className="absolute bottom-12"
-                                >
-                                    <p className="text-[10px] uppercase tracking-[0.4em] text-white">Scroll to Explore</p>
-                                </motion.div>
+                                <p className="text-sm md:text-lg font-light tracking-[0.3em] text-[#d4af37] uppercase opacity-80">
+                                    Curated . Timeless . Radiant
+                                </p>
+                            </motion.div>
+
+                            <motion.div
+                                    animate={{ y: [0, 10, 0], opacity: [0.4, 1, 0.4] }}
+                                    transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+                                    className="absolute bottom-12 z-20"
+                            >
+                                <p className="text-[10px] uppercase tracking-[0.4em] text-white/60">Scroll to Explore</p>
                             </motion.div>
                         </div>
 
-                         {/* --- The Three Cards (Creative Reveal) --- */}
-                         <div className="relative z-20 min-h-[50vh] flex flex-col items-center justify-center px-6 py-24 overflow-visible">
+                         {/* --- The Three Cards (Compact & Stylish) --- */}
+                         <div className="relative z-20 min-h-[40vh] flex flex-col items-center justify-center px-6 py-16 overflow-visible">
                             <motion.div 
                                 style={{ y: cardsSectionY }}
                                 className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-7xl w-full"
@@ -317,7 +318,7 @@ export default function Home() {
                                         <motion.div
                                             key={item.id}
                                             style={{ y: yTransform }}
-                                            className="group relative aspect-video md:aspect-3/4 w-full bg-neutral-900 rounded-lg overflow-hidden transition-all duration-700 hover:z-30 hover:scale-105 shadow-2xl border border-white/10"
+                                            className="group relative h-100 w-full bg-neutral-900 rounded-lg overflow-hidden transition-all duration-700 hover:z-30 hover:scale-105 shadow-2xl border border-white/10"
                                         >
                                             <div className="absolute inset-0 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1),transparent_60%)] mix-blend-overlay" />
                                             
