@@ -283,49 +283,57 @@ export default function Home() {
                             {/* 
                                 STRATEGY: 
                                 - Text moved to TOP-LEFT to reveal the center/bottom image.
-                                - Removed bottom texts completely to let the floor/furniture shine.
+                                - Realistic, Trustworthy Copy.
                             */}
                             
                             <motion.div 
                                 style={{ opacity: heroOpacity, y: heroY }}
                                 className="z-20 text-left max-w-4xl space-y-2 pointer-events-auto mix-blend-multiply"
                             >
-                                <h1 className="text-[5rem] md:text-[8rem] font-thin leading-[0.8] tracking-tighter text-neutral-900 drop-shadow-sm select-none">
-                                    <span className="block italic font-serif text-[#1a1a1a]">Oil &</span>
-                                    <span className="block font-medium tracking-tight">Onyx</span>
+                                <h1 className="text-[4rem] md:text-[6rem] font-medium leading-[0.9] tracking-tight text-neutral-900 drop-shadow-sm select-none">
+                                    <span className="block text-[#1a1a1a]">Authentic</span>
+                                    <span className="block text-neutral-600 font-light italic font-serif">Living</span>
                                 </h1>
                                 
-                                <div className="h-1 w-24 bg-neutral-900 mt-6 mb-8" />
+                                <div className="h-1 w-16 bg-neutral-900 mt-6 mb-8" />
                                 
-                                <p className="text-xl md:text-2xl font-light text-neutral-800 max-w-lg font-serif italic tracking-wide">
-                                    "Architecture for the soul. <br/> 
-                                    Surfaces that breathe."
+                                <p className="text-xl md:text-2xl font-light text-neutral-800 max-w-lg tracking-wide leading-relaxed">
+                                    Furniture grounded in heritage. <br/>
+                                    <span className="text-neutral-500 text-lg">Designed for real life, built to last generations.</span>
                                 </p>
                             </motion.div>
 
                             {/* NO BOTTOM TEXTS. PURE IMAGE VISIBILITY. */}
                         </div>
 
-                         {/* --- The Three Cards (Unified Float - High Visibility) --- */}
-                         <div className="relative z-20 min-h-[50vh] flex flex-col items-center justify-center px-10 py-24 overflow-visible bg-gradient-to-b from-transparent to-white/80">
+                         {/* --- The Three Cards (Unified Float - High Visibility - 3D Tilt) --- */}
+                         <div className="relative z-20 min-h-[50vh] flex flex-col items-center justify-center px-6 md:px-12 py-24 overflow-visible bg-gradient-to-b from-transparent to-white/90">
                             <motion.div 
                                 style={{ y: cardsSectionY }}
-                                className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-8xl w-full"
+                                className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 max-w-7xl w-full perspective-[1000px]"
                             >
                                 {FEATURED_ITEMS.map((item, index) => {
                                     return (
                                         <motion.div
                                             key={item.id}
-                                            // No vertical staggering (card1Y/2Y/3Y removed) -> They float together
-                                            initial={{ opacity: 0, y: 50 }}
-                                            whileInView={{ opacity: 1, y: 0 }}
-                                            transition={{ duration: 0.8, delay: index * 0.1, ease: [0.215, 0.61, 0.355, 1] }}
-                                            viewport={{ once: true, margin: "-100px" }}
-
-                                            className="group relative aspect-[3/4] w-full bg-white rounded-none overflow-hidden hover:z-30 shadow-[0_20px_50px_rgba(0,0,0,0.1)] hover:shadow-[0_30px_90px_rgba(0,0,0,0.2)] transition-all duration-700 ease-out"
+                                            // CREATIVE MOTION: Rotates slightly based on scroll entry + Staggered float
+                                            initial={{ opacity: 0, scale: 0.8, rotateX: 10 }}
+                                            whileInView={{ opacity: 1, scale: 1, rotateX: 0 }}
+                                            transition={{ 
+                                                duration: 1.2, 
+                                                delay: index * 0.15, // Staggered entry
+                                                type: "spring", 
+                                                stiffness: 50 
+                                            }}
+                                            viewport={{ once: true, margin: "-50px" }}
+                                            
+                                            // HOVER: Lifts up and shines
+                                            whileHover={{ y: -20, rotateY: index === 0 ? 5 : index === 2 ? -5 : 0 }}
+                                            
+                                            className="group relative aspect-[3/4] w-full bg-white rounded-none overflow-hidden hover:z-30 shadow-[0_15px_30px_rgba(0,0,0,0.08)] hover:shadow-[0_30px_60px_rgba(0,0,0,0.15)] transition-shadow duration-500 ease-out border border-neutral-100"
                                         >
                                             {/* Oily Shine Effect on Hover - Subtle liquid sweep */}
-                                            <div className="absolute inset-0 z-20 opacity-0 group-hover:opacity-40 transition-opacity duration-700 pointer-events-none bg-[linear-gradient(120deg,transparent,rgba(255,255,255,0.8),transparent)] translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                                            <div className="absolute inset-0 z-20 opacity-0 group-hover:opacity-40 transition-opacity duration-700 pointer-events-none bg-[linear-gradient(120deg,transparent,rgba(255,255,255,0.6),transparent)] translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
                                             
                                             <Image
                                                 src={item.image}
@@ -333,18 +341,22 @@ export default function Home() {
                                                 fill
                                                 priority={index === 0}
                                                 sizes="(max-width: 768px) 100vw, 33vw"
-                                                // High saturation, brightness for outstanding look. NO BLUR.
-                                                className="object-cover transition-transform duration-1000 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-110 saturate-[1.2] brightness-105 contrast-105"
+                                                // High saturation, NO BLUR. Clean and crisp.
+                                                className="object-cover transition-transform duration-1000 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-105 saturate-[1.1]"
                                             />
                                             
-                                            {/* Minimalist Text Overlay - Reduced to bare essentials */}
-                                            <div className="absolute bottom-0 left-0 p-8 z-10 w-full mix-blend-hard-light">
-                                                <h3 className="text-4xl font-thin tracking-tighter text-white drop-shadow-md opacity-90 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                                            {/* Trustworthy Text Overlay - Clean and functional */}
+                                            <div className="absolute bottom-0 left-0 p-6 z-10 w-full bg-linear-to-t from-black/80 via-black/40 to-transparent">
+                                                <h3 className="text-2xl font-medium tracking-tight text-white drop-shadow-md">
                                                     {item.title}
                                                 </h3>
-                                                {/* Description hidden by default, visible subtly on hover */}
-                                                <div className="overflow-hidden h-0 group-hover:h-auto transition-all duration-500 delay-100">
-                                                     <p className="text-white/80 text-sm font-medium pt-2 tracking-wide uppercase">{item.subtitle}</p>
+                                                <p className="text-white/80 text-xs font-light mt-1 max-w-[90%] line-clamp-2">
+                                                    Designed with integrity. {item.subtitle.toLowerCase()}.
+                                                </p>
+                                                
+                                                {/* Hidden CTA that slides up */}
+                                                <div className="h-0 overflow-hidden group-hover:h-8 transition-all duration-300 mt-2">
+                                                    <span className="text-[10px] uppercase tracking-widest text-neutral-200 border-b border-neutral-400 pb-0.5">View Details</span>
                                                 </div>
                                             </div>
                                         </motion.div>
@@ -354,7 +366,7 @@ export default function Home() {
                          </div>
 
                         {/* --- Footer (Replaces Auth & Manifesto) --- */}
-                        <div className="relative z-50">
+                        <div className="relative z-50 mt-[-10vh]">
                             <Footer />
                         </div>
                     </motion.section>
