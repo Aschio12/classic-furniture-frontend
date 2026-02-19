@@ -23,24 +23,24 @@ import Footer from "@/components/shared/Footer";
 const FEATURED_ITEMS = [
     {
         id: 1,
-        title: "The Velvet Sovereign",
+        title: "Velvet Sovereign",
         subtitle: "Tactile Opulence",
-        image: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=2670&auto=format&fit=crop",
-        description: "A throne of woven comfort designed for the modern monarch, merging classical grandeur with the soft embrace of contemporary living."
+        image: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=100&w=2670&auto=format&fit=crop", // Improved quality param
+        description: "Woven comfort."
     },
     {
         id: 2,
         title: "Azure Dreaming",
         subtitle: "Coastal Serenity",
-        image: "https://images.unsplash.com/photo-1592078615290-033ee584e267?q=80&w=2564&auto=format&fit=crop",
-        description: "Where the sky meets the sea in a symphony of joinery, bringing the calm of the horizon into the heart of your sanctuary."
+        image: "https://images.unsplash.com/photo-1592078615290-033ee584e267?q=100&w=2564&auto=format&fit=crop", // Improved quality param
+        description: "Symphony of joinery."
     },
     {
         id: 3,
         title: "Obsidian Echo",
         subtitle: "Midnight Minimalism",
-        image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=2694&auto=format&fit=crop",
-        description: "The silence of the night captured in formidable stone and steel, standing as a testament to the enduring power of restraint."
+        image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=100&w=2694&auto=format&fit=crop", // Improved quality param
+        description: "Formidable stone."
     }
 ];
 
@@ -58,23 +58,18 @@ export default function Home() {
     // --- Scroll & Parallax ---
     const { scrollY } = useScroll();
     
-    // Background Transforms - More subtle movement for stability
-    const bgScale = useTransform(scrollY, [0, 1000], [1, 1.1]);
-    const bgOpacity = useTransform(scrollY, [0, 800], [0.8, 0.4]);
+    // Background Transforms - Remove opacity fade to keep it visible
+    const bgScale = useTransform(scrollY, [0, 1000], [1, 1.05]); 
+    // const bgOpacity = useTransform(scrollY, [0, 800], [0.8, 0.4]); // Removed fading
     
     // Hero Transforms
     const heroOpacity = useTransform(scrollY, [0, 400], [1, 0]);
     const heroY = useTransform(scrollY, [0, 400], [0, -50]);
-    const textY = useTransform(scrollY, [0, 300], [0, 100]); // Parallax for text
-    const textOpacity = useTransform(scrollY, [0, 300], [1, 0]);
 
-    // Cards Section Transforms - Adjusted so they settle perfectly aligned
-    // The previous values [100, 0], [150, 0], [200, 0] ensure they land at 0 relative.
+    // Cards Section - NO STAIRS. Subtle unified float.
     const cardsSectionY = useTransform(scrollY, [200, 1000], [50, 0]); 
-    // Staggered entry, but synchronized landing
-    const card1Y = useTransform(scrollY, [200, 1000], [100, 0]);
-    const card2Y = useTransform(scrollY, [200, 1000], [200, 0]);
-    const card3Y = useTransform(scrollY, [200, 1000], [300, 0]);
+    
+    // --- Mouse Physics (The Shine) ---
 
     // --- Mouse Physics (The Shine) ---
     const mouseX = useMotionValue(0);
@@ -154,39 +149,37 @@ export default function Home() {
                 )}
             </AnimatePresence>
 
-            {/* --- Fixed Cinematic Background (Bright & Oily) --- */}
-            <div className="fixed inset-0 z-0 overflow-hidden h-screen bg-[#F0F0F0]">
+            {/* --- Fixed Cinematic Background (Ultra Sharp & Oily) --- */}
+            <div className="fixed inset-0 z-0 overflow-hidden h-screen bg-[#Fdfdfd]">
                 <motion.div 
                     className="relative h-full w-full"
                     style={{ 
                         x: springX, 
                         y: springY, 
-                        scale: bgScale,
-                        opacity: bgOpacity
+                        scale: bgScale, 
                     }}
                 >
                     <Image
-                        src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=2574&auto=format&fit=crop"
+                        src="https://images.unsplash.com/photo-1629898569904-6c3425cb65dc?q=100&w=2696&auto=format&fit=crop" // Switching to an even cleaner, sharper image
                         alt="Astonishing Luxury Salon"
                         fill
                         priority
-                        sizes="100vw"
-                        className="object-cover object-center scale-105 saturate-[1.1] contrast-[1.1]"
+                        className="object-cover object-center brightness-105 saturate-[1.1]" // Boosted clarity, no blur
                         quality={100}
                     />
 
-                    {/* Gradient overlay for text readability - More subtle now to let image shine */}
-                    <div className="absolute inset-0 z-1 bg-linear-to-b from-white/30 via-transparent to-white/90" />
+                    {/* Gradient only at the very top/bottom edges, leaving the center CRYTSTAL CLEAR */}
+                    <div className="absolute inset-0 z-1 bg-linear-to-b from-white/10 via-transparent to-white/10" />
                     
-                    {/* The "Oily" Shine Overlay - Enhanced specifically for the "Oily" vibe */}
+                    {/* The "Oily" Shine Overlay - Subtle liquid sheen across the whole surface */}
                     <motion.div 
-                        className="absolute inset-0 z-20 mix-blend-soft-light pointer-events-none opacity-40"
+                        className="absolute inset-0 z-20 mix-blend-soft-light pointer-events-none opacity-30"
                         style={{ background: spotGradient }}
                     />
                 </motion.div>
                 
-                {/* Oily Noise Texture - Golden Hue for warmth */}
-                <div className="absolute inset-0 z-4 pointer-events-none opacity-[0.08] mix-blend-multiply bg-[#d4af37]" />
+                {/* Micro-noise for texture, very faint */}
+                <div className="absolute inset-0 z-4 pointer-events-none opacity-[0.03] mix-blend-multiply bg-[#d4af37]" />
             </div>
 
             <AnimatePresence mode="wait">
@@ -285,71 +278,54 @@ export default function Home() {
                             </div>
                         </nav>
 
-                        {/* --- Hero Section --- */}
-                        <div className="relative h-screen flex flex-col items-center justify-center px-6">
+                        {/* --- Hero Section (Minimalist & Oily) --- */}
+                        <div className="relative h-screen w-full flex flex-col justify-start pt-32 px-12 md:px-24 pointer-events-none data-[cursor=text]:pointer-events-auto">
+                            {/* 
+                                STRATEGY: 
+                                - Text moved to TOP-LEFT to reveal the center/bottom image.
+                                - Removed bottom texts completely to let the floor/furniture shine.
+                            */}
+                            
                             <motion.div 
                                 style={{ opacity: heroOpacity, y: heroY }}
-                                className="flex flex-col items-center text-center space-y-8 z-20 max-w-5xl"
+                                className="z-20 text-left max-w-4xl space-y-2 pointer-events-auto mix-blend-multiply"
                             >
-                                <h1 className="text-6xl md:text-9xl font-thin tracking-tighter text-neutral-900 drop-shadow-2xl opacity-90 leading-none">
-                                    <span className="block font-serif italic bg-clip-text text-transparent bg-linear-to-b from-neutral-800 to-neutral-500 drop-shadow-sm">Impeccable</span>
-                                    <span className="block font-light mt-[-0.1em] uppercase tracking-[0.15em] text-neutral-900 drop-shadow-md">Refinement</span>
+                                <h1 className="text-[5rem] md:text-[8rem] font-thin leading-[0.8] tracking-tighter text-neutral-900 drop-shadow-sm select-none">
+                                    <span className="block italic font-serif text-[#1a1a1a]">Oil &</span>
+                                    <span className="block font-medium tracking-tight">Onyx</span>
                                 </h1>
                                 
-                                <motion.div 
-                                    initial={{ opacity: 0, scale: 0.9 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    transition={{ delay: 0.5, duration: 1 }}
-                                    className="space-y-6 flex flex-col items-center"
-                                >
-                                    <p className="text-xl md:text-3xl font-light text-neutral-800 leading-relaxed font-serif italic drop-shadow-md max-w-3xl">
-                                        "A sanctuary of glass, gold, and silence. Furniture that reflects the soul of the avant-garde."
-                                    </p>
-                                    
-                                    <div className="h-px w-24 bg-linear-to-r from-transparent via-[#d4af37] to-transparent" />
-                                    
-                                    <div className="grid grid-cols-3 gap-8 text-center pt-4">
-                                        <div className="flex flex-col items-center gap-1">
-                                            <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">Design</span>
-                                            <span className="text-lg font-serif italic text-neutral-800">Italian</span>
-                                        </div>
-                                        <div className="flex flex-col items-center gap-1">
-                                            <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">Material</span>
-                                            <span className="text-lg font-serif italic text-neutral-800">Bespoke</span>
-                                        </div>
-                                        <div className="flex flex-col items-center gap-1">
-                                            <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">Edition</span>
-                                            <span className="text-lg font-serif italic text-neutral-800">Limited</span>
-                                        </div>
-                                    </div>
-                                </motion.div>
+                                <div className="h-1 w-24 bg-neutral-900 mt-6 mb-8" />
+                                
+                                <p className="text-xl md:text-2xl font-light text-neutral-800 max-w-lg font-serif italic tracking-wide">
+                                    "Architecture for the soul. <br/> 
+                                    Surfaces that breathe."
+                                </p>
                             </motion.div>
 
-                            <motion.div
-                                    animate={{ y: [0, 10, 0], opacity: [0.4, 1, 0.4] }}
-                                    transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-                                    className="absolute bottom-12 z-20"
-                            >
-                                <p className="text-[10px] uppercase tracking-[0.4em] text-neutral-600 font-bold mix-blend-multiply">Scroll to Reveal</p>
-                            </motion.div>
+                            {/* NO BOTTOM TEXTS. PURE IMAGE VISIBILITY. */}
                         </div>
 
-                         {/* --- The Three Cards (Compact & Stylish - Light Mode) --- */}
-                         <div className="relative z-20 min-h-[40vh] flex flex-col items-center justify-center px-6 py-16 overflow-visible">
+                         {/* --- The Three Cards (Unified Float - High Visibility) --- */}
+                         <div className="relative z-20 min-h-[50vh] flex flex-col items-center justify-center px-10 py-24 overflow-visible bg-gradient-to-b from-transparent to-white/80">
                             <motion.div 
                                 style={{ y: cardsSectionY }}
-                                className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-7xl w-full"
+                                className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-8xl w-full"
                             >
                                 {FEATURED_ITEMS.map((item, index) => {
-                                    const yTransform = index === 0 ? card1Y : index === 1 ? card2Y : card3Y;
                                     return (
                                         <motion.div
                                             key={item.id}
-                                            style={{ y: yTransform }}
-                                            className="group relative h-100 w-full bg-white rounded-lg overflow-hidden transition-all duration-700 hover:z-30 hover:scale-105 shadow-xl hover:shadow-2xl border border-neutral-100"
+                                            // No vertical staggering (card1Y/2Y/3Y removed) -> They float together
+                                            initial={{ opacity: 0, y: 50 }}
+                                            whileInView={{ opacity: 1, y: 0 }}
+                                            transition={{ duration: 0.8, delay: index * 0.1, ease: [0.215, 0.61, 0.355, 1] }}
+                                            viewport={{ once: true, margin: "-100px" }}
+
+                                            className="group relative aspect-[3/4] w-full bg-white rounded-none overflow-hidden hover:z-30 shadow-[0_20px_50px_rgba(0,0,0,0.1)] hover:shadow-[0_30px_90px_rgba(0,0,0,0.2)] transition-all duration-700 ease-out"
                                         >
-                                            {/* Oily Shine Effect on Hover */}
-                                            <div className="absolute inset-0 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-[radial-gradient(circle_at_50%_50%,rgba(255,215,0,0.15),transparent_60%)] mix-blend-overlay" />
+                                            {/* Oily Shine Effect on Hover - Subtle liquid sweep */}
+                                            <div className="absolute inset-0 z-20 opacity-0 group-hover:opacity-40 transition-opacity duration-700 pointer-events-none bg-[linear-gradient(120deg,transparent,rgba(255,255,255,0.8),transparent)] translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
                                             
                                             <Image
                                                 src={item.image}
@@ -357,18 +333,19 @@ export default function Home() {
                                                 fill
                                                 priority={index === 0}
                                                 sizes="(max-width: 768px) 100vw, 33vw"
-                                                className="object-cover opacity-90 group-hover:opacity-100 transition-all duration-700"
+                                                // High saturation, brightness for outstanding look. NO BLUR.
+                                                className="object-cover transition-transform duration-1000 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-110 saturate-[1.2] brightness-105 contrast-105"
                                             />
-                                            {/* White Gradient Overlay for Dark Text Readability */}
-                                            <div className="absolute inset-0 bg-linear-to-t from-white via-white/40 to-transparent opacity-90 group-hover:opacity-80 transition-opacity duration-500" />
                                             
-                                            <div className="absolute bottom-0 left-0 right-0 p-8 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500 z-10 w-full">
-                                                <h3 className="text-2xl font-serif italic text-neutral-900 mb-2 drop-shadow-sm">{item.title}</h3>
-                                                <p className="text-[10px] uppercase tracking-[0.2em] text-[#d4af37] mb-4 font-bold">{item.subtitle}</p>
-                                                <div className="h-px w-8 group-hover:w-full bg-neutral-300 transition-all duration-700 delay-100 mb-4" />
-                                                <p className="text-neutral-600 font-light text-xs leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-200">
-                                                    {item.description}
-                                                </p>
+                                            {/* Minimalist Text Overlay - Reduced to bare essentials */}
+                                            <div className="absolute bottom-0 left-0 p-8 z-10 w-full mix-blend-hard-light">
+                                                <h3 className="text-4xl font-thin tracking-tighter text-white drop-shadow-md opacity-90 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                                                    {item.title}
+                                                </h3>
+                                                {/* Description hidden by default, visible subtly on hover */}
+                                                <div className="overflow-hidden h-0 group-hover:h-auto transition-all duration-500 delay-100">
+                                                     <p className="text-white/80 text-sm font-medium pt-2 tracking-wide uppercase">{item.subtitle}</p>
+                                                </div>
                                             </div>
                                         </motion.div>
                                     );
