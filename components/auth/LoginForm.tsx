@@ -71,6 +71,7 @@ export default function LoginForm() {
       )}
 
       <div className="w-full max-w-md space-y-8 p-4">
+
       <div className="text-center relative">
         <h2 className="text-4xl font-black tracking-tighter text-neutral-900 drop-shadow-sm">Welcome Back</h2>
         {/* Shiny Underline */}
@@ -151,17 +152,26 @@ export default function LoginForm() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="group relative w-full overflow-hidden rounded-full bg-neutral-900 py-4 text-sm font-bold text-white shadow-[0_10px_20px_rgba(0,0,0,0.2)] transition-all duration-500 hover:shadow-[0_20px_40px_rgba(212,175,55,0.3)] hover:scale-105 active:scale-95"
+          className="group relative w-full overflow-hidden rounded-full bg-white py-4 text-sm font-bold text-neutral-900 shadow-[0_6px_20px_rgba(0,0,0,0.08)] transition-all duration-300 active:scale-95 border border-neutral-100/50"
         >
-          <span className="relative z-10 flex items-center justify-center gap-2 uppercase tracking-[0.2em]">
-            {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Sign In"}
+          {/* Base - Liquid White */}
+          <div className="absolute inset-0 bg-white" />
+          
+          {/* Inner Depth Shadow (Sharp, no blur) */}
+          <div className="absolute inset-0 shadow-[inset_0_-4px_8px_rgba(0,0,0,0.05),inset_0_2px_6px_rgba(255,255,255,0.9)] rounded-full" />
+            
+          {/* Top Highlight - Sharp Glint */}
+          <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white to-transparent opacity-90" />
+          
+          {/* Crisp Highlight Line */}
+          <div className="absolute left-6 right-6 top-[2px] h-[1px] bg-white opacity-100" />
+
+          {/* Hover: Oil Sheen Animation (Sharp Edges) */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-neutral-100/60 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out z-20" />
+
+          <span className="relative z-10 flex items-center justify-center gap-2 uppercase tracking-[0.2em] transition-colors">
+            {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin text-neutral-400" /> : "Sign In"}
           </span>
-          
-          {/* Liquid Gold Fill Animation */}
-          <div className="absolute inset-x-0 bottom-0 h-full bg-linear-to-r from-[#bf953f] via-[#fcf6ba] to-[#b38728] translate-y-full transition-transform duration-500 ease-out group-hover:translate-y-0 opacity-100" />
-          
-          {/* Shine Sweep */}
-          <div className="absolute inset-0 -translate-x-full group-hover:animate-[shine_1s_infinite] bg-linear-to-r from-transparent via-white/50 to-transparent z-20" />
         </button>
       </form>
 
