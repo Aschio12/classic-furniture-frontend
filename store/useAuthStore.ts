@@ -20,12 +20,14 @@ type AuthState = {
   token: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  _hasHydrated: boolean; // Tracks if Zustand has finished rehydrating from localStorage
   error: string | null;
   setUser: (user: AuthUser | null) => void;
   setToken: (token: string | null) => void;
   clearAuth: () => void;
   login: (payload: LoginPayload) => Promise<void>;
   logout: () => void;
+  setHasHydrated: (state: boolean) => void;
 };
 
 export const useAuthStore = create<AuthState>()(
@@ -35,12 +37,15 @@ export const useAuthStore = create<AuthState>()(
       token: null,
       isAuthenticated: false,
       isLoading: false,
+      _hasHydrated: false,
       error: null,
 
       setUser: (user) => set({ user, isAuthenticated: !!user }),
       setToken: (token) => set({ token, isAuthenticated: !!token }),
       
       clearAuth: () => set({ user: null, token: null, isAuthenticated: false, error: null }),
+
+      setHasHydrated: (state) => set({ _hasHydrated: state }),
 
       login: async (payload) => {
         set({ isLoading: true, error: null });
@@ -80,6 +85,10 @@ export const useAuthStore = create<AuthState>()(
           token: state.token, 
           isAuthenticated: state.isAuthenticated 
       }), // Only persist these fields
+      onRehydrateStorage: () => (state) => {
+        // Called when rehydration completes
+        state?.setHasHydrated(true);
+      },
     }
   )
 );
