@@ -1,412 +1,422 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import Link from "next/link";
 import Image from "next/image";
-import { 
-    motion,
-    AnimatePresence,
-    useScroll, 
-    useTransform, 
-    useSpring, 
-    useMotionValue,
-} from "framer-motion";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
+import { Loader2, Sparkles } from "lucide-react";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+
 import { useAuthStore } from "@/store/useAuthStore";
 import { useServerStore } from "@/store/useServerStore";
 import RegisterForm from "@/components/auth/RegisterForm";
 import LoginForm from "@/components/auth/LoginForm";
-import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/components/ui/dialog";
-import { Loader2 } from "lucide-react";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import MainLayout from "@/components/shared/MainLayout";
 import Footer from "@/components/shared/Footer";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 const FEATURED_ITEMS = [
-    {
-        id: 1,
-        title: "Velvet Sovereign",
-        subtitle: "Tactile Opulence",
-        image: "https://images.unsplash.com/photo-1567538096635-e94ca81a3cdb?auto=format&fit=crop&q=80&w=1000", 
-        description: "Woven comfort."
-    },
-    {
-        id: 2,
-        title: "Azure Dreaming",
-        subtitle: "Coastal Serenity",
-        image: "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&q=80&w=1000", 
-        description: "Symphony of joinery."
-    },
-    {
-        id: 3,
-        title: "Obsidian Echo",
-        subtitle: "Midnight Minimalism",
-        image: "https://images.unsplash.com/photo-1505693314120-0d443867891e?auto=format&fit=crop&q=80&w=1000", 
-        description: "Formidable stone."
-    }
+  {
+    id: 1,
+    title: "Aurora Cloud Sofa",
+    category: "Living Room",
+    description: "Curved silhouette, buttery upholstery, and cloud-like comfort for modern gatherings.",
+    image:
+      "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&q=80&w=1400",
+  },
+  {
+    id: 2,
+    title: "Ivory Crest Bed",
+    category: "Bedroom",
+    description: "Soft panel detailing and premium wood framing designed for serene, elegant nights.",
+    image:
+      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&q=80&w=1400",
+  },
+  {
+    id: 3,
+    title: "Monarch Dining Set",
+    category: "Dining",
+    description: "Hand-finished surfaces and sculpted lines that elevate every meal into an experience.",
+    image:
+      "https://images.unsplash.com/photo-1616594039964-3d6d1efb3f8f?auto=format&fit=crop&q=80&w=1400",
+  },
+];
+
+const TESTIMONIALS = [
+  {
+    id: 1,
+    name: "Marta A.",
+    role: "Interior Architect",
+    quote:
+      "Classic Furniture brings boutique-level finish quality with a warm, livable style. My clients love it.",
+  },
+  {
+    id: 2,
+    name: "Daniel K.",
+    role: "Homeowner",
+    quote:
+      "From ordering to delivery, the process felt premium. The sofa became the centerpiece of our living room.",
+  },
+  {
+    id: 3,
+    name: "Leila T.",
+    role: "Design Enthusiast",
+    quote:
+      "The textures, the tone, the details—everything feels curated. It instantly elevated my apartment.",
+  },
 ];
 
 export default function Home() {
-    const { isAuthenticated } = useAuthStore();
-    const { isServerWaking } = useServerStore();
-    const [mounted, setMounted] = useState(false);
-    
-    // Eliminate hydration mismatch flash
-    useEffect(() => {
-        const timer = setTimeout(() => setMounted(true), 0);
-        return () => clearTimeout(timer);
-    }, []);
+  const { isAuthenticated, _hasHydrated } = useAuthStore();
+  const { isServerWaking } = useServerStore();
+  const [mounted, setMounted] = useState(false);
 
-    // --- Scroll & Parallax ---
-    const { scrollY } = useScroll();
-    
-    // Background Transforms - Remove opacity fade to keep it visible
-    const bgScale = useTransform(scrollY, [0, 1000], [1, 1.05]); 
-    // const bgOpacity = useTransform(scrollY, [0, 800], [0.8, 0.4]); // Removed fading
-    
-    // Hero Transforms
-    const heroOpacity = useTransform(scrollY, [0, 400], [1, 0]);
-    const heroY = useTransform(scrollY, [0, 400], [0, -50]);
+  useEffect(() => {
+    const timer = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(timer);
+  }, []);
 
-    // Cards Section - NO STAIRS. Subtle unified float.
-    const cardsSectionY = useTransform(scrollY, [200, 1000], [50, 0]); 
-    
-    // --- Mouse Physics (The Shine) ---
+  const { scrollY } = useScroll();
+  const heroY = useTransform(scrollY, [0, 600], [0, -80]);
+  const heroOpacity = useTransform(scrollY, [0, 450], [1, 0.25]);
+  const orbOneY = useTransform(scrollY, [0, 900], [0, 130]);
+  const orbTwoY = useTransform(scrollY, [0, 900], [0, -100]);
 
-    // --- Mouse Physics (The Shine) ---
-    const mouseX = useMotionValue(0);
-    const mouseY = useMotionValue(0);
-    
-    // Smooth mouse for background parallax
-    const springConfig = { damping: 30, stiffness: 200, mass: 0.5 };
-    const springX = useSpring(mouseX, springConfig);
-    const springY = useSpring(mouseY, springConfig);
+  if (!mounted || !_hasHydrated) {
+    return null;
+  }
 
-    // Raw mouse for Light Spot (instant reaction)
-    const spotX = useMotionValue(0);
-    const spotY = useMotionValue(0);
+  return (
+    <main className="relative min-h-screen overflow-x-hidden bg-[#FAF9F6] text-[#2C2C2C] selection:bg-[#D4AF37]/30">
+      <AnimatePresence>
+        {isServerWaking && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-white/80 backdrop-blur-md"
+          >
+            <div className="glass-strong relative flex w-[92%] max-w-md flex-col items-center gap-4 rounded-3xl p-8 text-center shadow-[0_30px_90px_rgba(0,0,0,0.12)]">
+              <Loader2 className="h-11 w-11 animate-spin text-[#D4AF37]" />
+              <h3 className="font-[Cormorant_Garamond] text-3xl">Preparing Your Experience</h3>
+              <p className="text-sm text-[#2C2C2C]/65">
+                Waking backend services securely. This can take a few moments on first load.
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-    const handleMouseMove = (e: React.MouseEvent) => {
-        const { clientX, clientY } = e;
-        const { innerWidth, innerHeight } = window;
-        
-        // Parallax (Centered 0)
-        mouseX.set((clientX - innerWidth / 2) / 50); 
-        mouseY.set((clientY - innerHeight / 2) / 50);
+      <AnimatePresence mode="wait">
+        {isAuthenticated ? (
+          <MainLayout>
+            <motion.section
+              key="dashboard"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="min-h-screen bg-[#F9F9FB] px-6 pb-16 pt-24 md:px-10"
+            >
+              <div className="mx-auto max-w-7xl space-y-10">
+                <header className="space-y-3 border-b border-black/10 pb-8">
+                  <p className="text-xs tracking-[0.24em] text-[#2C2C2C]/55">WELCOME BACK</p>
+                  <h1 className="font-[Cormorant_Garamond] text-4xl leading-none md:text-6xl">
+                    Your Curated Collection
+                  </h1>
+                  <p className="max-w-2xl text-[#2C2C2C]/65">
+                    Browse current inventory, track your orders, and continue building your dream interior.
+                  </p>
+                </header>
 
-        // Light Spot (Absolute)
-        spotX.set(clientX);
-        spotY.set(clientY);
-    };
-
-    // Light Spot Gradient (Adapted for Light Theme - Oily Iridescence)
-    const spotGradient = useTransform(
-        [spotX, spotY],
-        (values: number[]) => {
-            const [x, y] = values;
-            // A larger, multi-stop gradient to mimic oil slick dispersion
-            return `radial-gradient(1000px circle at ${x}px ${y}px, 
-                rgba(255, 255, 255, 0.8) 0%,
-                rgba(240, 240, 255, 0.4) 20%,
-                rgba(255, 215, 0, 0.1) 40%,
-                transparent 70%)`;
-        }
-    );
-
-    if (!mounted) {
-        return null;
-    }
-
-    return (
-        <main 
-            className="relative w-full bg-[#FAFAFA] text-neutral-900 overflow-x-hidden selection:bg-[#d4af37] selection:text-white"
-            onMouseMove={handleMouseMove}
-        >
-            {/* --- Global Fluid/Oily Overlay --- */}
-            <div className="fixed inset-0 pointer-events-none z-50 mix-blend-soft-light opacity-60">
-                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-150 contrast-150"></div>
+                <div className="grid gap-6 md:grid-cols-3">
+                  {[1, 2, 3].map((card, index) => (
+                    <motion.article
+                      key={card}
+                      initial={{ opacity: 0, y: 24 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.12 }}
+                      className="glass group relative aspect-[4/5] overflow-hidden rounded-3xl border border-white/40 p-6 shadow-[0_20px_50px_rgba(0,0,0,0.08)]"
+                    >
+                      <div className="absolute -right-10 -top-10 h-36 w-36 rounded-full bg-[#D4AF37]/20 blur-3xl" />
+                      <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                        <div className="animate-shimmer-sweep absolute inset-y-0 -left-[160%] w-[70%] bg-gradient-to-r from-transparent via-white/70 to-transparent" />
+                      </div>
+                      <div className="relative z-10 flex h-full flex-col justify-between">
+                        <p className="text-xs tracking-[0.2em] text-[#2C2C2C]/50">FEATURED DROP</p>
+                        <h3 className="font-[Cormorant_Garamond] text-3xl">Premium Piece #{card}</h3>
+                      </div>
+                    </motion.article>
+                  ))}
+                </div>
+              </div>
+            </motion.section>
+          </MainLayout>
+        ) : (
+          <motion.section
+            key="landing"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="relative"
+          >
+            <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+              <motion.div
+                style={{ y: orbOneY }}
+                className="animate-breathe absolute -left-20 top-24 h-80 w-80 rounded-full bg-[#D4AF37]/18 blur-3xl"
+              />
+              <motion.div
+                style={{ y: orbTwoY }}
+                className="animate-breathe absolute -right-24 top-72 h-96 w-96 rounded-full bg-[#E9F0FF]/70 blur-3xl"
+              />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(255,255,255,0.95),rgba(250,249,246,0.75),rgba(245,245,245,0.9))]" />
             </div>
 
-            {/* --- Server Waking Overlay --- */}
-            <AnimatePresence>
-                {isServerWaking && (
-                    <motion.div 
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 1 }}
-                        className="fixed inset-0 z-100 flex flex-col items-center justify-center bg-white/90 backdrop-blur-md"
+            <nav className="fixed inset-x-0 top-0 z-50">
+              <div className="mx-auto mt-4 flex w-[94%] max-w-7xl items-center justify-between rounded-2xl border border-white/60 bg-white/55 px-5 py-3 backdrop-blur-xl md:px-8">
+                <Link href="/" className="font-[Cormorant_Garamond] text-3xl leading-none tracking-[0.06em]">
+                  Classic Furniture
+                </Link>
+
+                <div className="flex items-center gap-2 md:gap-3">
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <button className="rounded-full border border-[#2C2C2C]/20 px-4 py-2 text-xs tracking-[0.18em] transition hover:bg-white md:px-6">
+                        LOGIN
+                      </button>
+                    </DialogTrigger>
+                    <DialogContent className="w-full border-0 bg-transparent p-0 shadow-none sm:max-w-md">
+                      <VisuallyHidden>
+                        <DialogTitle>Login</DialogTitle>
+                      </VisuallyHidden>
+                      <div className="glass-strong overflow-hidden rounded-2xl p-8">
+                        <LoginForm />
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <button className="group relative overflow-hidden rounded-full bg-[#2C2C2C] px-4 py-2 text-xs tracking-[0.18em] text-white md:px-6">
+                        <span className="relative z-10">SIGN UP</span>
+                        <span className="animate-shimmer-sweep absolute inset-y-0 -left-[150%] w-[70%] bg-gradient-to-r from-transparent via-white/55 to-transparent" />
+                      </button>
+                    </DialogTrigger>
+                    <DialogContent className="w-full border-0 bg-transparent p-0 shadow-none sm:max-w-md">
+                      <VisuallyHidden>
+                        <DialogTitle>Register</DialogTitle>
+                      </VisuallyHidden>
+                      <div className="glass-strong overflow-hidden rounded-2xl p-8">
+                        <RegisterForm />
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+              </div>
+            </nav>
+
+            <section className="relative mx-auto flex min-h-screen w-[94%] max-w-7xl items-center pt-28 md:pt-24">
+              <div className="grid w-full gap-10 md:grid-cols-[1.1fr_0.9fr] md:items-center">
+                <motion.div style={{ y: heroY, opacity: heroOpacity }} className="space-y-6">
+                  <p className="inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/45 bg-white/60 px-4 py-1 text-xs tracking-[0.2em] text-[#2C2C2C]/75 backdrop-blur-sm">
+                    <Sparkles className="h-3.5 w-3.5 text-[#D4AF37]" />
+                    PREMIUM LIVING
+                  </p>
+
+                  <h1 className="font-[Cormorant_Garamond] text-[2.8rem] leading-[0.9] text-[#2C2C2C] md:text-[5.6rem]">
+                    Sculpted Furniture
+                    <span className="block italic text-[#D4AF37]">for Timeless Homes</span>
+                  </h1>
+
+                  <p className="max-w-xl text-base leading-relaxed text-[#2C2C2C]/70 md:text-lg">
+                    Discover glossy finishes, artisan details, and statement pieces designed to make every corner
+                    look cinematic and feel lived in.
+                  </p>
+
+                  <div className="flex flex-wrap items-center gap-3 pt-2">
+                    <Link
+                      href="/shop"
+                      className="group relative overflow-hidden rounded-full bg-[#2C2C2C] px-7 py-3 text-xs tracking-[0.22em] text-white"
                     >
-                        {/* Background Texture */}
-                        <div className="absolute inset-0 z-0 opacity-40">
-                             <Image
-                                src="https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&q=80"
-                                alt="Loading Texture"
-                                fill
-                                className="object-cover blur-xl grayscale opacity-20"
-                            />
-                        </div>
-                        <div className="relative z-10 flex flex-col items-center gap-6 p-8 bg-white/40 backdrop-blur-xl border border-neutral-200 rounded-2xl shadow-2xl">
-                             <Loader2 className="w-12 h-12 text-[#d4af37] animate-spin" />
-                             <div className="text-center space-y-2">
-                                <h3 className="text-xl font-light tracking-widest uppercase text-neutral-900">System Awakening</h3>
-                                <p className="text-sm text-neutral-500 max-w-xs font-mono">
-                                    Spinning up secure backend services...
-                                    <br />
-                                    This may take up to 30 seconds.
-                                </p>
-                             </div>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+                      <span className="relative z-10">EXPLORE COLLECTION</span>
+                      <span className="animate-shimmer-sweep absolute inset-y-0 -left-[140%] w-[55%] bg-gradient-to-r from-transparent via-white/50 to-transparent" />
+                    </Link>
 
-            {/* --- Fixed Cinematic Background (Ultra Sharp & Oily) --- */}
-            <div className="fixed inset-0 z-0 overflow-hidden h-screen bg-[#Fdfdfd]">
-                <motion.div 
-                    className="relative h-full w-full"
-                    style={{ 
-                        x: springX, 
-                        y: springY, 
-                        scale: bgScale, 
-                    }}
-                >
-                    <Image
-                        src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2000&auto=format&fit=crop" 
-                        alt="Astonishing Luxury Salon"
-                        fill
-                        priority
-                        className="object-cover object-center brightness-105 saturate-[1.1]" 
-                        quality={100}
-                    />
-
-                    {/* Gradient only at the very top/bottom edges, leaving the center CRYTSTAL CLEAR */}
-                    <div className="absolute inset-0 z-1 bg-linear-to-b from-white/10 via-transparent to-white/10" />
-                    
-                    {/* The "Oily" Shine Overlay - Subtle liquid sheen across the whole surface */}
-                    <motion.div 
-                        className="absolute inset-0 z-20 mix-blend-soft-light pointer-events-none opacity-30"
-                        style={{ background: spotGradient }}
-                    />
+                    <a
+                      href="#featured"
+                      className="rounded-full border border-[#2C2C2C]/20 bg-white/70 px-7 py-3 text-xs tracking-[0.22em] text-[#2C2C2C] backdrop-blur-sm transition hover:bg-white"
+                    >
+                      VIEW HIGHLIGHTS
+                    </a>
+                  </div>
                 </motion.div>
-                
-                {/* Micro-noise for texture, very faint */}
-                <div className="absolute inset-0 z-4 pointer-events-none opacity-[0.03] mix-blend-multiply bg-[#d4af37]" />
-            </div>
 
-            <AnimatePresence mode="wait">
-                {isAuthenticated ? (
-                    <MainLayout>
-                        <motion.div
-                            key="dashboard"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            className="min-h-screen bg-[#F9F9FB] p-8 md:p-12"
-                        >
-                            <div className="max-w-7xl mx-auto space-y-12">
-                                <header className="space-y-4 border-b border-black/5 pb-8">
-                                    <h1 className="text-4xl md:text-6xl font-light tracking-tight text-neutral-900">
-                                        The <span className="font-serif italic text-neutral-500">Collection</span>
-                                    </h1>
-                                    <p className="text-neutral-400 max-w-xl text-lg font-light">
-                                        Welcome back. Your curated selection of artisanal pieces awaits.
-                                    </p>
-                                </header>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.96, y: 30 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  transition={{ duration: 0.8 }}
+                  className="glass-strong group relative aspect-[4/5] overflow-hidden rounded-[2rem] border border-white/60 shadow-[0_35px_80px_rgba(0,0,0,0.12)]"
+                >
+                  <Image
+                    src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&q=80&w=1600"
+                    alt="Premium living room interior"
+                    fill
+                    priority
+                    className="object-cover transition duration-700 group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, 40vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-white/20" />
+                  <div className="glass absolute bottom-4 left-4 right-4 rounded-2xl p-4">
+                    <p className="text-xs tracking-[0.18em] text-[#2C2C2C]/60">LATEST CURATION</p>
+                    <p className="font-[Cormorant_Garamond] text-2xl">The Ivory Light Collection</p>
+                  </div>
+                </motion.div>
+              </div>
+            </section>
 
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                    {/* Dashboard Placeholders */}
-                                    {[1, 2, 3].map((_, i) => (
-                                        <motion.div 
-                                            key={i}
-                                            initial={{ opacity: 0, y: 20 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{ delay: i * 0.1 }}
-                                            className="group aspect-4/5 bg-white rounded-xl shadow-xs border border-neutral-100 relative overflow-hidden cursor-pointer"
-                                        >
-                                            <div className="absolute inset-0 bg-neutral-100/50 group-hover:bg-neutral-100 transition-colors" />
-                                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                                <span className="text-neutral-400 font-serif italic text-xl">View Piece</span>
-                                            </div>
-                                        </motion.div>
-                                    ))}
-                                </div>
-                            </div>
-                        </motion.div>
-                    </MainLayout>
-                ) : (
-                    <motion.section
-                        key="landing"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.5 }}
-                        className="relative z-10 w-full min-h-[200vh]"
-                    >
-                        {/* --- Floating Navbar --- */}
-                        <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-6 md:px-12 flex justify-between items-center text-neutral-900 pointer-events-none">
-                            <div className="flex items-center gap-2 pointer-events-auto">
-                                <span className="text-xl md:text-2xl font-bold tracking-[0.2em] font-serif italic uppercase">LuxeCraft</span>
-                            </div>
-                            
-                            <div className="flex items-center gap-6 md:gap-8 pointer-events-auto">
-                                <Dialog>
-                                    <DialogTrigger asChild>
-                                        <button className="relative group overflow-hidden rounded-full px-8 py-2.5 transition-all duration-300 hover:scale-105 active:scale-95">
-                                            {/* Base - Clear with hint of oil */}
-                                            <div className="absolute inset-0 bg-transparent group-hover:bg-white/50 transition-colors duration-500 rounded-full" />
-                                            
-                                            {/* Wet Surface Reflection - Top */}
-                                            <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                                            
-                                            <span className="relative z-10 text-xs md:text-sm font-medium tracking-widest uppercase text-neutral-500 group-hover:text-black transition-colors duration-300">
-                                                Login
-                                            </span>
-                                        </button>
-                                    </DialogTrigger>
-                                    <DialogContent className="sm:max-w-md w-full border-0 bg-transparent p-0 shadow-none">
-                                        <VisuallyHidden>
-                                            <DialogTitle>Login</DialogTitle>
-                                        </VisuallyHidden>
-                                        <div className="relative overflow-hidden rounded-2xl bg-white p-8 shadow-2xl">
-                                            <div className="relative z-10">
-                                                <LoginForm />
-                                            </div>
-                                        </div>
-                                    </DialogContent>
-                                </Dialog>
+            <section id="featured" className="mx-auto w-[94%] max-w-7xl py-16 md:py-24">
+              <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                className="mb-10 flex items-end justify-between gap-4"
+              >
+                <div>
+                  <p className="text-xs tracking-[0.22em] text-[#2C2C2C]/55">EDITOR PICKS</p>
+                  <h2 className="font-[Cormorant_Garamond] text-4xl md:text-6xl">Featured Masterpieces</h2>
+                </div>
+                <Link href="/shop" className="text-sm tracking-[0.15em] text-[#2C2C2C]/70 hover:text-[#2C2C2C]">
+                  SEE ALL →
+                </Link>
+              </motion.div>
 
-                                <Dialog>
-                                    <DialogTrigger asChild>
-                                        <button className="relative group overflow-hidden rounded-full px-8 py-2.5 transition-all duration-500 hover:scale-105 active:scale-95 shadow-[0_10px_20px_-5px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.2)]">
-                                            {/* Base - Liquid White */}
-                                            <div className="absolute inset-0 bg-white" />
-                                            
-                                            {/* Oily Iridescence - Subtle */}
-                                            <div className="absolute inset-0 bg-linear-to-tr from-transparent via-neutral-100/50 to-transparent opacity-50" />
-                                            
-                                            {/* Wet Highlight - Top Edge */}
-                                            <div className="absolute inset-x-0 top-0 h-[40%] bg-white/90 blur-sm" />
-                                            <div className="absolute inset-x-2 top-0.5 h-[2px] bg-white rounded-full opacity-80" />
+              <div className="grid gap-6 md:grid-cols-3">
+                {FEATURED_ITEMS.map((item, index) => (
+                  <motion.article
+                    key={item.id}
+                    initial={{ opacity: 0, y: 28 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.12 }}
+                    viewport={{ once: true, amount: 0.25 }}
+                    className="glass group relative overflow-hidden rounded-3xl border border-white/45"
+                  >
+                    <div className="relative aspect-[4/5] overflow-hidden">
+                      <Image
+                        src={item.image}
+                        alt={item.title}
+                        fill
+                        className="object-cover transition duration-700 group-hover:scale-105"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                    </div>
 
-                                            {/* Bottom depth/shadow for volume */}
-                                            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/5 to-transparent" />
-                                            
-                                            {/* Hover: Oil Sheen Animation */}
-                                            <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/80 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out z-20" />
+                    <div className="space-y-3 p-5">
+                      <p className="text-xs tracking-[0.2em] text-[#2C2C2C]/55">{item.category}</p>
+                      <h3 className="font-[Cormorant_Garamond] text-3xl leading-none">{item.title}</h3>
+                      <p className="text-sm leading-relaxed text-[#2C2C2C]/70">{item.description}</p>
+                    </div>
+                  </motion.article>
+                ))}
+              </div>
+            </section>
 
-                                            <span className="relative z-10 text-xs md:text-sm font-bold tracking-[0.2em] uppercase text-neutral-900 group-hover:text-black transition-colors">
-                                                Sign Up
-                                            </span>
-                                        </button>
-                                    </DialogTrigger>
-                                    <DialogContent className="sm:max-w-md w-full border-0 bg-transparent p-0 shadow-none">
-                                        <VisuallyHidden>
-                                            <DialogTitle>Register</DialogTitle>
-                                        </VisuallyHidden>
-                                        <div className="relative overflow-hidden rounded-2xl bg-white p-8 shadow-2xl">
-                                            <div className="relative z-10">
-                                                <RegisterForm />
-                                            </div>
-                                        </div>
-                                    </DialogContent>
-                                </Dialog>
-                            </div>
-                        </nav>
+            <section className="mx-auto w-[94%] max-w-7xl py-12 md:py-20">
+              <div className="grid gap-5 md:grid-cols-3">
+                {[
+                  {
+                    title: "Material Excellence",
+                    text: "Premium woods, resilient fabrics, and long-lasting finishes selected for everyday luxury.",
+                  },
+                  {
+                    title: "Crafted by Experts",
+                    text: "Every silhouette is refined by experienced makers with precision in every join and seam.",
+                  },
+                  {
+                    title: "White-Glove Support",
+                    text: "Personalized help from selection to delivery so your space comes together effortlessly.",
+                  },
+                ].map((point, index) => (
+                  <motion.article
+                    key={point.title}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    viewport={{ once: true, amount: 0.2 }}
+                    className="glass rounded-3xl border border-white/40 p-6"
+                  >
+                    <h3 className="mb-3 font-[Cormorant_Garamond] text-3xl">{point.title}</h3>
+                    <p className="text-sm leading-relaxed text-[#2C2C2C]/70">{point.text}</p>
+                  </motion.article>
+                ))}
+              </div>
+            </section>
 
-                        {/* --- Hero Section (Minimalist & Oily) --- */}
-                        <div className="relative h-screen w-full flex flex-col justify-start pt-32 px-12 md:px-24 pointer-events-none data-[cursor=text]:pointer-events-auto">
-                            {/* 
-                                STRATEGY: 
-                                - Text moved to TOP-LEFT to reveal the center/bottom image.
-                                - Realistic, Trustworthy Copy.
-                            */}
-                            
-                            <motion.div 
-                                style={{ opacity: heroOpacity, y: heroY }}
-                                className="z-20 text-left max-w-4xl space-y-2 pointer-events-auto mix-blend-multiply"
-                            >
-                                <h1 className="text-[4rem] md:text-[6rem] font-medium leading-[0.9] tracking-tight text-neutral-900 drop-shadow-sm select-none">
-                                    <span className="block text-[#1a1a1a]">Authentic</span>
-                                    <span className="block text-neutral-600 font-light italic font-serif">Living</span>
-                                </h1>
-                                
-                                <div className="h-1 w-16 bg-neutral-900 mt-6 mb-8" />
-                                
-                                <p className="text-xl md:text-2xl font-light text-neutral-800 max-w-lg tracking-wide leading-relaxed">
-                                    Furniture grounded in heritage. <br/>
-                                    <span className="text-neutral-500 text-lg">Designed for real life, built to last generations.</span>
-                                </p>
-                            </motion.div>
+            <section className="mx-auto w-[94%] max-w-7xl py-16 md:py-24">
+              <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                className="mb-8"
+              >
+                <p className="text-xs tracking-[0.22em] text-[#2C2C2C]/55">TRUSTED BY CLIENTS</p>
+                <h2 className="font-[Cormorant_Garamond] text-4xl md:text-6xl">What People Are Saying</h2>
+              </motion.div>
 
-                            {/* NO BOTTOM TEXTS. PURE IMAGE VISIBILITY. */}
-                        </div>
+              <div className="grid gap-5 md:grid-cols-3">
+                {TESTIMONIALS.map((item, index) => (
+                  <motion.blockquote
+                    key={item.id}
+                    initial={{ opacity: 0, y: 24 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.12 }}
+                    viewport={{ once: true, amount: 0.2 }}
+                    className="glass rounded-3xl border border-white/45 p-6"
+                  >
+                    <p className="mb-5 text-sm leading-relaxed text-[#2C2C2C]/80">“{item.quote}”</p>
+                    <footer>
+                      <p className="font-medium text-[#2C2C2C]">{item.name}</p>
+                      <p className="text-xs tracking-[0.12em] text-[#2C2C2C]/55">{item.role}</p>
+                    </footer>
+                  </motion.blockquote>
+                ))}
+              </div>
+            </section>
 
-                         {/* --- The Three Cards (Unified Float - High Visibility - 3D Tilt) --- */}
-                         <div className="relative z-20 min-h-[50vh] flex flex-col items-center justify-center px-6 md:px-12 py-24 overflow-visible bg-linear-to-b from-transparent to-white/90">
-                            <motion.div 
-                                style={{ y: cardsSectionY }}
-                                className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 max-w-7xl w-full perspective-[1000px]"
-                            >
-                                {FEATURED_ITEMS.map((item, index) => {
-                                    return (
-                                        <motion.div
-                                            key={item.id}
-                                            // CREATIVE MOTION: Rotates slightly based on scroll entry + Staggered float
-                                            initial={{ opacity: 0, scale: 0.8, rotateX: 10 }}
-                                            whileInView={{ opacity: 1, scale: 1, rotateX: 0 }}
-                                            transition={{ 
-                                                duration: 1.2, 
-                                                delay: index * 0.15, // Staggered entry
-                                                type: "spring", 
-                                                stiffness: 50 
-                                            }}
-                                            viewport={{ once: true, margin: "-50px" }}
-                                            
-                                            // HOVER: Lifts up and shines
-                                            whileHover={{ y: -20, rotateY: index === 0 ? 5 : index === 2 ? -5 : 0 }}
-                                            
-                                            className="group relative aspect-3/4 w-full bg-white rounded-none overflow-hidden hover:z-30 shadow-[0_15px_30px_rgba(0,0,0,0.08)] hover:shadow-[0_30px_60px_rgba(0,0,0,0.15)] transition-shadow duration-500 ease-out border border-neutral-100"
-                                        >
-                                            {/* Oily Shine Effect on Hover - Subtle liquid sweep */}
-                                            <div className="absolute inset-0 z-20 opacity-0 group-hover:opacity-40 transition-opacity duration-700 pointer-events-none bg-[linear-gradient(120deg,transparent,rgba(255,255,255,0.6),transparent)] -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                                            
-                                            <Image
-                                                src={item.image}
-                                                alt={item.title}
-                                                fill
-                                                priority={index === 0}
-                                                sizes="(max-width: 768px) 100vw, 33vw"
-                                                // High saturation, NO BLUR. Clean and crisp.
-                                                className="object-cover transition-transform duration-1000 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-105 saturate-[1.1]"
-                                            />
-                                            
-                                            {/* Trustworthy Text Overlay - Clean and functional */}
-                                            <div className="absolute bottom-0 left-0 p-6 z-10 w-full bg-linear-to-t from-black/80 via-black/40 to-transparent">
-                                                <h3 className="text-2xl font-medium tracking-tight text-white drop-shadow-md">
-                                                    {item.title}
-                                                </h3>
-                                                <p className="text-white/80 text-xs font-light mt-1 max-w-[90%] line-clamp-2">
-                                                    Designed with integrity. {item.subtitle.toLowerCase()}.
-                                                </p>
-                                                
-                                                {/* Hidden CTA that slides up */}
-                                                <div className="h-0 overflow-hidden group-hover:h-8 transition-all duration-300 mt-2">
-                                                    <span className="text-[10px] uppercase tracking-widest text-neutral-200 border-b border-neutral-400 pb-0.5">View Details</span>
-                                                </div>
-                                            </div>
-                                        </motion.div>
-                                    );
-                                })}
-                            </motion.div>
-                         </div>
+            <section className="mx-auto w-[94%] max-w-7xl pb-20 pt-4 md:pb-28">
+              <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                className="glass-strong relative overflow-hidden rounded-[2rem] border border-white/65 p-8 md:p-12"
+              >
+                <div className="animate-oil-sheen absolute inset-0 bg-[linear-gradient(110deg,rgba(255,255,255,0),rgba(255,255,255,0.22),rgba(212,175,55,0.12),rgba(255,255,255,0))]" />
+                <div className="relative z-10 grid gap-8 md:grid-cols-[1fr_auto] md:items-end">
+                  <div className="space-y-4">
+                    <p className="text-xs tracking-[0.22em] text-[#2C2C2C]/55">ABOUT CLASSIC FURNITURE</p>
+                    <h2 className="font-[Cormorant_Garamond] text-4xl leading-none md:text-6xl">
+                      Designed to Shine.
+                      <span className="block italic text-[#D4AF37]">Built to Endure.</span>
+                    </h2>
+                    <p className="max-w-2xl text-sm leading-relaxed text-[#2C2C2C]/72 md:text-base">
+                      We blend contemporary sensibility with timeless craftsmanship. Every collection is curated to
+                      create beautiful spaces that feel elevated, warm, and unmistakably yours.
+                    </p>
+                  </div>
 
-                        {/* --- Footer (Replaces Auth & Manifesto) --- */}
-                        <div className="relative z-50 mt-[-10vh]">
-                            <Footer />
-                        </div>
-                    </motion.section>
-                )}
-            </AnimatePresence>
-        </main>
-    );
+                  <Link
+                    href="/shop"
+                    className="rounded-full bg-[#2C2C2C] px-8 py-3 text-xs tracking-[0.22em] text-white transition hover:opacity-90"
+                  >
+                    START SHOPPING
+                  </Link>
+                </div>
+              </motion.div>
+            </section>
+
+            <Footer />
+          </motion.section>
+        )}
+      </AnimatePresence>
+    </main>
+  );
 }
-
