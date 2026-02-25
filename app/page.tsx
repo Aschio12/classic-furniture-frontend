@@ -70,10 +70,17 @@ export default function Home() {
   const { isAuthenticated, _hasHydrated } = useAuthStore();
   const { isServerWaking } = useServerStore();
   const [mounted, setMounted] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setMounted(true), 0);
     return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const { scrollY } = useScroll();
@@ -171,16 +178,66 @@ export default function Home() {
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(255,255,255,0.95),rgba(250,249,246,0.75),rgba(245,245,245,0.9))]" />
             </div>
 
-            <nav className="fixed inset-x-0 top-0 z-50">
-              <div className="mx-auto mt-4 flex w-[94%] max-w-7xl items-center justify-between rounded-2xl border border-white/60 bg-white/55 px-5 py-3 backdrop-blur-xl md:px-8">
-                <Link href="/" className="font-[Cormorant_Garamond] text-3xl leading-none tracking-[0.06em]">
-                  Classic Furniture
+            <motion.nav
+              className="fixed inset-x-0 top-0 z-50"
+              initial={{ y: -100, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <div
+                className={`mx-auto mt-4 flex w-[94%] max-w-7xl items-center justify-between rounded-2xl border px-5 py-3 transition-all duration-700 ease-out md:px-8 ${
+                  scrolled
+                    ? "border-white/70 bg-white/80 shadow-[0_8px_40px_rgba(0,0,0,0.08),0_1px_3px_rgba(212,175,55,0.1)] backdrop-blur-2xl"
+                    : "border-white/30 bg-white/20 backdrop-blur-sm"
+                }`}
+              >
+                {/* Brand */}
+                <Link href="/" className="group flex items-center gap-2.5">
+                  <div className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-[#2C2C2C] transition-all duration-300 group-hover:bg-[#D4AF37]">
+                    <span className="font-[Cormorant_Garamond] text-lg font-bold text-white">CF</span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="font-[Cormorant_Garamond] text-xl leading-none tracking-[0.04em] md:text-2xl">
+                      Classic Furniture
+                    </span>
+                    <span
+                      className={`text-[9px] tracking-[0.3em] text-[#D4AF37] transition-opacity duration-500 ${
+                        scrolled ? "opacity-100" : "opacity-0"
+                      }`}
+                    >
+                      SINCE 2024
+                    </span>
+                  </div>
                 </Link>
 
+                {/* Center nav links — desktop only */}
+                <div className="hidden items-center gap-8 lg:flex">
+                  {["Collections", "Craftsmanship", "Stories"].map((item) => (
+                    <button
+                      key={item}
+                      className="group relative text-[11px] tracking-[0.18em] text-[#2C2C2C]/65 transition-colors duration-300 hover:text-[#2C2C2C]"
+                      onClick={() => {
+                        const sectionMap: Record<string, string> = {
+                          Collections: "featured",
+                          Craftsmanship: "why-us",
+                          Stories: "testimonials",
+                        };
+                        document
+                          .getElementById(sectionMap[item])
+                          ?.scrollIntoView({ behavior: "smooth" });
+                      }}
+                    >
+                      {item.toUpperCase()}
+                      <span className="absolute -bottom-1 left-0 h-px w-0 bg-[#D4AF37] transition-all duration-300 group-hover:w-full" />
+                    </button>
+                  ))}
+                </div>
+
+                {/* Auth Actions */}
                 <div className="flex items-center gap-2 md:gap-3">
                   <Dialog>
                     <DialogTrigger asChild>
-                      <button className="rounded-full border border-[#2C2C2C]/20 px-4 py-2 text-xs tracking-[0.18em] transition hover:bg-white md:px-6">
+                      <button className="relative overflow-hidden rounded-full border border-[#2C2C2C]/15 px-4 py-2 text-[11px] tracking-[0.18em] text-[#2C2C2C]/80 transition-all duration-300 hover:border-[#D4AF37]/40 hover:text-[#2C2C2C] md:px-6">
                         LOGIN
                       </button>
                     </DialogTrigger>
@@ -196,9 +253,9 @@ export default function Home() {
 
                   <Dialog>
                     <DialogTrigger asChild>
-                      <button className="group relative overflow-hidden rounded-full bg-[#2C2C2C] px-4 py-2 text-xs tracking-[0.18em] text-white md:px-6">
+                      <button className="group relative overflow-hidden rounded-full bg-linear-to-r from-[#D4AF37] to-[#C5A028] px-4 py-2 text-[11px] tracking-[0.18em] text-white shadow-[0_4px_20px_rgba(212,175,55,0.3)] transition-all duration-300 hover:shadow-[0_6px_30px_rgba(212,175,55,0.45)] md:px-6">
                         <span className="relative z-10">SIGN UP</span>
-                        <span className="animate-shimmer-sweep absolute inset-y-0 -left-[150%] w-[70%] bg-linear-to-r from-transparent via-white/55 to-transparent" />
+                        <span className="animate-shimmer-sweep absolute inset-y-0 -left-[150%] w-[70%] bg-linear-to-r from-transparent via-white/40 to-transparent" />
                       </button>
                     </DialogTrigger>
                     <DialogContent className="w-full border-0 bg-transparent p-0 shadow-none sm:max-w-md">
@@ -212,7 +269,18 @@ export default function Home() {
                   </Dialog>
                 </div>
               </div>
-            </nav>
+
+              {/* Gold accent line on scroll */}
+              <motion.div
+                className="mx-auto mt-1 h-px w-[90%] max-w-6xl bg-linear-to-r from-transparent via-[#D4AF37]/40 to-transparent"
+                initial={{ scaleX: 0, opacity: 0 }}
+                animate={{
+                  scaleX: scrolled ? 1 : 0,
+                  opacity: scrolled ? 1 : 0,
+                }}
+                transition={{ duration: 0.6 }}
+              />
+            </motion.nav>
 
             {/* ═══════════════ HERO — FULL-WIDTH IMMERSIVE ═══════════════ */}
             <section className="relative min-h-screen w-full overflow-hidden">
@@ -440,7 +508,7 @@ export default function Home() {
             </section>
 
             {/* ═══════════════ WHY CHOOSE US / VALUE PROPS ═══════════════ */}
-            <section className="relative mx-auto w-[94%] max-w-7xl py-20 md:py-28">
+            <section id="why-us" className="relative mx-auto w-[94%] max-w-7xl py-20 md:py-28">
               {/* Decorative background orb */}
               <div className="animate-breathe pointer-events-none absolute left-1/2 top-1/2 -z-10 h-125 w-125 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#D4AF37]/8 blur-[100px]" />
 
@@ -522,7 +590,7 @@ export default function Home() {
             </section>
 
             {/* ═══════════════ TESTIMONIALS ═══════════════ */}
-            <section className="relative mx-auto w-[94%] max-w-7xl py-20 md:py-28">
+            <section id="testimonials" className="relative mx-auto w-[94%] max-w-7xl py-20 md:py-28">
               {/* Background image strip */}
               <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden rounded-[2.5rem]">
                 <Image
