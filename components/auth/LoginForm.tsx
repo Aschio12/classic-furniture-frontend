@@ -65,8 +65,8 @@ export default function LoginForm() {
     <>
       {/* Shining Progress Bar (Authentication State) */}
       {isSubmitting && (
-        <div className="fixed top-0 left-0 z-100 h-1 w-full overflow-hidden bg-transparent">
-             <div className="h-full w-full animate-[shine_1.5s_infinite] bg-linear-to-r from-transparent via-white/80 to-transparent" />
+        <div className="absolute inset-x-0 top-0 z-50 h-1 overflow-hidden bg-transparent">
+             <div className="h-full w-full animate-[shine_1.5s_infinite] bg-linear-to-r from-transparent via-[#D4AF37]/80 to-transparent" />
         </div>
       )}
 
