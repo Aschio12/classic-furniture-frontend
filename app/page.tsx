@@ -383,24 +383,28 @@ export default function Home() {
                   transition={{ duration: 0.6, delay: 0.6 }}
                   className="mt-8 flex w-full max-w-sm flex-col items-center justify-center gap-3 sm:w-auto sm:max-w-none sm:flex-row sm:gap-4"
                 >
-                  {/* Primary CTA — glossy pill */}
+                  {/* Primary CTA — glossy pill with juicy glow */}
                   <Link
                     href="/shop"
-                    className="group relative w-full overflow-hidden rounded-full border border-[#D4AF37]/60 bg-[#D4AF37] px-6 py-3 text-center text-[11px] font-semibold tracking-[0.2em] text-white shadow-[0_8px_30px_rgba(212,175,55,0.35)] transition-transform duration-300 hover:scale-105 hover:shadow-[0_12px_40px_rgba(212,175,55,0.45)] sm:w-auto sm:px-8 sm:py-3.5 sm:text-xs sm:tracking-[0.24em]"
+                    className="group relative w-full overflow-hidden rounded-full border border-[#D4AF37]/70 bg-linear-to-br from-[#D4AF37] via-[#C5A028] to-[#D4AF37] px-6 py-3 text-center text-[11px] font-semibold tracking-[0.2em] text-white shadow-[0_8px_32px_rgba(212,175,55,0.4),0_0_20px_rgba(212,175,55,0.2),inset_0_1px_0_rgba(255,255,255,0.25)] transition-all duration-300 hover:scale-105 hover:shadow-[0_12px_48px_rgba(212,175,55,0.55),0_0_30px_rgba(212,175,55,0.3)] sm:w-auto sm:px-8 sm:py-3.5 sm:text-xs sm:tracking-[0.24em]"
                   >
-                    <span className="relative z-10">EXPLORE COLLECTION</span>
-                    {/* Shimmer sweep on hover */}
-                    <span className="absolute inset-y-0 -left-[150%] w-[70%] bg-linear-to-r from-transparent via-white/50 to-transparent transition-transform duration-700 group-hover:translate-x-[450%]" />
-                    {/* Wet top highlight */}
-                    <span className="absolute inset-x-2 top-0.5 h-0.5 rounded-full bg-white/50" />
+                    <span className="relative z-10 drop-shadow-[0_1px_2px_rgba(0,0,0,0.2)]">EXPLORE COLLECTION</span>
+                    {/* Oil-slick shimmer sweep on hover */}
+                    <span className="absolute inset-y-0 -left-[150%] w-[80%] bg-linear-to-r from-transparent via-white/60 to-transparent transition-transform duration-700 group-hover:translate-x-[420%]" />
+                    {/* Wet top highlight — thicker */}
+                    <span className="absolute inset-x-3 top-0.5 h-0.75 rounded-full bg-linear-to-r from-transparent via-white/50 to-transparent" />
+                    {/* Bottom reflection */}
+                    <span className="absolute inset-x-4 bottom-1 h-px rounded-full bg-linear-to-r from-transparent via-white/20 to-transparent" />
                   </Link>
 
-                  {/* Secondary CTA — glass pill */}
+                  {/* Secondary CTA — oily glass pill */}
                   <a
                     href="#featured"
-                    className="w-full rounded-full border border-white/40 bg-white/15 px-6 py-3 text-center text-[11px] tracking-[0.18em] text-white backdrop-blur-md transition-all duration-300 hover:bg-white/30 hover:shadow-[0_8px_24px_rgba(255,255,255,0.12)] sm:w-auto sm:px-8 sm:py-3.5 sm:text-xs sm:tracking-[0.22em]"
+                    className="group relative w-full overflow-hidden rounded-full border border-white/50 bg-white/20 px-6 py-3 text-center text-[11px] tracking-[0.18em] text-white backdrop-blur-xl shadow-[0_4px_24px_rgba(255,255,255,0.06),inset_0_1px_0_rgba(255,255,255,0.3)] transition-all duration-300 hover:bg-white/35 hover:shadow-[0_8px_32px_rgba(255,255,255,0.15)] sm:w-auto sm:px-8 sm:py-3.5 sm:text-xs sm:tracking-[0.22em]"
                   >
-                    VIEW HIGHLIGHTS
+                    <span className="relative z-10">VIEW HIGHLIGHTS</span>
+                    {/* Subtle shimmer on hover */}
+                    <span className="absolute inset-y-0 -left-[150%] w-[70%] bg-linear-to-r from-transparent via-white/30 to-transparent transition-transform duration-600 group-hover:translate-x-[450%]" />
                   </a>
                 </motion.div>
 
