@@ -245,7 +245,7 @@ export default function Home() {
                       <VisuallyHidden>
                         <DialogTitle>Login</DialogTitle>
                       </VisuallyHidden>
-                      <div className="glass-strong overflow-hidden rounded-2xl p-8">
+                      <div className="glass-strong relative overflow-hidden rounded-2xl p-8 shadow-[0_30px_80px_rgba(0,0,0,0.12),0_0_0_1px_rgba(255,255,255,0.2)]">
                         <LoginForm />
                       </div>
                     </DialogContent>
@@ -262,7 +262,7 @@ export default function Home() {
                       <VisuallyHidden>
                         <DialogTitle>Register</DialogTitle>
                       </VisuallyHidden>
-                      <div className="glass-strong overflow-hidden rounded-2xl p-8">
+                      <div className="glass-strong relative overflow-hidden rounded-2xl p-8 shadow-[0_30px_80px_rgba(0,0,0,0.12),0_0_0_1px_rgba(255,255,255,0.2)]">
                         <RegisterForm />
                       </div>
                     </DialogContent>
