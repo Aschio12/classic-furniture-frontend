@@ -52,15 +52,26 @@ export const useAuthStore = create<AuthState>()(
         try {
           const response = await apiClient.post("/auth/login", payload);
           const token = response.data?.token ?? null;
-          const role = response.data?.role ?? "user";
-          
+          const userFromServer = response.data?.user ?? null;
+          const role = response.data?.role ?? userFromServer?.role ?? "user";
+
           if (token) {
+              const userObj = userFromServer ?? {
+                id: userFromServer?.id ?? userFromServer?._id ?? "temp-id",
+                name: userFromServer?.name ?? payload.email.split('@')[0] ?? "User",
+                email: userFromServer?.email ?? payload.email,
+                role,
+              };
+
               set({ 
                   token, 
-                  user: { id: "temp-id", name: "User", email: payload.email, role }, 
+                  user: userObj, 
                   isAuthenticated: true,
                   error: null
               });
+          } else {
+            set({ error: "Login failed", isAuthenticated: false });
+            throw new Error("Login failed");
           }
         } catch (err) {
           const axiosError = err as AxiosError<{ message?: string }>;
