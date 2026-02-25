@@ -38,7 +38,7 @@ const FEATURED_ITEMS = [
     category: "Dining",
     description: "Hand-finished surfaces and sculpted lines that elevate every meal into an experience.",
     image:
-      "https://images.unsplash.com/photo-1616594039964-3d6d1efb3f8f?auto=format&fit=crop&q=80&w=1400",
+      "https://images.unsplash.com/photo-1617806118233-18e1de247200?auto=format&fit=crop&q=80&w=1400",
   },
 ];
 
@@ -245,7 +245,7 @@ export default function Home() {
                       <VisuallyHidden>
                         <DialogTitle>Login</DialogTitle>
                       </VisuallyHidden>
-                      <div className="glass-strong relative overflow-hidden rounded-2xl p-8 shadow-[0_30px_80px_rgba(0,0,0,0.12),0_0_0_1px_rgba(255,255,255,0.2)]">
+                      <div className="glass-oily oil-slick-animated relative overflow-hidden rounded-2xl p-8 shadow-[0_30px_80px_rgba(0,0,0,0.12),0_0_0_1px_rgba(255,255,255,0.2)]">
                         <LoginForm />
                       </div>
                     </DialogContent>
@@ -262,7 +262,7 @@ export default function Home() {
                       <VisuallyHidden>
                         <DialogTitle>Register</DialogTitle>
                       </VisuallyHidden>
-                      <div className="glass-strong relative overflow-hidden rounded-2xl p-8 shadow-[0_30px_80px_rgba(0,0,0,0.12),0_0_0_1px_rgba(255,255,255,0.2)]">
+                      <div className="glass-oily oil-slick-animated relative overflow-hidden rounded-2xl p-8 shadow-[0_30px_80px_rgba(0,0,0,0.12),0_0_0_1px_rgba(255,255,255,0.2)]">
                         <RegisterForm />
                       </div>
                     </DialogContent>
@@ -295,25 +295,46 @@ export default function Home() {
                   fill
                   priority
                   quality={90}
-                  className="object-cover object-center saturate-[1.05]"
+                  className="object-cover object-center saturate-[1.08]"
                   sizes="100vw"
                 />
               </motion.div>
 
               {/* Soft white / sage overlay (15-20% opacity) */}
-              <div className="absolute inset-0 bg-[#FAF9F6]/18" />
+              <div className="absolute inset-0 bg-[#FAF9F6]/15" />
 
               {/* Vignette — subtle darkening at edges */}
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(0,0,0,0.25)_100%)]" />
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(0,0,0,0.35)_100%)]" />
 
-              {/* Glossy light-catch overlay — moves with oil-sheen animation */}
-              <div className="animate-oil-sheen absolute inset-0 bg-[linear-gradient(115deg,transparent_20%,rgba(255,255,255,0.22)_40%,rgba(212,175,55,0.08)_50%,transparent_70%)] pointer-events-none" />
+              {/* Primary prismatic oil sweep — dramatic rainbow effect */}
+              <div className="animate-hero-prismatic absolute inset-0 bg-[linear-gradient(125deg,transparent_0%,rgba(255,220,180,0.12)_15%,rgba(212,175,55,0.15)_25%,rgba(180,200,255,0.08)_40%,rgba(220,180,240,0.06)_55%,rgba(212,175,55,0.1)_70%,transparent_100%)] pointer-events-none" />
+
+              {/* Secondary oil-sheen sweep — moving highlight */}
+              <div className="animate-oil-sheen absolute inset-0 bg-[linear-gradient(115deg,transparent_20%,rgba(255,255,255,0.28)_38%,rgba(212,175,55,0.12)_48%,rgba(255,255,255,0.15)_58%,transparent_75%)] pointer-events-none" />
+
+              {/* Floating liquid orbs — creates depth and movement */}
+              <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                {/* Large gold orb — top left */}
+                <div className="animate-liquid-float absolute -left-20 top-1/4 h-96 w-96 rounded-full bg-[radial-gradient(circle,rgba(212,175,55,0.15)_0%,transparent_70%)] blur-3xl" />
+                
+                {/* Blue-ish orb — top right */}
+                <div className="animate-liquid-float-delayed absolute -right-32 top-1/3 h-80 w-80 rounded-full bg-[radial-gradient(circle,rgba(180,200,255,0.12)_0%,transparent_70%)] blur-3xl" />
+                
+                {/* Warm orb — center */}
+                <div className="animate-liquid-float-slow absolute left-1/2 top-1/2 h-120 w-120 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,220,180,0.1)_0%,transparent_60%)] blur-3xl" />
+                
+                {/* Small accent orb — bottom */}
+                <div className="animate-liquid-float absolute bottom-1/4 left-1/3 h-64 w-64 rounded-full bg-[radial-gradient(circle,rgba(212,175,55,0.12)_0%,transparent_70%)] blur-2xl" />
+              </div>
+
+              {/* Wet highlight line — horizontal accent */}
+              <div className="absolute left-0 right-0 top-1/3 h-px bg-linear-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
 
               {/* Subtle noise grain for texture */}
-              <div className="absolute inset-0 opacity-[0.03] mix-blend-multiply bg-[#D4AF37] pointer-events-none" />
+              <div className="absolute inset-0 opacity-[0.025] mix-blend-overlay bg-[url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E')] pointer-events-none" />
 
               {/* Bottom fade into page background */}
-              <div className="absolute inset-x-0 bottom-0 h-40 bg-linear-to-t from-[#FAF9F6] to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 h-48 bg-linear-to-t from-[#FAF9F6] via-[#FAF9F6]/80 to-transparent" />
 
               {/* Hero content — centered */}
               <motion.div
@@ -322,12 +343,12 @@ export default function Home() {
               >
                 {/* Badge */}
                 <motion.p
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.1 }}
-                  className="mb-6 inline-flex items-center gap-1.5 rounded-full border border-white/50 bg-white/40 px-3 py-1.5 text-[9px] tracking-[0.18em] text-white backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.06)] sm:gap-2 sm:px-5 sm:text-[10px] sm:tracking-[0.28em]"
+                  initial={{ opacity: 0, y: 16, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 0.6, delay: 0.1, type: "spring", stiffness: 100 }}
+                  className="mb-6 inline-flex items-center gap-1.5 rounded-full border border-white/60 bg-white/45 px-3 py-1.5 text-[9px] tracking-[0.18em] text-white backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.1),inset_0_1px_0_rgba(255,255,255,0.4)] sm:gap-2 sm:px-5 sm:text-[10px] sm:tracking-[0.28em]"
                 >
-                  <Sparkles className="h-3 w-3 text-[#D4AF37] sm:h-3.5 sm:w-3.5" />
+                  <Sparkles className="h-3 w-3 text-[#D4AF37] drop-shadow-[0_0_6px_rgba(212,175,55,0.5)] sm:h-3.5 sm:w-3.5" />
                   PREMIUM HANDCRAFTED FURNITURE
                 </motion.p>
 
@@ -336,10 +357,10 @@ export default function Home() {
                   initial={{ opacity: 0, y: 24 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.7, delay: 0.25 }}
-                  className="max-w-4xl font-[Cormorant_Garamond] text-[2rem] leading-[0.95] text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.25)] sm:text-[2.6rem] sm:leading-[0.92] md:text-[5.8rem]"
+                  className="max-w-4xl font-[Cormorant_Garamond] text-[2rem] leading-[0.95] text-white drop-shadow-[0_4px_20px_rgba(0,0,0,0.3)] sm:text-[2.6rem] sm:leading-[0.92] md:text-[5.8rem]"
                 >
                   Timeless Elegance
-                  <span className="block italic text-[#D4AF37] drop-shadow-[0_2px_8px_rgba(212,175,55,0.35)]">
+                  <span className="animate-hero-glow block italic text-[#D4AF37] drop-shadow-[0_4px_16px_rgba(212,175,55,0.5)]">
                     Meets Modern Luxury
                   </span>
                 </motion.h1>
@@ -349,7 +370,7 @@ export default function Home() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.45 }}
-                  className="mt-5 max-w-2xl text-base leading-relaxed text-white/85 drop-shadow-[0_1px_6px_rgba(0,0,0,0.2)] md:text-lg"
+                  className="mt-5 max-w-2xl text-base leading-relaxed text-white/90 drop-shadow-[0_2px_10px_rgba(0,0,0,0.25)] md:text-lg"
                 >
                   Discover exquisite collections where classic craftsmanship, glossy finishes, and
                   artisan detailing transform every room into a work of art.
@@ -403,17 +424,17 @@ export default function Home() {
             </section>
 
             {/* ═══════════════ FEATURED PRODUCTS SHOWCASE ═══════════════ */}
-            <section id="featured" className="relative mx-auto w-[94%] max-w-7xl py-20 md:py-32">
+            <section id="featured" className="relative mx-auto w-[94%] max-w-7xl py-16 md:py-32">
               {/* Section header */}
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7 }}
                 viewport={{ once: true, amount: 0.3 }}
-                className="mb-14 flex flex-col items-center text-center md:mb-16"
+                className="mb-10 flex flex-col items-center text-center md:mb-16"
               >
                 <p className="mb-3 text-[10px] tracking-[0.32em] text-[#D4AF37]">EDITOR&apos;S PICKS</p>
-                <h2 className="font-[Cormorant_Garamond] text-4xl leading-[1.05] md:text-7xl">
+                <h2 className="font-[Cormorant_Garamond] text-3xl leading-[1.05] sm:text-4xl md:text-7xl">
                   Featured Masterpieces
                 </h2>
                 <p className="mt-4 max-w-lg text-sm leading-relaxed text-[#2C2C2C]/60 md:text-base">
@@ -424,7 +445,7 @@ export default function Home() {
               </motion.div>
 
               {/* Cards grid */}
-              <div className="grid gap-7 md:grid-cols-3">
+              <div className="grid gap-5 sm:gap-7 md:grid-cols-3">
                 {FEATURED_ITEMS.map((item, index) => (
                   <motion.article
                     key={item.id}
@@ -433,7 +454,7 @@ export default function Home() {
                     transition={{ duration: 0.65, delay: index * 0.15, type: "spring", stiffness: 80 }}
                     viewport={{ once: true, amount: 0.2 }}
                     whileHover={{ y: -10 }}
-                    className="glass group relative overflow-hidden rounded-[1.6rem] border border-white/50 shadow-[0_15px_45px_rgba(0,0,0,0.07)] transition-shadow duration-500 hover:shadow-[0_25px_65px_rgba(0,0,0,0.13)]"
+                    className="glass oil-slick wet-shine group relative overflow-hidden rounded-2xl border border-white/50 shadow-[0_15px_45px_rgba(0,0,0,0.07)] transition-shadow duration-500 hover:shadow-[0_25px_65px_rgba(0,0,0,0.13)] sm:rounded-[1.6rem]"
                   >
                     {/* Image area */}
                     <div className="relative aspect-4/5 overflow-hidden">
@@ -459,15 +480,15 @@ export default function Home() {
                       </span>
 
                       {/* Bottom overlay text on image */}
-                      <div className="absolute inset-x-0 bottom-0 z-10 p-5">
-                        <h3 className="font-[Cormorant_Garamond] text-3xl leading-none text-white drop-shadow-[0_1px_6px_rgba(0,0,0,0.3)] md:text-[2rem]">
+                      <div className="absolute inset-x-0 bottom-0 z-10 p-4 sm:p-5">
+                        <h3 className="font-[Cormorant_Garamond] text-2xl leading-none text-white drop-shadow-[0_1px_6px_rgba(0,0,0,0.3)] sm:text-3xl md:text-[2rem]">
                           {item.title}
                         </h3>
                       </div>
                     </div>
 
                     {/* Card body */}
-                    <div className="relative space-y-3 p-5">
+                    <div className="relative space-y-3 p-4 sm:p-5">
                       {/* Wet line separator */}
                       <div className="wet-line w-full" />
 
@@ -508,7 +529,7 @@ export default function Home() {
             </section>
 
             {/* ═══════════════ WHY CHOOSE US / VALUE PROPS ═══════════════ */}
-            <section id="why-us" className="relative mx-auto w-[94%] max-w-7xl py-20 md:py-28">
+            <section id="why-us" className="relative mx-auto w-[94%] max-w-7xl py-16 md:py-28">
               {/* Decorative background orb */}
               <div className="animate-breathe pointer-events-none absolute left-1/2 top-1/2 -z-10 h-125 w-125 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#D4AF37]/8 blur-[100px]" />
 
@@ -518,10 +539,10 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7 }}
                 viewport={{ once: true, amount: 0.3 }}
-                className="mb-14 flex flex-col items-center text-center md:mb-16"
+                className="mb-10 flex flex-col items-center text-center md:mb-16"
               >
                 <p className="mb-3 text-[10px] tracking-[0.32em] text-[#D4AF37]">WHY CLASSIC FURNITURE</p>
-                <h2 className="font-[Cormorant_Garamond] text-4xl leading-[1.05] md:text-7xl">
+                <h2 className="font-[Cormorant_Garamond] text-3xl leading-[1.05] sm:text-4xl md:text-7xl">
                   Built Different. <span className="italic text-[#D4AF37]">Felt Instantly.</span>
                 </h2>
                 <p className="mt-4 max-w-lg text-sm leading-relaxed text-[#2C2C2C]/60 md:text-base">
@@ -531,7 +552,7 @@ export default function Home() {
               </motion.div>
 
               {/* Cards */}
-              <div className="grid gap-6 md:grid-cols-3">
+              <div className="grid gap-5 sm:gap-6 md:grid-cols-3">
                 {[
                   {
                     icon: TreePine,
@@ -559,7 +580,7 @@ export default function Home() {
                     transition={{ duration: 0.6, delay: index * 0.14 }}
                     viewport={{ once: true, amount: 0.2 }}
                     whileHover={{ y: -6 }}
-                    className="glass group relative overflow-hidden rounded-[1.6rem] border border-white/50 p-7 shadow-[0_12px_40px_rgba(0,0,0,0.05)] transition-shadow duration-500 hover:shadow-[0_20px_55px_rgba(0,0,0,0.1)] md:p-8"
+                    className="glass-oily oil-slick wet-shine group relative overflow-hidden rounded-2xl border border-white/50 p-5 shadow-[0_12px_40px_rgba(0,0,0,0.05)] transition-shadow duration-500 hover:shadow-[0_20px_55px_rgba(0,0,0,0.1)] sm:rounded-[1.6rem] sm:p-7 md:p-8"
                   >
                     {/* Colored radial wash behind icon */}
                     <div className={`pointer-events-none absolute -right-8 -top-8 h-40 w-40 rounded-full bg-linear-to-br ${point.accent} blur-2xl`} />
@@ -590,7 +611,7 @@ export default function Home() {
             </section>
 
             {/* ═══════════════ TESTIMONIALS ═══════════════ */}
-            <section id="testimonials" className="relative mx-auto w-[94%] max-w-7xl py-20 md:py-28">
+            <section id="testimonials" className="relative mx-auto w-[94%] max-w-7xl py-16 md:py-28">
               {/* Background image strip */}
               <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden rounded-[2.5rem]">
                 <Image
@@ -608,10 +629,10 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7 }}
                 viewport={{ once: true, amount: 0.3 }}
-                className="mb-14 flex flex-col items-center text-center md:mb-16"
+                className="mb-10 flex flex-col items-center text-center md:mb-16"
               >
                 <p className="mb-3 text-[10px] tracking-[0.32em] text-[#D4AF37]">TRUSTED BY CLIENTS</p>
-                <h2 className="font-[Cormorant_Garamond] text-4xl leading-[1.05] md:text-7xl">
+                <h2 className="font-[Cormorant_Garamond] text-3xl leading-[1.05] sm:text-4xl md:text-7xl">
                   What People Are Saying
                 </h2>
                 <p className="mt-4 max-w-lg text-sm leading-relaxed text-[#2C2C2C]/60 md:text-base">
@@ -621,7 +642,7 @@ export default function Home() {
               </motion.div>
 
               {/* Testimonial cards */}
-              <div className="grid gap-6 md:grid-cols-3">
+              <div className="grid gap-5 sm:gap-6 md:grid-cols-3">
                 {TESTIMONIALS.map((item, index) => (
                   <motion.blockquote
                     key={item.id}
@@ -630,7 +651,7 @@ export default function Home() {
                     transition={{ duration: 0.6, delay: index * 0.14 }}
                     viewport={{ once: true, amount: 0.2 }}
                     whileHover={{ y: -6 }}
-                    className="glass group relative overflow-hidden rounded-[1.6rem] border border-white/50 p-7 shadow-[0_12px_40px_rgba(0,0,0,0.05)] transition-shadow duration-500 hover:shadow-[0_20px_55px_rgba(0,0,0,0.1)] md:p-8"
+                    className="glass-oily oil-slick wet-shine group relative overflow-hidden rounded-2xl border border-white/50 p-5 shadow-[0_12px_40px_rgba(0,0,0,0.05)] transition-shadow duration-500 hover:shadow-[0_20px_55px_rgba(0,0,0,0.1)] sm:rounded-[1.6rem] sm:p-7 md:p-8"
                   >
                     {/* Shimmer on hover */}
                     <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
@@ -673,20 +694,20 @@ export default function Home() {
             </section>
 
             {/* ═══════════════ ABOUT / CTA BANNER ═══════════════ */}
-            <section className="relative mx-auto w-[94%] max-w-7xl pb-24 pt-8 md:pb-32">
+            <section className="relative mx-auto w-[94%] max-w-7xl pb-16 pt-6 md:pb-32 md:pt-8">
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7 }}
                 viewport={{ once: true, amount: 0.2 }}
-                className="glass-strong relative overflow-hidden rounded-[2.2rem] border border-white/60 shadow-[0_30px_80px_rgba(0,0,0,0.09)]"
+                className="glass-strong oil-slick-animated juicy-glow relative overflow-hidden rounded-2xl border border-white/60 shadow-[0_30px_80px_rgba(0,0,0,0.09)] sm:rounded-[2.2rem]"
               >
                 {/* Oil-sheen sweep overlay */}
                 <div className="animate-oil-sheen pointer-events-none absolute inset-0 z-10 bg-[linear-gradient(115deg,transparent_20%,rgba(255,255,255,0.25)_38%,rgba(212,175,55,0.1)_48%,transparent_65%)]" />
 
                 <div className="relative z-20 grid md:grid-cols-[1fr_1fr]">
                   {/* Left — Image */}
-                  <div className="relative min-h-80 overflow-hidden md:min-h-120">
+                  <div className="relative min-h-56 overflow-hidden sm:min-h-80 md:min-h-120">
                     <Image
                       src="https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&q=85&w=1200"
                       alt="Beautifully styled furniture showroom"
@@ -699,7 +720,7 @@ export default function Home() {
                     <div className="absolute inset-0 bg-linear-to-t from-white/40 via-transparent to-transparent md:from-transparent" />
 
                     {/* Floating stat badges */}
-                    <div className="absolute bottom-5 left-5 z-10 flex gap-3">
+                    <div className="absolute bottom-4 left-4 z-10 flex gap-2 sm:bottom-5 sm:left-5 sm:gap-3">
                       {[
                         { value: "500+", label: "PIECES SOLD", color: "text-[#2C2C2C]" },
                         { value: "4.9", label: "AVG RATING", color: "text-[#D4AF37]" },
@@ -710,17 +731,17 @@ export default function Home() {
                           whileInView={{ opacity: 1, y: 0, scale: 1 }}
                           transition={{ duration: 0.5, delay: 0.6 + i * 0.15, type: "spring", stiffness: 120 }}
                           viewport={{ once: true }}
-                          className="glass rounded-xl px-4 py-2.5 text-center shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
+                          className="glass-oily animate-liquid-pulse rounded-lg px-3 py-2 text-center sm:rounded-xl sm:px-4 sm:py-2.5"
                         >
-                          <p className={`font-[Cormorant_Garamond] text-2xl font-semibold ${stat.color}`}>{stat.value}</p>
-                          <p className="text-[9px] tracking-[0.2em] text-[#2C2C2C]/55">{stat.label}</p>
+                          <p className={`font-[Cormorant_Garamond] text-xl font-semibold sm:text-2xl ${stat.color}`}>{stat.value}</p>
+                          <p className="text-[8px] tracking-[0.18em] text-[#2C2C2C]/55 sm:text-[9px] sm:tracking-[0.2em]">{stat.label}</p>
                         </motion.div>
                       ))}
                     </div>
                   </div>
 
                   {/* Right — Content */}
-                  <div className="flex flex-col justify-center space-y-6 p-8 md:p-12 lg:p-16">
+                  <div className="flex flex-col justify-center space-y-5 p-6 sm:space-y-6 sm:p-8 md:p-12 lg:p-16">
                     <motion.p
                       initial={{ opacity: 0, x: 20 }}
                       whileInView={{ opacity: 1, x: 0 }}
@@ -736,7 +757,7 @@ export default function Home() {
                       whileInView={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.6, delay: 0.2 }}
                       viewport={{ once: true }}
-                      className="font-[Cormorant_Garamond] text-4xl leading-[0.95] md:text-[3.4rem]"
+                      className="font-[Cormorant_Garamond] text-3xl leading-[0.95] sm:text-4xl md:text-[3.4rem]"
                     >
                       Designed to Shine.
                       <span className="block italic text-[#D4AF37]">Built to Endure.</span>
