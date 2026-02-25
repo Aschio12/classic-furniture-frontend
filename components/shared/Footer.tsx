@@ -45,7 +45,7 @@ export default function Footer() {
 
       <div className="relative mx-auto w-[94%] max-w-7xl">
         {/* ── Upper section: Brand + Newsletter ── */}
-        <div className="flex flex-col items-start justify-between gap-10 border-b border-[#2C2C2C]/8 py-16 md:flex-row md:items-end">
+        <div className="flex flex-col items-start justify-between gap-8 border-b border-[#2C2C2C]/8 py-12 sm:gap-10 md:flex-row md:items-end md:py-16">
           {/* Brand block */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -54,11 +54,11 @@ export default function Footer() {
             viewport={{ once: true, amount: 0.3 }}
             className="max-w-md space-y-5"
           >
-            <Link href="/" className="group inline-flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#2C2C2C] transition-colors duration-300 group-hover:bg-[#D4AF37]">
-                <span className="font-[Cormorant_Garamond] text-xl font-bold text-white">CF</span>
+            <Link href="/" className="group inline-flex items-center gap-2 sm:gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#2C2C2C] transition-colors duration-300 group-hover:bg-[#D4AF37] sm:h-11 sm:w-11">
+                <span className="font-[Cormorant_Garamond] text-lg font-bold text-white sm:text-xl">CF</span>
               </div>
-              <span className="font-[Cormorant_Garamond] text-3xl leading-none tracking-[0.04em]">
+              <span className="font-[Cormorant_Garamond] text-2xl leading-none tracking-[0.04em] sm:text-3xl">
                 Classic Furniture
               </span>
             </Link>
@@ -95,7 +95,7 @@ export default function Footer() {
         </div>
 
         {/* ── Link columns ── */}
-        <div className="grid grid-cols-2 gap-8 border-b border-[#2C2C2C]/8 py-14 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-6 border-b border-[#2C2C2C]/8 py-10 sm:gap-8 sm:grid-cols-3 md:py-14 lg:grid-cols-4">
           {Object.entries(FOOTER_LINKS).map(([category, links], colIndex) => (
             <motion.div
               key={category}
@@ -104,10 +104,10 @@ export default function Footer() {
               transition={{ duration: 0.5, delay: colIndex * 0.1 }}
               viewport={{ once: true, amount: 0.2 }}
             >
-              <h4 className="mb-5 text-[11px] font-medium tracking-[0.22em] text-[#D4AF37]">
+              <h4 className="mb-4 text-[10px] font-medium tracking-[0.2em] text-[#D4AF37] sm:mb-5 sm:text-[11px] sm:tracking-[0.22em]">
                 {category.toUpperCase()}
               </h4>
-              <ul className="space-y-3">
+              <ul className="space-y-2.5 sm:space-y-3">
                 {links.map((link) => (
                   <li key={link.label}>
                     <Link
@@ -130,7 +130,7 @@ export default function Footer() {
             transition={{ duration: 0.5, delay: 0.3 }}
             viewport={{ once: true, amount: 0.2 }}
           >
-            <h4 className="mb-5 text-[11px] font-medium tracking-[0.22em] text-[#D4AF37]">
+            <h4 className="mb-4 text-[10px] font-medium tracking-[0.2em] text-[#D4AF37] sm:mb-5 sm:text-[11px] sm:tracking-[0.22em]">
               CONNECT
             </h4>
             <div className="flex gap-3">
@@ -157,7 +157,7 @@ export default function Footer() {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           viewport={{ once: true }}
-          className="flex flex-col items-center justify-between gap-4 py-8 md:flex-row"
+          className="flex flex-col items-center justify-between gap-3 py-6 sm:gap-4 md:flex-row md:py-8"
         >
           <p className="text-[11px] tracking-wider text-[#2C2C2C]/35">
             &copy; {new Date().getFullYear()} Classic Furniture. All rights reserved.
