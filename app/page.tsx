@@ -192,11 +192,11 @@ export default function Home() {
                 }`}
               >
                 {/* Brand */}
-                <Link href="/" className="group flex items-center gap-2.5">
-                  <div className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-[#2C2C2C] transition-all duration-300 group-hover:bg-[#D4AF37]">
+                <Link href="/" className="group flex items-center gap-2 sm:gap-2.5">
+                  <div className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#2C2C2C] transition-all duration-300 group-hover:bg-[#D4AF37]">
                     <span className="font-[Cormorant_Garamond] text-lg font-bold text-white">CF</span>
                   </div>
-                  <div className="flex flex-col">
+                  <div className="hidden flex-col sm:flex">
                     <span className="font-[Cormorant_Garamond] text-xl leading-none tracking-[0.04em] md:text-2xl">
                       Classic Furniture
                     </span>
@@ -325,9 +325,9 @@ export default function Home() {
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.1 }}
-                  className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/50 bg-white/40 px-5 py-1.5 text-[10px] tracking-[0.28em] text-white backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.06)]"
+                  className="mb-6 inline-flex items-center gap-1.5 rounded-full border border-white/50 bg-white/40 px-3 py-1.5 text-[9px] tracking-[0.18em] text-white backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.06)] sm:gap-2 sm:px-5 sm:text-[10px] sm:tracking-[0.28em]"
                 >
-                  <Sparkles className="h-3.5 w-3.5 text-[#D4AF37]" />
+                  <Sparkles className="h-3 w-3 text-[#D4AF37] sm:h-3.5 sm:w-3.5" />
                   PREMIUM HANDCRAFTED FURNITURE
                 </motion.p>
 
@@ -336,7 +336,7 @@ export default function Home() {
                   initial={{ opacity: 0, y: 24 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.7, delay: 0.25 }}
-                  className="max-w-4xl font-[Cormorant_Garamond] text-[2.6rem] leading-[0.92] text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.25)] md:text-[5.8rem]"
+                  className="max-w-4xl font-[Cormorant_Garamond] text-[2rem] leading-[0.95] text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.25)] sm:text-[2.6rem] sm:leading-[0.92] md:text-[5.8rem]"
                 >
                   Timeless Elegance
                   <span className="block italic text-[#D4AF37] drop-shadow-[0_2px_8px_rgba(212,175,55,0.35)]">
@@ -360,12 +360,12 @@ export default function Home() {
                   initial={{ opacity: 0, y: 18 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.6 }}
-                  className="mt-8 flex flex-wrap items-center justify-center gap-4"
+                  className="mt-8 flex w-full max-w-sm flex-col items-center justify-center gap-3 sm:w-auto sm:max-w-none sm:flex-row sm:gap-4"
                 >
                   {/* Primary CTA — glossy pill */}
                   <Link
                     href="/shop"
-                    className="group relative overflow-hidden rounded-full border border-[#D4AF37]/60 bg-[#D4AF37] px-8 py-3.5 text-xs font-semibold tracking-[0.24em] text-white shadow-[0_8px_30px_rgba(212,175,55,0.35)] transition-transform duration-300 hover:scale-105 hover:shadow-[0_12px_40px_rgba(212,175,55,0.45)]"
+                    className="group relative w-full overflow-hidden rounded-full border border-[#D4AF37]/60 bg-[#D4AF37] px-6 py-3 text-center text-[11px] font-semibold tracking-[0.2em] text-white shadow-[0_8px_30px_rgba(212,175,55,0.35)] transition-transform duration-300 hover:scale-105 hover:shadow-[0_12px_40px_rgba(212,175,55,0.45)] sm:w-auto sm:px-8 sm:py-3.5 sm:text-xs sm:tracking-[0.24em]"
                   >
                     <span className="relative z-10">EXPLORE COLLECTION</span>
                     {/* Shimmer sweep on hover */}
@@ -377,7 +377,7 @@ export default function Home() {
                   {/* Secondary CTA — glass pill */}
                   <a
                     href="#featured"
-                    className="rounded-full border border-white/40 bg-white/15 px-8 py-3.5 text-xs tracking-[0.22em] text-white backdrop-blur-md transition-all duration-300 hover:bg-white/30 hover:shadow-[0_8px_24px_rgba(255,255,255,0.12)]"
+                    className="w-full rounded-full border border-white/40 bg-white/15 px-6 py-3 text-center text-[11px] tracking-[0.18em] text-white backdrop-blur-md transition-all duration-300 hover:bg-white/30 hover:shadow-[0_8px_24px_rgba(255,255,255,0.12)] sm:w-auto sm:px-8 sm:py-3.5 sm:text-xs sm:tracking-[0.22em]"
                   >
                     VIEW HIGHLIGHTS
                   </a>
