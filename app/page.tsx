@@ -521,64 +521,169 @@ export default function Home() {
               </div>
             </section>
 
-            <section className="mx-auto w-[94%] max-w-7xl py-16 md:py-24">
+            {/* ═══════════════ TESTIMONIALS ═══════════════ */}
+            <section className="relative mx-auto w-[94%] max-w-7xl py-20 md:py-28">
+              {/* Background image strip */}
+              <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden rounded-[2.5rem]">
+                <Image
+                  src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=80&w=2000"
+                  alt=""
+                  fill
+                  className="object-cover opacity-[0.04] saturate-0"
+                  sizes="100vw"
+                />
+              </div>
+
+              {/* Section header */}
               <motion.div
-                initial={{ opacity: 0, y: 24 }}
+                initial={{ opacity: 0, y: 28 }}
                 whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7 }}
                 viewport={{ once: true, amount: 0.3 }}
-                className="mb-8"
+                className="mb-14 flex flex-col items-center text-center md:mb-16"
               >
-                <p className="text-xs tracking-[0.22em] text-[#2C2C2C]/55">TRUSTED BY CLIENTS</p>
-                <h2 className="font-[Cormorant_Garamond] text-4xl md:text-6xl">What People Are Saying</h2>
+                <p className="mb-3 text-[10px] tracking-[0.32em] text-[#D4AF37]">TRUSTED BY CLIENTS</p>
+                <h2 className="font-[Cormorant_Garamond] text-4xl leading-[1.05] md:text-7xl">
+                  What People Are Saying
+                </h2>
+                <p className="mt-4 max-w-lg text-sm leading-relaxed text-[#2C2C2C]/60 md:text-base">
+                  Real stories from clients who chose quality, craftsmanship, and an elevated living experience.
+                </p>
+                <div className="mt-6 h-px w-16 bg-linear-to-r from-transparent via-[#D4AF37] to-transparent" />
               </motion.div>
 
-              <div className="grid gap-5 md:grid-cols-3">
+              {/* Testimonial cards */}
+              <div className="grid gap-6 md:grid-cols-3">
                 {TESTIMONIALS.map((item, index) => (
                   <motion.blockquote
                     key={item.id}
-                    initial={{ opacity: 0, y: 24 }}
+                    initial={{ opacity: 0, y: 32 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.12 }}
+                    transition={{ duration: 0.6, delay: index * 0.14 }}
                     viewport={{ once: true, amount: 0.2 }}
-                    className="glass rounded-3xl border border-white/45 p-6"
+                    whileHover={{ y: -6 }}
+                    className="glass group relative overflow-hidden rounded-[1.6rem] border border-white/50 p-7 shadow-[0_12px_40px_rgba(0,0,0,0.05)] transition-shadow duration-500 hover:shadow-[0_20px_55px_rgba(0,0,0,0.1)] md:p-8"
                   >
-                    <p className="mb-5 text-sm leading-relaxed text-[#2C2C2C]/80">“{item.quote}”</p>
-                    <footer>
-                      <p className="font-medium text-[#2C2C2C]">{item.name}</p>
-                      <p className="text-xs tracking-[0.12em] text-[#2C2C2C]/55">{item.role}</p>
+                    {/* Shimmer on hover */}
+                    <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                      <div className="absolute inset-y-0 -left-[160%] w-[70%] bg-linear-to-r from-transparent via-white/50 to-transparent transition-transform duration-1000 group-hover:translate-x-[450%]" />
+                    </div>
+
+                    {/* Quote icon */}
+                    <div className="relative mb-5">
+                      <Quote className="h-8 w-8 text-[#D4AF37]/30" strokeWidth={1.5} />
+                    </div>
+
+                    {/* Stars */}
+                    <div className="relative mb-4 flex gap-1">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="h-3.5 w-3.5 fill-[#D4AF37] text-[#D4AF37]" />
+                      ))}
+                    </div>
+
+                    {/* Quote text */}
+                    <p className="relative mb-6 text-sm leading-relaxed text-[#2C2C2C]/80 md:text-[0.935rem]">
+                      &ldquo;{item.quote}&rdquo;
+                    </p>
+
+                    {/* Wet line separator */}
+                    <div className="wet-line mb-5 w-full opacity-50" />
+
+                    {/* Author */}
+                    <footer className="relative flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[#D4AF37]/20 bg-[#D4AF37]/10 text-sm font-medium text-[#D4AF37]">
+                        {item.name.charAt(0)}
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-[#2C2C2C]">{item.name}</p>
+                        <p className="text-xs tracking-widest text-[#2C2C2C]/50">{item.role}</p>
+                      </div>
                     </footer>
                   </motion.blockquote>
                 ))}
               </div>
             </section>
 
-            <section className="mx-auto w-[94%] max-w-7xl pb-20 pt-4 md:pb-28">
+            {/* ═══════════════ ABOUT / CTA BANNER ═══════════════ */}
+            <section className="relative mx-auto w-[94%] max-w-7xl pb-24 pt-8 md:pb-32">
               <motion.div
-                initial={{ opacity: 0, y: 24 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                className="glass-strong relative overflow-hidden rounded-[2rem] border border-white/65 p-8 md:p-12"
+                transition={{ duration: 0.7 }}
+                viewport={{ once: true, amount: 0.2 }}
+                className="glass-strong relative overflow-hidden rounded-[2.2rem] border border-white/60 shadow-[0_30px_80px_rgba(0,0,0,0.09)]"
               >
-                <div className="animate-oil-sheen absolute inset-0 bg-[linear-gradient(110deg,rgba(255,255,255,0),rgba(255,255,255,0.22),rgba(212,175,55,0.12),rgba(255,255,255,0))]" />
-                <div className="relative z-10 grid gap-8 md:grid-cols-[1fr_auto] md:items-end">
-                  <div className="space-y-4">
-                    <p className="text-xs tracking-[0.22em] text-[#2C2C2C]/55">ABOUT CLASSIC FURNITURE</p>
-                    <h2 className="font-[Cormorant_Garamond] text-4xl leading-none md:text-6xl">
+                {/* Oil-sheen sweep overlay */}
+                <div className="animate-oil-sheen pointer-events-none absolute inset-0 z-10 bg-[linear-gradient(115deg,transparent_20%,rgba(255,255,255,0.25)_38%,rgba(212,175,55,0.1)_48%,transparent_65%)]" />
+
+                <div className="relative z-20 grid md:grid-cols-[1fr_1fr]">
+                  {/* Left — Image */}
+                  <div className="relative min-h-80 overflow-hidden md:min-h-120">
+                    <Image
+                      src="https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&q=85&w=1200"
+                      alt="Beautifully styled furniture showroom"
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                    {/* Subtle overlay for blend */}
+                    <div className="absolute inset-0 bg-linear-to-r from-transparent to-white/30 md:to-white/50" />
+                    <div className="absolute inset-0 bg-linear-to-t from-white/40 via-transparent to-transparent md:from-transparent" />
+
+                    {/* Floating stat badges */}
+                    <div className="absolute bottom-5 left-5 z-10 flex gap-3">
+                      <div className="glass rounded-xl px-4 py-2.5 text-center shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
+                        <p className="font-[Cormorant_Garamond] text-2xl font-semibold text-[#2C2C2C]">500+</p>
+                        <p className="text-[9px] tracking-[0.2em] text-[#2C2C2C]/55">PIECES SOLD</p>
+                      </div>
+                      <div className="glass rounded-xl px-4 py-2.5 text-center shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
+                        <p className="font-[Cormorant_Garamond] text-2xl font-semibold text-[#D4AF37]">4.9</p>
+                        <p className="text-[9px] tracking-[0.2em] text-[#2C2C2C]/55">AVG RATING</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right — Content */}
+                  <div className="flex flex-col justify-center space-y-6 p-8 md:p-12 lg:p-16">
+                    <p className="text-[10px] tracking-[0.32em] text-[#D4AF37]">ABOUT CLASSIC FURNITURE</p>
+
+                    <h2 className="font-[Cormorant_Garamond] text-4xl leading-[0.95] md:text-[3.4rem]">
                       Designed to Shine.
                       <span className="block italic text-[#D4AF37]">Built to Endure.</span>
                     </h2>
-                    <p className="max-w-2xl text-sm leading-relaxed text-[#2C2C2C]/72 md:text-base">
+
+                    <p className="max-w-lg text-sm leading-relaxed text-[#2C2C2C]/68 md:text-base">
                       We blend contemporary sensibility with timeless craftsmanship. Every collection is curated to
                       create beautiful spaces that feel elevated, warm, and unmistakably yours.
                     </p>
-                  </div>
 
-                  <Link
-                    href="/shop"
-                    className="rounded-full bg-[#2C2C2C] px-8 py-3 text-xs tracking-[0.22em] text-white transition hover:opacity-90"
-                  >
-                    START SHOPPING
-                  </Link>
+                    <p className="max-w-lg text-sm leading-relaxed text-[#2C2C2C]/55">
+                      From ethically sourced hardwoods to hand-finished surfaces, our process honors
+                      tradition while embracing modern design. This is furniture made to be lived in — and loved.
+                    </p>
+
+                    {/* Wet line */}
+                    <div className="wet-line w-full opacity-50" />
+
+                    {/* CTA row */}
+                    <div className="flex flex-wrap items-center gap-4 pt-2">
+                      <Link
+                        href="/shop"
+                        className="group relative overflow-hidden rounded-full border border-[#D4AF37]/50 bg-[#D4AF37] px-8 py-3.5 text-xs font-semibold tracking-[0.22em] text-white shadow-[0_8px_28px_rgba(212,175,55,0.3)] transition-transform duration-300 hover:scale-105 hover:shadow-[0_12px_36px_rgba(212,175,55,0.4)]"
+                      >
+                        <span className="relative z-10">START SHOPPING</span>
+                        <span className="absolute inset-y-0 -left-[150%] w-[70%] bg-linear-to-r from-transparent via-white/45 to-transparent transition-transform duration-700 group-hover:translate-x-[450%]" />
+                        <span className="absolute inset-x-2 top-0.5 h-0.5 rounded-full bg-white/40" />
+                      </Link>
+
+                      <Link
+                        href="/shop"
+                        className="text-xs tracking-[0.18em] text-[#2C2C2C]/65 transition-colors hover:text-[#2C2C2C]"
+                      >
+                        BROWSE CATALOG →
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             </section>
