@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
-import { Loader2, Sparkles } from "lucide-react";
+import { Loader2, Sparkles, TreePine, Gem, Truck } from "lucide-react";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 import { useAuthStore } from "@/store/useAuthStore";
@@ -334,79 +334,188 @@ export default function Home() {
               </motion.div>
             </section>
 
-            <section id="featured" className="mx-auto w-[94%] max-w-7xl py-16 md:py-24">
+            {/* ═══════════════ FEATURED PRODUCTS SHOWCASE ═══════════════ */}
+            <section id="featured" className="relative mx-auto w-[94%] max-w-7xl py-20 md:py-32">
+              {/* Section header */}
               <motion.div
-                initial={{ opacity: 0, y: 24 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7 }}
                 viewport={{ once: true, amount: 0.3 }}
-                className="mb-10 flex items-end justify-between gap-4"
+                className="mb-14 flex flex-col items-center text-center md:mb-16"
               >
-                <div>
-                  <p className="text-xs tracking-[0.22em] text-[#2C2C2C]/55">EDITOR PICKS</p>
-                  <h2 className="font-[Cormorant_Garamond] text-4xl md:text-6xl">Featured Masterpieces</h2>
-                </div>
-                <Link href="/shop" className="text-sm tracking-[0.15em] text-[#2C2C2C]/70 hover:text-[#2C2C2C]">
-                  SEE ALL →
-                </Link>
+                <p className="mb-3 text-[10px] tracking-[0.32em] text-[#D4AF37]">EDITOR&apos;S PICKS</p>
+                <h2 className="font-[Cormorant_Garamond] text-4xl leading-[1.05] md:text-7xl">
+                  Featured Masterpieces
+                </h2>
+                <p className="mt-4 max-w-lg text-sm leading-relaxed text-[#2C2C2C]/60 md:text-base">
+                  A curated selection of our most sought-after designs — where form, finish, and function converge.
+                </p>
+                {/* Gold accent line */}
+                <div className="mt-6 h-px w-16 bg-linear-to-r from-transparent via-[#D4AF37] to-transparent" />
               </motion.div>
 
-              <div className="grid gap-6 md:grid-cols-3">
+              {/* Cards grid */}
+              <div className="grid gap-7 md:grid-cols-3">
                 {FEATURED_ITEMS.map((item, index) => (
                   <motion.article
                     key={item.id}
-                    initial={{ opacity: 0, y: 28 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.12 }}
-                    viewport={{ once: true, amount: 0.25 }}
-                    className="glass group relative overflow-hidden rounded-3xl border border-white/45"
+                    initial={{ opacity: 0, y: 40, scale: 0.97 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ duration: 0.65, delay: index * 0.15, type: "spring", stiffness: 80 }}
+                    viewport={{ once: true, amount: 0.2 }}
+                    whileHover={{ y: -10 }}
+                    className="glass group relative overflow-hidden rounded-[1.6rem] border border-white/50 shadow-[0_15px_45px_rgba(0,0,0,0.07)] transition-shadow duration-500 hover:shadow-[0_25px_65px_rgba(0,0,0,0.13)]"
                   >
+                    {/* Image area */}
                     <div className="relative aspect-4/5 overflow-hidden">
                       <Image
                         src={item.image}
                         alt={item.title}
                         fill
-                        className="object-cover transition duration-700 group-hover:scale-105"
+                        className="object-cover transition-transform duration-800 ease-out group-hover:scale-[1.07]"
                         sizes="(max-width: 768px) 100vw, 33vw"
                       />
-                      <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent" />
+
+                      {/* Image bottom fade */}
+                      <div className="absolute inset-0 bg-linear-to-t from-black/50 via-black/10 to-transparent" />
+
+                      {/* Glossy shine sweep on hover */}
+                      <div className="pointer-events-none absolute inset-0 z-10 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                        <div className="absolute inset-y-0 -left-[160%] w-[75%] bg-linear-to-r from-transparent via-white/40 to-transparent transition-transform duration-1200 ease-out group-hover:translate-x-[450%]" />
+                      </div>
+
+                      {/* Category tag floating on image */}
+                      <span className="absolute left-4 top-4 z-10 rounded-full border border-white/30 bg-white/20 px-3 py-1 text-[9px] tracking-[0.22em] text-white backdrop-blur-md">
+                        {item.category.toUpperCase()}
+                      </span>
+
+                      {/* Bottom overlay text on image */}
+                      <div className="absolute inset-x-0 bottom-0 z-10 p-5">
+                        <h3 className="font-[Cormorant_Garamond] text-3xl leading-none text-white drop-shadow-[0_1px_6px_rgba(0,0,0,0.3)] md:text-[2rem]">
+                          {item.title}
+                        </h3>
+                      </div>
                     </div>
 
-                    <div className="space-y-3 p-5">
-                      <p className="text-xs tracking-[0.2em] text-[#2C2C2C]/55">{item.category}</p>
-                      <h3 className="font-[Cormorant_Garamond] text-3xl leading-none">{item.title}</h3>
-                      <p className="text-sm leading-relaxed text-[#2C2C2C]/70">{item.description}</p>
+                    {/* Card body */}
+                    <div className="relative space-y-3 p-5">
+                      {/* Wet line separator */}
+                      <div className="wet-line w-full" />
+
+                      <p className="pt-2 text-sm leading-relaxed text-[#2C2C2C]/70">
+                        {item.description}
+                      </p>
+
+                      {/* View details CTA */}
+                      <div className="flex items-center gap-2 pt-1">
+                        <span className="text-xs font-medium tracking-[0.18em] text-[#D4AF37] transition-colors group-hover:text-[#C9A961]">
+                          VIEW DETAILS
+                        </span>
+                        <span className="inline-block text-[#D4AF37] transition-transform duration-300 group-hover:translate-x-1">
+                          →
+                        </span>
+                      </div>
                     </div>
                   </motion.article>
                 ))}
               </div>
+
+              {/* See all link */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                viewport={{ once: true }}
+                className="mt-12 flex justify-center"
+              >
+                <Link
+                  href="/shop"
+                  className="group relative overflow-hidden rounded-full border border-[#2C2C2C]/15 bg-white/70 px-8 py-3 text-xs tracking-[0.22em] text-[#2C2C2C] backdrop-blur-sm transition-all duration-300 hover:border-[#D4AF37]/40 hover:bg-white hover:shadow-[0_8px_30px_rgba(212,175,55,0.1)]"
+                >
+                  <span className="relative z-10">BROWSE ALL COLLECTIONS</span>
+                  <span className="absolute inset-y-0 -left-[150%] w-[65%] bg-linear-to-r from-transparent via-[#D4AF37]/15 to-transparent transition-transform duration-700 group-hover:translate-x-[450%]" />
+                </Link>
+              </motion.div>
             </section>
 
-            <section className="mx-auto w-[94%] max-w-7xl py-12 md:py-20">
-              <div className="grid gap-5 md:grid-cols-3">
+            {/* ═══════════════ WHY CHOOSE US / VALUE PROPS ═══════════════ */}
+            <section className="relative mx-auto w-[94%] max-w-7xl py-20 md:py-28">
+              {/* Decorative background orb */}
+              <div className="animate-breathe pointer-events-none absolute left-1/2 top-1/2 -z-10 h-125 w-125 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#D4AF37]/8 blur-[100px]" />
+
+              {/* Section header */}
+              <motion.div
+                initial={{ opacity: 0, y: 28 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7 }}
+                viewport={{ once: true, amount: 0.3 }}
+                className="mb-14 flex flex-col items-center text-center md:mb-16"
+              >
+                <p className="mb-3 text-[10px] tracking-[0.32em] text-[#D4AF37]">WHY CLASSIC FURNITURE</p>
+                <h2 className="font-[Cormorant_Garamond] text-4xl leading-[1.05] md:text-7xl">
+                  Built Different. <span className="italic text-[#D4AF37]">Felt Instantly.</span>
+                </h2>
+                <p className="mt-4 max-w-lg text-sm leading-relaxed text-[#2C2C2C]/60 md:text-base">
+                  Three pillars that define every piece we create and every experience we deliver.
+                </p>
+                <div className="mt-6 h-px w-16 bg-linear-to-r from-transparent via-[#D4AF37] to-transparent" />
+              </motion.div>
+
+              {/* Cards */}
+              <div className="grid gap-6 md:grid-cols-3">
                 {[
                   {
+                    icon: TreePine,
                     title: "Material Excellence",
-                    text: "Premium woods, resilient fabrics, and long-lasting finishes selected for everyday luxury.",
+                    text: "Premium hardwoods, hand-selected fabrics, and enduring finishes chosen for beauty that lasts decades — not seasons.",
+                    accent: "from-[#A8B5A0]/20 to-transparent",
                   },
                   {
-                    title: "Crafted by Experts",
-                    text: "Every silhouette is refined by experienced makers with precision in every join and seam.",
+                    icon: Gem,
+                    title: "Artisan Craftsmanship",
+                    text: "Every joint, curve, and upholstered edge is refined by experienced makers who treat each piece like a signature work.",
+                    accent: "from-[#D4AF37]/15 to-transparent",
                   },
                   {
-                    title: "White-Glove Support",
-                    text: "Personalized help from selection to delivery so your space comes together effortlessly.",
+                    icon: Truck,
+                    title: "White-Glove Delivery",
+                    text: "Personalized guidance from selection through doorstep delivery — your space comes together without a single worry.",
+                    accent: "from-[#E9F0FF]/40 to-transparent",
                   },
                 ].map((point, index) => (
                   <motion.article
                     key={point.title}
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 32 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
+                    transition={{ duration: 0.6, delay: index * 0.14 }}
                     viewport={{ once: true, amount: 0.2 }}
-                    className="glass rounded-3xl border border-white/40 p-6"
+                    whileHover={{ y: -6 }}
+                    className="glass group relative overflow-hidden rounded-[1.6rem] border border-white/50 p-7 shadow-[0_12px_40px_rgba(0,0,0,0.05)] transition-shadow duration-500 hover:shadow-[0_20px_55px_rgba(0,0,0,0.1)] md:p-8"
                   >
-                    <h3 className="mb-3 font-[Cormorant_Garamond] text-3xl">{point.title}</h3>
-                    <p className="text-sm leading-relaxed text-[#2C2C2C]/70">{point.text}</p>
+                    {/* Colored radial wash behind icon */}
+                    <div className={`pointer-events-none absolute -right-8 -top-8 h-40 w-40 rounded-full bg-linear-to-br ${point.accent} blur-2xl`} />
+
+                    {/* Shimmer on hover */}
+                    <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                      <div className="absolute inset-y-0 -left-[160%] w-[70%] bg-linear-to-r from-transparent via-white/50 to-transparent transition-transform duration-1000 group-hover:translate-x-[450%]" />
+                    </div>
+
+                    {/* Icon */}
+                    <div className="relative mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-[#D4AF37]/20 bg-white/70 shadow-[0_4px_16px_rgba(212,175,55,0.08)]">
+                      <point.icon className="h-5 w-5 text-[#D4AF37]" strokeWidth={1.5} />
+                    </div>
+
+                    {/* Content */}
+                    <h3 className="relative mb-3 font-[Cormorant_Garamond] text-[1.7rem] leading-tight">
+                      {point.title}
+                    </h3>
+                    <p className="relative text-sm leading-relaxed text-[#2C2C2C]/65">
+                      {point.text}
+                    </p>
+
+                    {/* Wet line at bottom */}
+                    <div className="wet-line mt-6 w-full opacity-60" />
                   </motion.article>
                 ))}
               </div>
