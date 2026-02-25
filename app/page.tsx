@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
-import { Loader2, Sparkles, TreePine, Gem, Truck } from "lucide-react";
+import { Loader2, Sparkles, TreePine, Gem, Truck, Quote, Star } from "lucide-react";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 import { useAuthStore } from "@/store/useAuthStore";
