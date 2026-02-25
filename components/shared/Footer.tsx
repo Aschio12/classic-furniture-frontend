@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { Instagram, Facebook, Twitter, ArrowUpRight, Mail } from "lucide-react";
 
 const FOOTER_LINKS = {
@@ -46,7 +47,13 @@ export default function Footer() {
         {/* ── Upper section: Brand + Newsletter ── */}
         <div className="flex flex-col items-start justify-between gap-10 border-b border-[#2C2C2C]/8 py-16 md:flex-row md:items-end">
           {/* Brand block */}
-          <div className="max-w-md space-y-5">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true, amount: 0.3 }}
+            className="max-w-md space-y-5"
+          >
             <Link href="/" className="group inline-flex items-center gap-3">
               <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#2C2C2C] transition-colors duration-300 group-hover:bg-[#D4AF37]">
                 <span className="font-[Cormorant_Garamond] text-xl font-bold text-white">CF</span>
@@ -59,10 +66,16 @@ export default function Footer() {
               Curating timeless furniture that transforms spaces into stories.
               Every piece is crafted with intention, built to last generations.
             </p>
-          </div>
+          </motion.div>
 
           {/* Newsletter */}
-          <div className="w-full max-w-sm space-y-3">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.15 }}
+            viewport={{ once: true, amount: 0.3 }}
+            className="w-full max-w-sm space-y-3"
+          >
             <p className="text-[11px] tracking-[0.2em] text-[#2C2C2C]/50">STAY INSPIRED</p>
             <div className="group flex overflow-hidden rounded-xl border border-[#2C2C2C]/10 bg-white/60 backdrop-blur-sm transition-all duration-300 focus-within:border-[#D4AF37]/40 focus-within:shadow-[0_4px_24px_rgba(212,175,55,0.1)]">
               <div className="flex items-center pl-4 text-[#2C2C2C]/30">
@@ -78,13 +91,19 @@ export default function Footer() {
                 <ArrowUpRight className="h-3 w-3" />
               </button>
             </div>
-          </div>
+          </motion.div>
         </div>
 
         {/* ── Link columns ── */}
         <div className="grid grid-cols-2 gap-8 border-b border-[#2C2C2C]/8 py-14 sm:grid-cols-3 lg:grid-cols-4">
-          {Object.entries(FOOTER_LINKS).map(([category, links]) => (
-            <div key={category}>
+          {Object.entries(FOOTER_LINKS).map(([category, links], colIndex) => (
+            <motion.div
+              key={category}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: colIndex * 0.1 }}
+              viewport={{ once: true, amount: 0.2 }}
+            >
               <h4 className="mb-5 text-[11px] font-medium tracking-[0.22em] text-[#D4AF37]">
                 {category.toUpperCase()}
               </h4>
@@ -101,11 +120,16 @@ export default function Footer() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </motion.div>
           ))}
 
           {/* Social column */}
-          <div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            viewport={{ once: true, amount: 0.2 }}
+          >
             <h4 className="mb-5 text-[11px] font-medium tracking-[0.22em] text-[#D4AF37]">
               CONNECT
             </h4>
@@ -124,11 +148,17 @@ export default function Footer() {
             <p className="mt-5 text-xs text-[#2C2C2C]/35">
               Follow us for daily <br /> design inspiration.
             </p>
-          </div>
+          </motion.div>
         </div>
 
         {/* ── Bottom bar ── */}
-        <div className="flex flex-col items-center justify-between gap-4 py-8 md:flex-row">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="flex flex-col items-center justify-between gap-4 py-8 md:flex-row"
+        >
           <p className="text-[11px] tracking-wider text-[#2C2C2C]/35">
             &copy; {new Date().getFullYear()} Classic Furniture. All rights reserved.
           </p>
@@ -143,7 +173,7 @@ export default function Footer() {
               </Link>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </footer>
   );
