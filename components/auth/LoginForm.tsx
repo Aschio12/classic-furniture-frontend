@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
 import { useAuthStore } from "@/store/useAuthStore";
 
 export default function LoginForm() {
-  const { setUser, setToken } = useAuthStore();
+  const router = useRouter();
+  const { login } = useAuthStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [localError, setLocalError] = useState("");
   const [email, setEmail] = useState("");
@@ -18,38 +20,15 @@ export default function LoginForm() {
     try {
       setIsSubmitting(true);
       setLocalError("");
+      await login({ email, password });
 
-      const response = await fetch("https://classic-furniture-backend.onrender.com/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      const currentUser = useAuthStore.getState().user;
+      const role = currentUser?.role ?? "user";
 
-      if (!response.ok) {
-        const errorPayload = await response.json().catch(() => ({}));
-        throw new Error(errorPayload.message || "Login failed");
-      }
-
-      const data = await response.json();
-      const token = data?.token ?? null;
-      const incomingRole = data?.role ?? data?.user?.role;
-      const role: "user" | "admin" | "seller" | "hub_manager" =
-        incomingRole === "admin" || incomingRole === "seller" || incomingRole === "hub_manager"
-          ? incomingRole
-          : "user";
-      const userId = data?.user?.id ?? data?.user?._id ?? "temp-id";
-      const userName = data?.user?.name ?? "User";
-      const userEmail = data?.user?.email ?? email;
-
-      if (!token) {
-        throw new Error("Login failed");
-      }
-
-      setToken(token);
-      setUser({ id: userId, name: userName, email: userEmail, role });
-      useAuthStore.setState({ isAuthenticated: true });
+      // Smart redirect similar to register flow
+      if (role === "hub_manager") router.push("/dashboard/hub");
+      else if (role === "admin") router.push("/admin");
+      else router.push("/shop");
     } catch (err: unknown) {
       const message =
         err instanceof Error && err.message
@@ -73,68 +52,68 @@ export default function LoginForm() {
       <div className="w-full max-w-md space-y-8 p-4">
 
       <div className="text-center relative">
-        <h2 className="text-4xl font-black tracking-tighter text-neutral-900 drop-shadow-sm">Welcome Back</h2>
-        {/* Shiny Underline */}
-        <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-12 h-1 bg-linear-to-r from-transparent via-[#d4af37] to-transparent rounded-full shadow-[0_0_10px_#d4af37] animate-pulse" />
+        <h2 className="font-[Cormorant_Garamond] text-4xl font-semibold tracking-tight text-[#2C2C2C]">Welcome Back</h2>
+        {/* Gold Shiny Underline */}
+        <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-16 h-0.5 bg-linear-to-r from-transparent via-[#D4AF37] to-transparent rounded-full shadow-[0_0_12px_rgba(212,175,55,0.5)]" />
       </div>
 
       <form className="space-y-8 mt-8" onSubmit={handleSubmit}>
-        <div className="space-y-6">
-            {/* Email Field - Wet/Oily Effect */}
+        <div className="space-y-5">
+            {/* Email Field - Glass Effect with Gold Accent */}
             <div className="group relative">
-                <div className="relative overflow-hidden rounded-xl bg-white shadow-[inset_0_2px_6px_rgba(0,0,0,0.05),0_4px_10px_rgba(0,0,0,0.02)] transition-all duration-300 group-hover:shadow-[inset_0_2px_6px_rgba(0,0,0,0.02),0_8px_20px_rgba(0,0,0,0.05)] border border-neutral-100">
+                <div className="relative overflow-hidden rounded-2xl bg-white/80 backdrop-blur-sm shadow-[0_4px_20px_rgba(0,0,0,0.04),inset_0_1px_0_rgba(255,255,255,0.8)] transition-all duration-300 group-hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] border border-white/60 group-focus-within:border-[#D4AF37]/40 group-focus-within:shadow-[0_8px_30px_rgba(212,175,55,0.08)]">
                     <input
                         id="email"
                         type="email"
                         required
                         disabled={isSubmitting}
-                        className="peer block w-full bg-transparent px-4 pt-5 pb-2 text-neutral-900 outline-none placeholder:text-transparent transition-all"
+                        className="peer block w-full bg-transparent px-4 pt-6 pb-2 text-[#2C2C2C] outline-none placeholder:text-transparent transition-all"
                         placeholder="you@example.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
                     {/* Liquid Highlight Overlay */}
-                    <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-white/80 to-transparent opacity-50" />
+                    <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-white/60 to-transparent opacity-50" />
                     
                     <label 
                         htmlFor="email" 
-                        className="pointer-events-none absolute left-4 top-3.5 origin-[0] -translate-y-2.5 scale-75 transform text-xs font-bold text-neutral-400 transition-all duration-300 
-                        peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:text-sm peer-placeholder-shown:font-normal peer-placeholder-shown:text-neutral-500
-                        peer-focus:-translate-y-2.5 peer-focus:scale-75 peer-focus:text-xs peer-focus:font-bold peer-focus:text-neutral-900"
+                        className="pointer-events-none absolute left-4 top-4 origin-left -translate-y-2.5 scale-75 transform text-[10px] font-medium tracking-wider text-[#D4AF37] transition-all duration-300 
+                        peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:text-sm peer-placeholder-shown:font-normal peer-placeholder-shown:text-[#2C2C2C]/50 peer-placeholder-shown:tracking-normal
+                        peer-focus:-translate-y-2.5 peer-focus:scale-75 peer-focus:text-[10px] peer-focus:font-medium peer-focus:tracking-wider peer-focus:text-[#D4AF37]"
                     >
                         Email Address
                     </label>
 
-                    {/* Active Wet Line */}
-                    <div className="absolute bottom-0 left-0 h-[2px] w-full scale-x-0 bg-neutral-900 transition-transform duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] peer-focus:scale-x-100" />
+                    {/* Gold Wet Line on Focus */}
+                    <div className="absolute bottom-0 left-0 h-0.5 w-full scale-x-0 bg-linear-to-r from-transparent via-[#D4AF37] to-transparent transition-transform duration-500 ease-out peer-focus:scale-x-100" />
                 </div>
             </div>
 
-            {/* Password Field - Wet/Oily Effect */}
+            {/* Password Field - Glass Effect with Gold Accent */}
             <div className="group relative">
-                <div className="relative overflow-hidden rounded-xl bg-white shadow-[inset_0_2px_6px_rgba(0,0,0,0.05),0_4px_10px_rgba(0,0,0,0.02)] transition-all duration-300 group-hover:shadow-[inset_0_2px_6px_rgba(0,0,0,0.02),0_8px_20px_rgba(0,0,0,0.05)] border border-neutral-100">
+                <div className="relative overflow-hidden rounded-2xl bg-white/80 backdrop-blur-sm shadow-[0_4px_20px_rgba(0,0,0,0.04),inset_0_1px_0_rgba(255,255,255,0.8)] transition-all duration-300 group-hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] border border-white/60 group-focus-within:border-[#D4AF37]/40 group-focus-within:shadow-[0_8px_30px_rgba(212,175,55,0.08)]">
                     <input
                         id="password"
                         type="password"
                         required
                         disabled={isSubmitting}
-                        className="peer block w-full bg-transparent px-4 pt-5 pb-2 text-neutral-900 outline-none placeholder:text-transparent transition-all"
+                        className="peer block w-full bg-transparent px-4 pt-6 pb-2 text-[#2C2C2C] outline-none placeholder:text-transparent transition-all"
                         placeholder="Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
-                    <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-white/80 to-transparent opacity-50" />
+                    <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-white/60 to-transparent opacity-50" />
                     
                     <label 
                         htmlFor="password" 
-                        className="pointer-events-none absolute left-4 top-3.5 origin-[0] -translate-y-2.5 scale-75 transform text-xs font-bold text-neutral-400 transition-all duration-300 
-                        peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:text-sm peer-placeholder-shown:font-normal peer-placeholder-shown:text-neutral-500
-                        peer-focus:-translate-y-2.5 peer-focus:scale-75 peer-focus:text-xs peer-focus:font-bold peer-focus:text-neutral-900"
+                        className="pointer-events-none absolute left-4 top-4 origin-left -translate-y-2.5 scale-75 transform text-[10px] font-medium tracking-wider text-[#D4AF37] transition-all duration-300 
+                        peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:text-sm peer-placeholder-shown:font-normal peer-placeholder-shown:text-[#2C2C2C]/50 peer-placeholder-shown:tracking-normal
+                        peer-focus:-translate-y-2.5 peer-focus:scale-75 peer-focus:text-[10px] peer-focus:font-medium peer-focus:tracking-wider peer-focus:text-[#D4AF37]"
                     >
                         Password
                     </label>
 
-                    <div className="absolute bottom-0 left-0 h-[2px] w-full scale-x-0 bg-neutral-900 transition-transform duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] peer-focus:scale-x-100" />
+                    <div className="absolute bottom-0 left-0 h-0.5 w-full scale-x-0 bg-linear-to-r from-transparent via-[#D4AF37] to-transparent transition-transform duration-500 ease-out peer-focus:scale-x-100" />
                 </div>
             </div>
         </div>
@@ -143,41 +122,33 @@ export default function LoginForm() {
           <motion.p
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center text-sm font-medium text-red-500 bg-red-50 p-2 rounded-lg"
+            className="text-center text-sm font-medium text-red-600 bg-red-50/80 backdrop-blur-sm p-3 rounded-xl border border-red-100"
           >
             {localError}
           </motion.p>
         )}
 
+        {/* Gold Gradient Submit Button */}
         <button
           type="submit"
           disabled={isSubmitting}
-          className="group relative w-full overflow-hidden rounded-full bg-white py-4 text-sm font-bold text-neutral-900 shadow-[0_6px_20px_rgba(0,0,0,0.08)] transition-all duration-300 active:scale-95 border border-neutral-100/50"
+          className="group relative w-full overflow-hidden rounded-full bg-linear-to-r from-[#D4AF37] via-[#C5A028] to-[#D4AF37] py-3.5 text-sm font-semibold text-white shadow-[0_8px_32px_rgba(212,175,55,0.35),inset_0_1px_0_rgba(255,255,255,0.25)] transition-all duration-300 hover:shadow-[0_12px_40px_rgba(212,175,55,0.45)] active:scale-[0.98] disabled:opacity-70"
         >
-          {/* Base - Liquid White */}
-          <div className="absolute inset-0 bg-white" />
+          {/* Oil shimmer sweep */}
+          <span className="absolute inset-y-0 -left-[150%] w-[80%] bg-linear-to-r from-transparent via-white/50 to-transparent transition-transform duration-700 group-hover:translate-x-[420%]" />
           
-          {/* Inner Depth Shadow (Sharp, no blur) */}
-          <div className="absolute inset-0 shadow-[inset_0_-4px_8px_rgba(0,0,0,0.05),inset_0_2px_6px_rgba(255,255,255,0.9)] rounded-full" />
-            
-          {/* Top Highlight - Sharp Glint */}
-          <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white to-transparent opacity-90" />
-          
-          {/* Crisp Highlight Line */}
-          <div className="absolute left-6 right-6 top-[2px] h-[1px] bg-white opacity-100" />
+          {/* Top wet highlight */}
+          <span className="absolute inset-x-4 top-0.5 h-0.5 rounded-full bg-linear-to-r from-transparent via-white/50 to-transparent" />
 
-          {/* Hover: Oil Sheen Animation (Sharp Edges) */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-neutral-100/60 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out z-20" />
-
-          <span className="relative z-10 flex items-center justify-center gap-2 uppercase tracking-[0.2em] transition-colors">
-            {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin text-neutral-400" /> : "Sign In"}
+          <span className="relative z-10 flex items-center justify-center gap-2 uppercase tracking-[0.2em]">
+            {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Sign In"}
           </span>
         </button>
       </form>
 
-      <div className="text-center text-xs uppercase tracking-widest text-neutral-400 font-medium">
+      <div className="text-center text-xs tracking-wider text-[#2C2C2C]/50">
         Don&apos;t have an account?{" "}
-        <Link href="/register" className="text-neutral-900 hover:text-[#d4af37] transition-colors underline decoration-1 underline-offset-4">
+        <Link href="/register" className="font-medium text-[#D4AF37] hover:text-[#C5A028] transition-colors">
           Create Account
         </Link>
       </div>
