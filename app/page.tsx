@@ -94,7 +94,7 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-white/80 backdrop-blur-md"
+            className="fixed inset-0 z-100 flex items-center justify-center bg-white/80 backdrop-blur-md"
           >
             <div className="glass-strong relative flex w-[92%] max-w-md flex-col items-center gap-4 rounded-3xl p-8 text-center shadow-[0_30px_90px_rgba(0,0,0,0.12)]">
               <Loader2 className="h-11 w-11 animate-spin text-[#D4AF37]" />
@@ -135,11 +135,11 @@ export default function Home() {
                       initial={{ opacity: 0, y: 24 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.12 }}
-                      className="glass group relative aspect-[4/5] overflow-hidden rounded-3xl border border-white/40 p-6 shadow-[0_20px_50px_rgba(0,0,0,0.08)]"
+                      className="glass group relative aspect-4/5 overflow-hidden rounded-3xl border border-white/40 p-6 shadow-[0_20px_50px_rgba(0,0,0,0.08)]"
                     >
                       <div className="absolute -right-10 -top-10 h-36 w-36 rounded-full bg-[#D4AF37]/20 blur-3xl" />
                       <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                        <div className="animate-shimmer-sweep absolute inset-y-0 -left-[160%] w-[70%] bg-gradient-to-r from-transparent via-white/70 to-transparent" />
+                        <div className="animate-shimmer-sweep absolute inset-y-0 -left-[160%] w-[70%] bg-linear-to-r from-transparent via-white/70 to-transparent" />
                       </div>
                       <div className="relative z-10 flex h-full flex-col justify-between">
                         <p className="text-xs tracking-[0.2em] text-[#2C2C2C]/50">FEATURED DROP</p>
@@ -198,7 +198,7 @@ export default function Home() {
                     <DialogTrigger asChild>
                       <button className="group relative overflow-hidden rounded-full bg-[#2C2C2C] px-4 py-2 text-xs tracking-[0.18em] text-white md:px-6">
                         <span className="relative z-10">SIGN UP</span>
-                        <span className="animate-shimmer-sweep absolute inset-y-0 -left-[150%] w-[70%] bg-gradient-to-r from-transparent via-white/55 to-transparent" />
+                        <span className="animate-shimmer-sweep absolute inset-y-0 -left-[150%] w-[70%] bg-linear-to-r from-transparent via-white/55 to-transparent" />
                       </button>
                     </DialogTrigger>
                     <DialogContent className="w-full border-0 bg-transparent p-0 shadow-none sm:max-w-md">
@@ -214,63 +214,124 @@ export default function Home() {
               </div>
             </nav>
 
-            <section className="relative mx-auto flex min-h-screen w-[94%] max-w-7xl items-center pt-28 md:pt-24">
-              <div className="grid w-full gap-10 md:grid-cols-[1.1fr_0.9fr] md:items-center">
-                <motion.div style={{ y: heroY, opacity: heroOpacity }} className="space-y-6">
-                  <p className="inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/45 bg-white/60 px-4 py-1 text-xs tracking-[0.2em] text-[#2C2C2C]/75 backdrop-blur-sm">
-                    <Sparkles className="h-3.5 w-3.5 text-[#D4AF37]" />
-                    PREMIUM LIVING
-                  </p>
+            {/* ═══════════════ HERO — FULL-WIDTH IMMERSIVE ═══════════════ */}
+            <section className="relative min-h-screen w-full overflow-hidden">
+              {/* Background image with parallax */}
+              <motion.div
+                style={{ y: heroY }}
+                className="absolute inset-0 -top-20 bottom-0"
+              >
+                <Image
+                  src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=90&w=2400"
+                  alt="Luxury living room with classic furniture"
+                  fill
+                  priority
+                  quality={90}
+                  className="object-cover object-center saturate-[1.05]"
+                  sizes="100vw"
+                />
+              </motion.div>
 
-                  <h1 className="font-[Cormorant_Garamond] text-[2.8rem] leading-[0.9] text-[#2C2C2C] md:text-[5.6rem]">
-                    Sculpted Furniture
-                    <span className="block italic text-[#D4AF37]">for Timeless Homes</span>
-                  </h1>
+              {/* Soft white / sage overlay (15-20% opacity) */}
+              <div className="absolute inset-0 bg-[#FAF9F6]/18" />
 
-                  <p className="max-w-xl text-base leading-relaxed text-[#2C2C2C]/70 md:text-lg">
-                    Discover glossy finishes, artisan details, and statement pieces designed to make every corner
-                    look cinematic and feel lived in.
-                  </p>
+              {/* Vignette — subtle darkening at edges */}
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(0,0,0,0.25)_100%)]" />
 
-                  <div className="flex flex-wrap items-center gap-3 pt-2">
-                    <Link
-                      href="/shop"
-                      className="group relative overflow-hidden rounded-full bg-[#2C2C2C] px-7 py-3 text-xs tracking-[0.22em] text-white"
-                    >
-                      <span className="relative z-10">EXPLORE COLLECTION</span>
-                      <span className="animate-shimmer-sweep absolute inset-y-0 -left-[140%] w-[55%] bg-gradient-to-r from-transparent via-white/50 to-transparent" />
-                    </Link>
+              {/* Glossy light-catch overlay — moves with oil-sheen animation */}
+              <div className="animate-oil-sheen absolute inset-0 bg-[linear-gradient(115deg,transparent_20%,rgba(255,255,255,0.22)_40%,rgba(212,175,55,0.08)_50%,transparent_70%)] pointer-events-none" />
 
-                    <a
-                      href="#featured"
-                      className="rounded-full border border-[#2C2C2C]/20 bg-white/70 px-7 py-3 text-xs tracking-[0.22em] text-[#2C2C2C] backdrop-blur-sm transition hover:bg-white"
-                    >
-                      VIEW HIGHLIGHTS
-                    </a>
-                  </div>
-                </motion.div>
+              {/* Subtle noise grain for texture */}
+              <div className="absolute inset-0 opacity-[0.03] mix-blend-multiply bg-[#D4AF37] pointer-events-none" />
 
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.96, y: 30 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  transition={{ duration: 0.8 }}
-                  className="glass-strong group relative aspect-[4/5] overflow-hidden rounded-[2rem] border border-white/60 shadow-[0_35px_80px_rgba(0,0,0,0.12)]"
+              {/* Bottom fade into page background */}
+              <div className="absolute inset-x-0 bottom-0 h-40 bg-linear-to-t from-[#FAF9F6] to-transparent" />
+
+              {/* Hero content — centered */}
+              <motion.div
+                style={{ opacity: heroOpacity }}
+                className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 text-center"
+              >
+                {/* Badge */}
+                <motion.p
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.1 }}
+                  className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/50 bg-white/40 px-5 py-1.5 text-[10px] tracking-[0.28em] text-white backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.06)]"
                 >
-                  <Image
-                    src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&q=80&w=1600"
-                    alt="Premium living room interior"
-                    fill
-                    priority
-                    className="object-cover transition duration-700 group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, 40vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-white/20" />
-                  <div className="glass absolute bottom-4 left-4 right-4 rounded-2xl p-4">
-                    <p className="text-xs tracking-[0.18em] text-[#2C2C2C]/60">LATEST CURATION</p>
-                    <p className="font-[Cormorant_Garamond] text-2xl">The Ivory Light Collection</p>
+                  <Sparkles className="h-3.5 w-3.5 text-[#D4AF37]" />
+                  PREMIUM HANDCRAFTED FURNITURE
+                </motion.p>
+
+                {/* Headline */}
+                <motion.h1
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, delay: 0.25 }}
+                  className="max-w-4xl font-[Cormorant_Garamond] text-[2.6rem] leading-[0.92] text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.25)] md:text-[5.8rem]"
+                >
+                  Timeless Elegance
+                  <span className="block italic text-[#D4AF37] drop-shadow-[0_2px_8px_rgba(212,175,55,0.35)]">
+                    Meets Modern Luxury
+                  </span>
+                </motion.h1>
+
+                {/* Sub-copy */}
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.45 }}
+                  className="mt-5 max-w-2xl text-base leading-relaxed text-white/85 drop-shadow-[0_1px_6px_rgba(0,0,0,0.2)] md:text-lg"
+                >
+                  Discover exquisite collections where classic craftsmanship, glossy finishes, and
+                  artisan detailing transform every room into a work of art.
+                </motion.p>
+
+                {/* CTA buttons */}
+                <motion.div
+                  initial={{ opacity: 0, y: 18 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.6 }}
+                  className="mt-8 flex flex-wrap items-center justify-center gap-4"
+                >
+                  {/* Primary CTA — glossy pill */}
+                  <Link
+                    href="/shop"
+                    className="group relative overflow-hidden rounded-full border border-[#D4AF37]/60 bg-[#D4AF37] px-8 py-3.5 text-xs font-semibold tracking-[0.24em] text-white shadow-[0_8px_30px_rgba(212,175,55,0.35)] transition-transform duration-300 hover:scale-105 hover:shadow-[0_12px_40px_rgba(212,175,55,0.45)]"
+                  >
+                    <span className="relative z-10">EXPLORE COLLECTION</span>
+                    {/* Shimmer sweep on hover */}
+                    <span className="absolute inset-y-0 -left-[150%] w-[70%] bg-linear-to-r from-transparent via-white/50 to-transparent transition-transform duration-700 group-hover:translate-x-[450%]" />
+                    {/* Wet top highlight */}
+                    <span className="absolute inset-x-2 top-0.5 h-0.5 rounded-full bg-white/50" />
+                  </Link>
+
+                  {/* Secondary CTA — glass pill */}
+                  <a
+                    href="#featured"
+                    className="rounded-full border border-white/40 bg-white/15 px-8 py-3.5 text-xs tracking-[0.22em] text-white backdrop-blur-md transition-all duration-300 hover:bg-white/30 hover:shadow-[0_8px_24px_rgba(255,255,255,0.12)]"
+                  >
+                    VIEW HIGHLIGHTS
+                  </a>
+                </motion.div>
+
+                {/* Scroll indicator */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1.2, duration: 0.8 }}
+                  className="absolute bottom-10 left-1/2 -translate-x-1/2"
+                >
+                  <div className="flex flex-col items-center gap-2">
+                    <span className="text-[9px] tracking-[0.3em] text-white/50">SCROLL</span>
+                    <motion.div
+                      animate={{ y: [0, 8, 0] }}
+                      transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
+                      className="h-8 w-px bg-linear-to-b from-white/60 to-transparent"
+                    />
                   </div>
                 </motion.div>
-              </div>
+              </motion.div>
             </section>
 
             <section id="featured" className="mx-auto w-[94%] max-w-7xl py-16 md:py-24">
@@ -299,7 +360,7 @@ export default function Home() {
                     viewport={{ once: true, amount: 0.25 }}
                     className="glass group relative overflow-hidden rounded-3xl border border-white/45"
                   >
-                    <div className="relative aspect-[4/5] overflow-hidden">
+                    <div className="relative aspect-4/5 overflow-hidden">
                       <Image
                         src={item.image}
                         alt={item.title}
@@ -307,7 +368,7 @@ export default function Home() {
                         className="object-cover transition duration-700 group-hover:scale-105"
                         sizes="(max-width: 768px) 100vw, 33vw"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                      <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent" />
                     </div>
 
                     <div className="space-y-3 p-5">
