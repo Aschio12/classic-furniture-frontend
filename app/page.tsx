@@ -700,41 +700,87 @@ export default function Home() {
 
                     {/* Floating stat badges */}
                     <div className="absolute bottom-5 left-5 z-10 flex gap-3">
-                      <div className="glass rounded-xl px-4 py-2.5 text-center shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
-                        <p className="font-[Cormorant_Garamond] text-2xl font-semibold text-[#2C2C2C]">500+</p>
-                        <p className="text-[9px] tracking-[0.2em] text-[#2C2C2C]/55">PIECES SOLD</p>
-                      </div>
-                      <div className="glass rounded-xl px-4 py-2.5 text-center shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
-                        <p className="font-[Cormorant_Garamond] text-2xl font-semibold text-[#D4AF37]">4.9</p>
-                        <p className="text-[9px] tracking-[0.2em] text-[#2C2C2C]/55">AVG RATING</p>
-                      </div>
+                      {[
+                        { value: "500+", label: "PIECES SOLD", color: "text-[#2C2C2C]" },
+                        { value: "4.9", label: "AVG RATING", color: "text-[#D4AF37]" },
+                      ].map((stat, i) => (
+                        <motion.div
+                          key={stat.label}
+                          initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                          transition={{ duration: 0.5, delay: 0.6 + i * 0.15, type: "spring", stiffness: 120 }}
+                          viewport={{ once: true }}
+                          className="glass rounded-xl px-4 py-2.5 text-center shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
+                        >
+                          <p className={`font-[Cormorant_Garamond] text-2xl font-semibold ${stat.color}`}>{stat.value}</p>
+                          <p className="text-[9px] tracking-[0.2em] text-[#2C2C2C]/55">{stat.label}</p>
+                        </motion.div>
+                      ))}
                     </div>
                   </div>
 
                   {/* Right — Content */}
                   <div className="flex flex-col justify-center space-y-6 p-8 md:p-12 lg:p-16">
-                    <p className="text-[10px] tracking-[0.32em] text-[#D4AF37]">ABOUT CLASSIC FURNITURE</p>
+                    <motion.p
+                      initial={{ opacity: 0, x: 20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: 0.1 }}
+                      viewport={{ once: true }}
+                      className="text-[10px] tracking-[0.32em] text-[#D4AF37]"
+                    >
+                      ABOUT CLASSIC FURNITURE
+                    </motion.p>
 
-                    <h2 className="font-[Cormorant_Garamond] text-4xl leading-[0.95] md:text-[3.4rem]">
+                    <motion.h2
+                      initial={{ opacity: 0, x: 24 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.6, delay: 0.2 }}
+                      viewport={{ once: true }}
+                      className="font-[Cormorant_Garamond] text-4xl leading-[0.95] md:text-[3.4rem]"
+                    >
                       Designed to Shine.
                       <span className="block italic text-[#D4AF37]">Built to Endure.</span>
-                    </h2>
+                    </motion.h2>
 
-                    <p className="max-w-lg text-sm leading-relaxed text-[#2C2C2C]/68 md:text-base">
+                    <motion.p
+                      initial={{ opacity: 0, x: 20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: 0.35 }}
+                      viewport={{ once: true }}
+                      className="max-w-lg text-sm leading-relaxed text-[#2C2C2C]/68 md:text-base"
+                    >
                       We blend contemporary sensibility with timeless craftsmanship. Every collection is curated to
                       create beautiful spaces that feel elevated, warm, and unmistakably yours.
-                    </p>
+                    </motion.p>
 
-                    <p className="max-w-lg text-sm leading-relaxed text-[#2C2C2C]/55">
+                    <motion.p
+                      initial={{ opacity: 0, x: 20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: 0.45 }}
+                      viewport={{ once: true }}
+                      className="max-w-lg text-sm leading-relaxed text-[#2C2C2C]/55"
+                    >
                       From ethically sourced hardwoods to hand-finished surfaces, our process honors
                       tradition while embracing modern design. This is furniture made to be lived in — and loved.
-                    </p>
+                    </motion.p>
 
                     {/* Wet line */}
-                    <div className="wet-line w-full opacity-50" />
+                    <motion.div
+                      initial={{ scaleX: 0, opacity: 0 }}
+                      whileInView={{ scaleX: 1, opacity: 0.5 }}
+                      transition={{ duration: 0.7, delay: 0.55 }}
+                      viewport={{ once: true }}
+                      className="wet-line w-full origin-left"
+                    />
 
                     {/* CTA row */}
-                    <div className="flex flex-wrap items-center gap-4 pt-2">
+                    <motion.div
+                      initial={{ opacity: 0, y: 16 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: 0.65 }}
+                      viewport={{ once: true }}
+                      className="flex flex-wrap items-center gap-4 pt-2"
+                    >
                       <Link
                         href="/shop"
                         className="group relative overflow-hidden rounded-full border border-[#D4AF37]/50 bg-[#D4AF37] px-8 py-3.5 text-xs font-semibold tracking-[0.22em] text-white shadow-[0_8px_28px_rgba(212,175,55,0.3)] transition-transform duration-300 hover:scale-105 hover:shadow-[0_12px_36px_rgba(212,175,55,0.4)]"
@@ -750,7 +796,7 @@ export default function Home() {
                       >
                         BROWSE CATALOG →
                       </Link>
-                    </div>
+                    </motion.div>
                   </div>
                 </div>
               </motion.div>
