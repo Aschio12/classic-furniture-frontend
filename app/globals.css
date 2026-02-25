@@ -183,6 +183,8 @@
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
   
   body {
@@ -199,6 +201,8 @@
   
   input, button, textarea, select {
     font: inherit;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
   
   p, h1, h2, h3, h4, h5, h6 {
@@ -208,11 +212,16 @@
   a {
     color: inherit;
     text-decoration: inherit;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
   
   button {
     background: none;
     border: none;
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
     cursor: pointer;
   }
 }
@@ -245,14 +254,118 @@
   100% { background-position: 200% 0; }
 }
 
+/* Hero liquid orb float */
+@keyframes liquid-float {
+  0%, 100% { 
+    transform: translate(0, 0) scale(1);
+    opacity: 0.6;
+  }
+  25% { 
+    transform: translate(15px, -25px) scale(1.05);
+    opacity: 0.75;
+  }
+  50% { 
+    transform: translate(-10px, -15px) scale(0.95);
+    opacity: 0.55;
+  }
+  75% { 
+    transform: translate(-20px, 10px) scale(1.02);
+    opacity: 0.7;
+  }
+}
+
+/* Hero prismatic sweep - dramatic rainbow oil effect */
+@keyframes hero-prismatic {
+  0% { 
+    background-position: 0% 50%;
+    filter: hue-rotate(0deg);
+  }
+  50% { 
+    background-position: 100% 50%;
+    filter: hue-rotate(15deg);
+  }
+  100% { 
+    background-position: 0% 50%;
+    filter: hue-rotate(0deg);
+  }
+}
+
+/* Hero glow pulse */
+@keyframes hero-glow {
+  0%, 100% { 
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.4), 0 0 40px rgba(212, 175, 55, 0.2);
+  }
+  50% { 
+    text-shadow: 0 0 30px rgba(212, 175, 55, 0.6), 0 0 60px rgba(212, 175, 55, 0.3);
+  }
+}
+
+.animate-liquid-float {
+  animation: liquid-float 12s ease-in-out infinite;
+}
+
+.animate-liquid-float-delayed {
+  animation: liquid-float 14s ease-in-out infinite;
+  animation-delay: -4s;
+}
+
+.animate-liquid-float-slow {
+  animation: liquid-float 18s ease-in-out infinite;
+  animation-delay: -8s;
+}
+
+.animate-hero-prismatic {
+  background-size: 200% 200%;
+  animation: hero-prismatic 15s ease-in-out infinite;
+}
+
+.animate-hero-glow {
+  animation: hero-glow 3s ease-in-out infinite;
+}
+
 /* Smooth reveal from below */
 @keyframes reveal-up {
   from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Liquid ripple pulse - subtle expanding glow */
+@keyframes liquid-pulse {
+  0%, 100% { 
+    box-shadow: 
+      0 0 30px rgba(212, 175, 55, 0.08),
+      0 0 60px rgba(212, 175, 55, 0.04);
+  }
+  50% { 
+    box-shadow: 
+      0 0 50px rgba(212, 175, 55, 0.12),
+      0 0 100px rgba(212, 175, 55, 0.06);
+  }
+}
+
+/* Prismatic shift - subtle color shift */
+@keyframes prismatic-shift {
+  0%, 100% { 
+    filter: hue-rotate(0deg) saturate(1);
+  }
+  33% { 
+    filter: hue-rotate(5deg) saturate(1.05);
+  }
+  66% { 
+    filter: hue-rotate(-5deg) saturate(1.02);
+  }
+}
+
 .animate-shimmer-sweep {
   animation: shimmer-sweep 3s ease-in-out infinite;
+}
+
+.animate-liquid-pulse {
+  animation: liquid-pulse 4s ease-in-out infinite;
+}
+
+.animate-prismatic {
+  animation: prismatic-shift 10s ease-in-out infinite;
 }
 .animate-gentle-float {
   animation: gentle-float 6s ease-in-out infinite;
@@ -265,24 +378,162 @@
   animation: oil-sheen 8s ease-in-out infinite;
 }
 
-/* Glass morphism card utility */
+/* ═══════════════ ENHANCED GLASS MORPHISM ═══════════════ */
+
+/* Base glass - subtle, clean */
 .glass {
-  background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(20px) saturate(1.4);
-  -webkit-backdrop-filter: blur(20px) saturate(1.4);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-}
-.glass-strong {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(30px) saturate(1.6);
-  -webkit-backdrop-filter: blur(30px) saturate(1.6);
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.58);
+  backdrop-filter: blur(24px) saturate(1.5) contrast(1.02);
+  -webkit-backdrop-filter: blur(24px) saturate(1.5) contrast(1.02);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 
+    0 4px 24px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.2);
 }
 
-/* Wet surface reflection line */
+/* Strong glass - more prominent */
+.glass-strong {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(32px) saturate(1.7) contrast(1.03);
+  -webkit-backdrop-filter: blur(32px) saturate(1.7) contrast(1.03);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow: 
+    0 8px 40px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.25);
+}
+
+/* Oily glass - maximum wet/juicy effect */
+.glass-oily {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.65) 0%,
+    rgba(255, 255, 255, 0.55) 50%,
+    rgba(255, 255, 255, 0.68) 100%
+  );
+  backdrop-filter: blur(40px) saturate(1.9) contrast(1.05) brightness(1.02);
+  -webkit-backdrop-filter: blur(40px) saturate(1.9) contrast(1.05) brightness(1.02);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 
+    0 12px 48px rgba(0, 0, 0, 0.08),
+    0 4px 16px rgba(212, 175, 55, 0.04),
+    inset 0 2px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -2px 4px rgba(255, 255, 255, 0.15);
+}
+
+/* Oil slick prismatic overlay - adds rainbow/petroleum effect */
+.oil-slick::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    125deg,
+    transparent 0%,
+    rgba(255, 220, 180, 0.06) 15%,
+    rgba(212, 175, 55, 0.08) 25%,
+    rgba(180, 200, 255, 0.05) 40%,
+    rgba(200, 180, 220, 0.04) 55%,
+    rgba(212, 175, 55, 0.06) 70%,
+    transparent 100%
+  );
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 1;
+}
+
+/* Animated oil slick with shimmer */
+.oil-slick-animated::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    125deg,
+    transparent 0%,
+    rgba(255, 220, 180, 0.08) 15%,
+    rgba(212, 175, 55, 0.1) 25%,
+    rgba(180, 200, 255, 0.06) 40%,
+    rgba(200, 180, 220, 0.05) 55%,
+    rgba(212, 175, 55, 0.08) 70%,
+    transparent 100%
+  );
+  background-size: 200% 200%;
+  animation: oil-slick-shift 12s ease-in-out infinite;
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 1;
+}
+
+@keyframes oil-slick-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Wet shine - horizontal reflection sweep */
+.wet-shine {
+  position: relative;
+  overflow: hidden;
+}
+.wet-shine::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4) 30%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0.4) 70%,
+    transparent
+  );
+  transform: skewX(-20deg);
+  pointer-events: none;
+  z-index: 10;
+}
+.wet-shine:hover::after {
+  animation: wet-shine-sweep 0.8s ease-out forwards;
+}
+
+@keyframes wet-shine-sweep {
+  0% { left: -100%; }
+  100% { left: 150%; }
+}
+
+/* Juicy glow - subtle ambient glow effect */
+.juicy-glow {
+  box-shadow: 
+    0 0 40px rgba(212, 175, 55, 0.08),
+    0 0 80px rgba(212, 175, 55, 0.04),
+    0 20px 60px rgba(0, 0, 0, 0.08);
+}
+
+/* Wet surface reflection line - enhanced */
 .wet-line {
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent);
+  background: linear-gradient(
+    90deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.5) 20%,
+    rgba(255, 255, 255, 0.95) 50%,
+    rgba(255, 255, 255, 0.5) 80%,
+    transparent 100%
+  );
   height: 1px;
+}
+
+/* Thick wet line with gold tint */
+.wet-line-gold {
+  background: linear-gradient(
+    90deg, 
+    transparent 0%, 
+    rgba(212, 175, 55, 0.2) 20%,
+    rgba(212, 175, 55, 0.5) 50%,
+    rgba(212, 175, 55, 0.2) 80%,
+    transparent 100%
+  );
+  height: 2px;
 }
 
 /* Scrollbar styling for consistency */
