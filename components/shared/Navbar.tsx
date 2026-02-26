@@ -30,7 +30,7 @@ const navLinks = [
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { user } = useAuthStore();
+  const { user, logout } = useAuthStore();
   const { itemCount } = useCartStore();
   const { unreadCount } = useNotificationStore();
 
@@ -116,7 +116,7 @@ export default function Navbar() {
                   <DropdownMenuItem>Orders</DropdownMenuItem>
                   <DropdownMenuItem>Settings</DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem className="text-red-600">Sign Out</DropdownMenuItem>
+                  <DropdownMenuItem className="text-red-600" onClick={() => logout()}>Sign Out</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </>
