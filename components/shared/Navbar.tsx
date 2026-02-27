@@ -113,7 +113,7 @@ export default function Navbar() {
                   <DropdownMenuLabel>Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
-                    <Link href="/dashboard" className="w-full">
+                    <Link href="/profile" className="w-full">
                       My Profile
                     </Link>
                   </DropdownMenuItem>
