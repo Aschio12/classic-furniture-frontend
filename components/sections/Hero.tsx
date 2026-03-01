@@ -52,13 +52,13 @@ export default function Hero() {
       onMouseMove={handleMouseMove}
     >
       {/* 
-        Background Image with 'Slow-Pan' effect.
+        Background Image - Ultra crisp, high-quality luxury furniture
       */}
       <motion.div
-        initial={{ scale: 1.1, x: "0%" }}
-        animate={{ scale: 1.15, x: "-5%" }}
+        initial={{ scale: 1.05, x: "0%" }}
+        animate={{ scale: 1.08, x: "-3%" }}
         transition={{
-          duration: 20,
+          duration: 25,
           ease: "linear",
           repeat: Infinity,
           repeatType: "mirror"
@@ -66,37 +66,33 @@ export default function Hero() {
         className="absolute inset-0 z-0"
       >
         <Image
-          src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=2670&auto=format&fit=crop"
-          alt="Luxury Salon Furniture Morning"
+          src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=95&w=2800&auto=format&fit=crop"
+          alt="Luxury Designer Furniture Showroom"
           fill
-          className="object-cover"
+          className="object-cover object-center"
           priority
+          quality={95}
         />
       </motion.div>
 
-      {/* The 'Oily' Effect Overlay - Adjusted for Glossy/Wet Morning Vibe */}
+      {/* Crisp Oily Glass Overlay - Sharp, wet-look gradient */}
       <div 
-        className="absolute inset-0 z-10 bg-linear-to-r from-neutral-50/60 via-white/5 to-transparent"
-        style={{
-             backdropFilter: "saturate(1.4) contrast(1.1) brightness(1.05)"
-        }}
+        className="absolute inset-0 z-10 bg-[linear-gradient(135deg,rgba(255,255,255,0.08)_0%,transparent_30%,rgba(212,175,55,0.04)_60%,transparent_100%)]"
       />
       
-      {/* Subtle Golden Morning Shine Fixed Layer */}
+      {/* Metallic sheen accent - top-right gold light */}
       <div 
-        className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_top_right,rgba(255,245,230,0.3)_0%,transparent_60%)] mix-blend-overlay"
+        className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_75%_25%,rgba(212,175,55,0.15)_0%,transparent_50%)] mix-blend-overlay"
       />
 
-       {/* Interactive 'Liquid Light' Cursor Follower 
-           Creates a localized spot of high saturation/brightness where the user looks
-       */}
+       {/* Interactive 'Liquid Light' Cursor Follower - crisp oily highlight */}
       <motion.div
-        className="pointer-events-none absolute z-10 h-150 w-150 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-60 mix-blend-overlay"
+        className="pointer-events-none absolute z-10 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-40 mix-blend-screen"
         style={{
             left: smoothX,
             top: smoothY,
-            background: "radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.2) 40%, transparent 70%)",
-            filter: "blur(40px)",
+            background: "radial-gradient(circle, rgba(255,255,255,0.6) 0%, rgba(212,175,55,0.15) 35%, transparent 65%)",
+            filter: "blur(50px)",
         }}
       />
       

@@ -56,18 +56,24 @@ export default function Navbar() {
         y: isLandingPage ? navY : 0,
         pointerEvents: isLandingPage ? navPointerEvents : "auto"
       }}
-      className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-white/70 backdrop-blur-md"
+      className="fixed inset-x-0 top-0 z-50 border-b border-white/20 bg-white/60 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.06)]"
     >
       <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-6">
-        <Link href="/" className="text-xl font-bold tracking-[0.2em] text-neutral-900">
-          LUXECRAFT
+        <Link href="/" className="group relative flex items-center gap-2.5">
+          <div className="relative flex h-9 w-9 items-center justify-center rounded-lg bg-[linear-gradient(135deg,#2C2C2C_0%,#1a1a1a_100%)] shadow-[0_4px_12px_rgba(212,175,55,0.2)] transition-all duration-300 group-hover:shadow-[0_6px_20px_rgba(212,175,55,0.35)]">
+            <span className="font-[Cormorant_Garamond] text-lg font-bold text-[#D4AF37]">CF</span>
+            <div className="absolute inset-0 rounded-lg bg-[linear-gradient(135deg,transparent,rgba(212,175,55,0.1))] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+          </div>
+          <span className="text-xl font-bold tracking-[0.15em] text-neutral-900 transition-colors duration-300 group-hover:text-[#D4AF37]">
+            LUXECRAFT
+          </span>
         </Link>
         
         {showNavLinks && (
           <nav className="hidden items-center gap-8 text-sm font-medium text-neutral-600 md:flex">
             {navLinks.map((link) => (
-              <motion.div key={link.href} whileHover="hover" className="relative">
-                <Link href={link.href} className="transition-colors hover:text-neutral-900">
+              <motion.div key={link.href} whileHover="hover" className="group relative">
+                <Link href={link.href} className="text-neutral-700 transition-colors duration-300 hover:text-neutral-900">
                   {link.label}
                 </Link>
                 <motion.span
@@ -76,7 +82,8 @@ export default function Navbar() {
                     initial: { scaleX: 0, opacity: 0 },
                   }}
                   initial="initial"
-                  className="absolute -bottom-1 left-0 h-0.5 w-full origin-left bg-neutral-900"
+                  transition={{ duration: 0.3 }}
+                  className="absolute -bottom-1 left-0 h-[2px] w-full origin-left bg-[linear-gradient(90deg,#D4AF37_0%,#C5A028_100%)] shadow-[0_2px_8px_rgba(212,175,55,0.4)]"
                 />
               </motion.div>
             ))}

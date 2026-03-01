@@ -22,7 +22,7 @@ const FEATURED_ITEMS = [
     category: "Living Room",
     description: "Curved silhouette, buttery upholstery, and cloud-like comfort for modern gatherings.",
     image:
-      "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&q=80&w=1400",
+      "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?q=95&w=2000&auto=format&fit=crop",
   },
   {
     id: 2,
@@ -30,7 +30,7 @@ const FEATURED_ITEMS = [
     category: "Bedroom",
     description: "Soft panel detailing and premium wood framing designed for serene, elegant nights.",
     image:
-      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&q=80&w=1400",
+      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=95&w=2000&auto=format&fit=crop",
   },
   {
     id: 3,
@@ -38,7 +38,7 @@ const FEATURED_ITEMS = [
     category: "Dining",
     description: "Hand-finished surfaces and sculpted lines that elevate every meal into an experience.",
     image:
-      "https://images.unsplash.com/photo-1617806118233-18e1de247200?auto=format&fit=crop&q=80&w=1400",
+      "https://images.unsplash.com/photo-1617806118233-18e1de247200?q=95&w=2000&auto=format&fit=crop",
   },
 ];
 
@@ -284,54 +284,51 @@ export default function Home() {
 
             {/* ═══════════════ HERO — FULL-WIDTH IMMERSIVE ═══════════════ */}
             <section className="relative min-h-screen w-full overflow-hidden">
-              {/* Background image with parallax */}
+              {/* Background image with parallax - Ultra HQ crisp image */}
               <motion.div
                 style={{ y: heroY }}
                 className="absolute inset-0 -top-20 bottom-0"
               >
                 <Image
-                  src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=90&w=2400"
-                  alt="Luxury living room with classic furniture"
+                  src="https://images.unsplash.com/photo-1540932239986-30128078f3c5?q=95&w=2800&auto=format&fit=crop"
+                  alt="Luxury designer living room with premium furniture"
                   fill
                   priority
-                  quality={90}
-                  className="object-cover object-center saturate-[1.08]"
+                  quality={95}
+                  className="object-cover object-center"
                   sizes="100vw"
                 />
               </motion.div>
 
-              {/* Soft white / sage overlay (15-20% opacity) */}
-              <div className="absolute inset-0 bg-[#FAF9F6]/15" />
+              {/* Crisp oily glass overlay - minimal, sharp gradient */}
+              <div className="absolute inset-0 bg-[linear-gradient(125deg,rgba(250,249,246,0.25)_0%,transparent_40%,rgba(212,175,55,0.06)_75%)]" />
 
-              {/* Vignette — subtle darkening at edges */}
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(0,0,0,0.35)_100%)]" />
+              {/* Vignette — softer edges */}
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(0,0,0,0.25)_100%)]" />
 
-              {/* Primary prismatic oil sweep — dramatic rainbow effect */}
-              <div className="animate-hero-prismatic absolute inset-0 bg-[linear-gradient(125deg,transparent_0%,rgba(255,220,180,0.12)_15%,rgba(212,175,55,0.15)_25%,rgba(180,200,255,0.08)_40%,rgba(220,180,240,0.06)_55%,rgba(212,175,55,0.1)_70%,transparent_100%)] pointer-events-none" />
+              {/* Primary prismatic oil sweep — sharp, crisp rainbow shimmer */}
+              <div className="animate-hero-prismatic absolute inset-0 bg-[linear-gradient(125deg,transparent_0%,rgba(255,255,255,0.08)_20%,rgba(212,175,55,0.12)_35%,rgba(255,255,255,0.06)_50%,rgba(212,175,55,0.08)_65%,transparent_100%)] pointer-events-none mix-blend-overlay" />
 
-              {/* Secondary oil-sheen sweep — moving highlight */}
-              <div className="animate-oil-sheen absolute inset-0 bg-[linear-gradient(115deg,transparent_20%,rgba(255,255,255,0.28)_38%,rgba(212,175,55,0.12)_48%,rgba(255,255,255,0.15)_58%,transparent_75%)] pointer-events-none" />
+              {/* Secondary oil-sheen sweep — crisp metallic highlight */}
+              <div className="animate-oil-sheen absolute inset-0 bg-[linear-gradient(115deg,transparent_25%,rgba(255,255,255,0.35)_42%,rgba(212,175,55,0.15)_50%,rgba(255,255,255,0.2)_58%,transparent_75%)] pointer-events-none" />
 
-              {/* Floating liquid orbs — creates depth and movement */}
+              {/* Floating liquid orbs — crisp depth accents */}
               <div className="absolute inset-0 pointer-events-none overflow-hidden">
                 {/* Large gold orb — top left */}
-                <div className="animate-liquid-float absolute -left-20 top-1/4 h-96 w-96 rounded-full bg-[radial-gradient(circle,rgba(212,175,55,0.15)_0%,transparent_70%)] blur-3xl" />
-                
-                {/* Blue-ish orb — top right */}
-                <div className="animate-liquid-float-delayed absolute -right-32 top-1/3 h-80 w-80 rounded-full bg-[radial-gradient(circle,rgba(180,200,255,0.12)_0%,transparent_70%)] blur-3xl" />
+                <div className="animate-liquid-float absolute -left-20 top-1/4 h-96 w-96 rounded-full bg-[radial-gradient(circle,rgba(212,175,55,0.12)_0%,transparent_65%)] blur-2xl" />
                 
                 {/* Warm orb — center */}
-                <div className="animate-liquid-float-slow absolute left-1/2 top-1/2 h-120 w-120 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,220,180,0.1)_0%,transparent_60%)] blur-3xl" />
+                <div className="animate-liquid-float-slow absolute left-1/2 top-1/2 h-120 w-120 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,230,200,0.08)_0%,transparent_60%)] blur-2xl" />
                 
-                {/* Small accent orb — bottom */}
-                <div className="animate-liquid-float absolute bottom-1/4 left-1/3 h-64 w-64 rounded-full bg-[radial-gradient(circle,rgba(212,175,55,0.12)_0%,transparent_70%)] blur-2xl" />
+                {/* Small accent orb — bottom right */}
+                <div className="animate-liquid-float absolute bottom-1/4 right-1/4 h-64 w-64 rounded-full bg-[radial-gradient(circle,rgba(212,175,55,0.1)_0%,transparent_70%)] blur-xl" />
               </div>
 
-              {/* Wet highlight line — horizontal accent */}
-              <div className="absolute left-0 right-0 top-1/3 h-px bg-linear-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
+              {/* Crisp wet highlight line — sharp horizontal accent */}
+              <div className="absolute left-0 right-0 top-1/3 h-[1.5px] bg-linear-to-r from-transparent via-white/30 to-transparent pointer-events-none shadow-[0_0_8px_rgba(255,255,255,0.3)]" />
 
-              {/* Subtle noise grain for texture */}
-              <div className="absolute inset-0 opacity-[0.025] mix-blend-overlay bg-[url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E')] pointer-events-none" />
+              {/* Subtle film grain for texture */}
+              <div className="absolute inset-0 opacity-[0.015] mix-blend-overlay bg-[url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E')] pointer-events-none" />
 
               {/* Bottom fade into page background */}
               <div className="absolute inset-x-0 bottom-0 h-48 bg-linear-to-t from-[#FAF9F6] via-[#FAF9F6]/80 to-transparent" />
