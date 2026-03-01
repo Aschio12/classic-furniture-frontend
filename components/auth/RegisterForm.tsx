@@ -225,12 +225,15 @@ export default function RegisterForm() {
 
       <div className="text-center text-xs tracking-wider text-[#2C2C2C]/50">
         Already have an account?{" "}
-        <Link 
-            href="/login" 
+        <button 
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = "/login";
+            }}
             className="font-medium text-[#D4AF37] hover:text-[#C5A028] transition-colors"
         >
           Sign In
-        </Link>
+        </button>
       </div>
     </div>
   );
