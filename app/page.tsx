@@ -38,7 +38,7 @@ const FEATURED_ITEMS = [
     category: "Dining",
     description: "Hand-finished surfaces and sculpted lines that elevate every meal into an experience.",
     image:
-      "https://images.unsplash.com/photo-1596205593845-a7b6cf3c1def?q=100&w=2400&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1617806118233-18e1de247200?q=100&w=2400&auto=format&fit=crop",
   },
 ];
 
@@ -275,25 +275,43 @@ export default function Home() {
             </motion.nav>
 
             {/* ═══════════════ HERO — FULL-WIDTH IMMERSIVE ═══════════════ */}
-            <section className="relative min-h-screen w-full overflow-hidden">
+            <section className="group relative min-h-screen w-full overflow-hidden cursor-default">
               {/* Background image - Natural, high quality, unaltered to preserve originality */}
-              <div className="absolute inset-0">
+              <div className="absolute inset-0 transition-transform duration-[2000ms] ease-out group-hover:scale-105">
                 <Image
-                  src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=100&w=3200&auto=format&fit=crop"
+                  src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=100&w=3200&auto=format&fit=crop"
                   alt="Dark luxury modern interior with premium furniture"
                   fill
                   priority
                   quality={100}
-                  className="object-cover object-center brightness-[0.8]"
+                  className="object-cover object-center"
                   sizes="100vw"
                 />
               </div>
 
               {/* Soft, natural gradient overlay to ensure text readability without ruining the image */}
-              <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(10,11,15,0.1)_0%,rgba(10,11,15,0.3)_60%,rgba(10,11,15,0.8)_100%)]" />
+              <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(10,11,15,0.4)_0%,rgba(10,11,15,0.2)_60%,rgba(10,11,15,0.8)_100%)] transition-opacity duration-1000 group-hover:opacity-60" />
 
               {/* Subtle natural vignette */}
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(0,0,0,0.5)_100%)] pointer-events-none" />
+
+              {/* ─ HOVER EFFECTS: ASTONISHING GLASSY / OILY VIBE ─ */}
+              {/* These glass and oily light reflections fade in beautifully when mouse enters the hero area */}
+              <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-1000 ease-in-out group-hover:opacity-100">
+                {/* Dark oily glass overlay */}
+                <div className="absolute inset-0 bg-[linear-gradient(125deg,rgba(0,0,0,0.3)_0%,transparent_45%,rgba(212,175,55,0.15)_80%)] mix-blend-multiply" />
+                
+                {/* Sharp Oily prismatic sweep — extremely crisp gloss */}
+                <div className="animate-hero-prismatic absolute inset-0 bg-[linear-gradient(125deg,transparent_0%,rgba(255,255,255,0.12)_15%,rgba(212,175,55,0.25)_30%,rgba(255,255,255,0.12)_45%,rgba(212,175,55,0.2)_60%,transparent_100%)] mix-blend-color-dodge" />
+                
+                {/* Wet glass sheen — intense sharp lighting */}
+                <div className="animate-oil-sheen absolute inset-0 bg-[linear-gradient(115deg,transparent_20%,rgba(255,255,255,0.5)_35%,rgba(212,175,55,0.35)_45%,rgba(255,255,255,0.35)_55%,transparent_75%)] mix-blend-overlay" />
+                
+                {/* Sharp lighting flares — pure glass reflection */}
+                <div className="absolute -left-[10%] top-1/4 h-[1px] w-[50%] rotate-45 bg-linear-to-r from-transparent via-white/50 to-transparent shadow-[0_0_20px_rgba(255,255,255,0.8)] mix-blend-screen" />
+                <div className="absolute left-[30%] top-[40%] h-[2px] w-[30%] -rotate-12 bg-linear-to-r from-transparent via-[#D4AF37]/60 to-transparent shadow-[0_0_25px_rgba(212,175,55,0.9)] mix-blend-color-dodge" />
+                <div className="absolute -right-[5%] bottom-1/3 h-[1px] w-[40%] -rotate-45 bg-linear-to-r from-transparent via-white/40 to-transparent shadow-[0_0_20px_rgba(255,255,255,0.7)] mix-blend-screen" />
+              </div>
 
               {/* Subtle film grain for texture */}
               <div className="absolute inset-0 opacity-[0.015] mix-blend-overlay bg-[url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E')] pointer-events-none" />
@@ -304,19 +322,8 @@ export default function Home() {
               {/* Hero content — centered */}
               <motion.div
                 style={{ opacity: heroOpacity }}
-                className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 text-center"
+                className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 text-center pt-20"
               >
-                {/* Badge */}
-                <motion.p
-                  initial={{ opacity: 0, y: 16, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ duration: 0.6, delay: 0.1, type: "spring", stiffness: 100 }}
-                  className="mb-6 inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/8 px-3 py-1.5 text-[9px] tracking-[0.18em] text-white/90 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.15)] sm:gap-2 sm:px-5 sm:text-[10px] sm:tracking-[0.28em]"
-                >
-                  <Sparkles className="h-3 w-3 text-[#D4AF37] drop-shadow-[0_0_6px_rgba(212,175,55,0.5)] sm:h-3.5 sm:w-3.5" />
-                  PREMIUM HANDCRAFTED FURNITURE
-                </motion.p>
-
                 {/* Headline */}
                 <motion.h1
                   initial={{ opacity: 0, y: 24 }}
