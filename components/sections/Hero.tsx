@@ -63,26 +63,26 @@ export default function Hero() {
         className="absolute inset-0 z-0"
       >
         <Image
-          src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=100&w=3200&auto=format&fit=crop"
-          alt="Luxury Modern Furniture Interior Design"
+          src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=100&w=3200&auto=format&fit=crop"
+          alt="Dark Luxury Modern Furniture Interior"
           fill
-          className="object-cover object-center"
+          className="object-cover object-center brightness-[0.85]"
           priority
           quality={100}
         />
       </motion.div>
 
       {/* Deep vignette for dramatic focus */}
-      <div className="absolute inset-0 z-[1] bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.28)_55%,rgba(0,0,0,0.62)_100%)]" />
+      <div className="absolute inset-0 z-[1] bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.35)_45%,rgba(0,0,0,0.72)_100%)]" />
 
       {/* Oily Glass Gradient Layer 1 - Warm Gold Sweep */}
       <motion.div 
-        className="absolute inset-0 z-[2] opacity-70"
+        className="absolute inset-0 z-[2] opacity-85"
         animate={{
           background: [
-            "linear-gradient(135deg, rgba(212,175,55,0.2) 0%, transparent 38%, rgba(255,240,200,0.16) 70%, rgba(255,255,255,0.08) 100%)",
-            "linear-gradient(145deg, rgba(255,240,200,0.12) 0%, transparent 30%, rgba(212,175,55,0.22) 65%, rgba(255,255,255,0.06) 100%)",
-            "linear-gradient(135deg, rgba(212,175,55,0.2) 0%, transparent 38%, rgba(255,240,200,0.16) 70%, rgba(255,255,255,0.08) 100%)",
+            "linear-gradient(135deg, rgba(212,175,55,0.28) 0%, transparent 35%, rgba(255,240,200,0.22) 65%, rgba(255,255,255,0.12) 100%)",
+            "linear-gradient(145deg, rgba(255,240,200,0.18) 0%, transparent 28%, rgba(212,175,55,0.3) 60%, rgba(255,255,255,0.1) 100%)",
+            "linear-gradient(135deg, rgba(212,175,55,0.28) 0%, transparent 35%, rgba(255,240,200,0.22) 65%, rgba(255,255,255,0.12) 100%)",
           ]
         }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
@@ -93,12 +93,12 @@ export default function Hero() {
         className="absolute inset-0 z-[3]"
         animate={{
           background: [
-            "linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.48) 22%, rgba(212,175,55,0.35) 34%, rgba(255,255,255,0.42) 46%, transparent 67%)",
-            "linear-gradient(120deg, transparent 33%, rgba(255,255,255,0.48) 53%, rgba(212,175,55,0.35) 65%, rgba(255,255,255,0.42) 77%, transparent 100%)",
-            "linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.48) 22%, rgba(212,175,55,0.35) 34%, rgba(255,255,255,0.42) 46%, transparent 67%)",
+            "linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.55) 20%, rgba(212,175,55,0.42) 32%, rgba(255,255,255,0.5) 44%, transparent 64%)",
+            "linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.55) 50%, rgba(212,175,55,0.42) 62%, rgba(255,255,255,0.5) 74%, transparent 100%)",
+            "linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.55) 20%, rgba(212,175,55,0.42) 32%, rgba(255,255,255,0.5) 44%, transparent 64%)",
           ]
         }}
-        transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+        transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
         style={{ mixBlendMode: "screen" }}
       />
 
@@ -113,8 +113,8 @@ export default function Hero() {
           }}
           transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
           style={{
-            background: "radial-gradient(circle, rgba(212,175,55,0.35) 0%, rgba(255,255,255,0.15) 40%, transparent 70%)",
-            filter: "blur(42px)",
+            background: "radial-gradient(circle, rgba(212,175,55,0.45) 0%, rgba(255,255,255,0.2) 40%, transparent 70%)",
+            filter: "blur(25px)",
             mixBlendMode: "screen"
           }}
         />
@@ -128,9 +128,9 @@ export default function Hero() {
           }}
           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
           style={{
-            background: "conic-gradient(from 0deg, transparent, rgba(212,175,55,0.15), rgba(255,255,255,0.2), rgba(212,175,55,0.1), transparent)",
-            filter: "blur(52px)",
-            opacity: 0.62
+            background: "conic-gradient(from 0deg, transparent, rgba(212,175,55,0.22), rgba(255,255,255,0.28), rgba(212,175,55,0.18), transparent)",
+            filter: "blur(30px)",
+            opacity: 0.7
           }}
         />
 
@@ -143,8 +143,8 @@ export default function Hero() {
           }}
           transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
           style={{
-            background: "radial-gradient(circle, rgba(255,230,180,0.3) 0%, rgba(212,175,55,0.2) 35%, transparent 65%)",
-            filter: "blur(45px)",
+            background: "radial-gradient(circle, rgba(255,230,180,0.35) 0%, rgba(212,175,55,0.28) 35%, transparent 65%)",
+            filter: "blur(28px)",
             mixBlendMode: "screen"
           }}
         />
@@ -156,10 +156,10 @@ export default function Hero() {
         style={{
             left: smoothX,
             top: smoothY,
-            background: "radial-gradient(circle, rgba(255,255,255,0.62) 0%, rgba(212,175,55,0.36) 24%, rgba(255,255,255,0.18) 44%, transparent 68%)",
-            filter: "blur(42px)",
+            background: "radial-gradient(circle, rgba(255,255,255,0.7) 0%, rgba(212,175,55,0.45) 22%, rgba(255,255,255,0.22) 42%, transparent 65%)",
+            filter: "blur(22px)",
             mixBlendMode: "screen",
-            opacity: 0.72
+            opacity: 0.8
         }}
       />
 
@@ -216,8 +216,8 @@ export default function Hero() {
           style={{
             width: `${config.width}px`,
             height: `${config.height}px`,
-            background: "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.7), rgba(212,175,55,0.42), transparent)",
-            filter: "blur(8px)",
+            background: "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(212,175,55,0.5), transparent)",
+            filter: "blur(4px)",
             mixBlendMode: "screen"
           }}
         />
@@ -236,13 +236,13 @@ export default function Hero() {
         className="pointer-events-none absolute inset-0 z-[8]"
         animate={{
           background: [
-            "linear-gradient(105deg, transparent 0%, rgba(255,255,255,0.2) 18%, rgba(212,175,55,0.26) 32%, transparent 52%)",
-            "linear-gradient(105deg, transparent 32%, rgba(255,255,255,0.22) 50%, rgba(212,175,55,0.28) 64%, transparent 84%)",
-            "linear-gradient(105deg, transparent 0%, rgba(255,255,255,0.2) 18%, rgba(212,175,55,0.26) 32%, transparent 52%)",
+            "linear-gradient(105deg, transparent 0%, rgba(255,255,255,0.28) 16%, rgba(212,175,55,0.34) 30%, transparent 50%)",
+            "linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.3) 48%, rgba(212,175,55,0.36) 62%, transparent 82%)",
+            "linear-gradient(105deg, transparent 0%, rgba(255,255,255,0.28) 16%, rgba(212,175,55,0.34) 30%, transparent 50%)",
           ]
         }}
-        transition={{ duration: 7, repeat: Infinity, ease: "linear" }}
-        style={{ mixBlendMode: "screen", opacity: 0.52 }}
+        transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+        style={{ mixBlendMode: "screen", opacity: 0.62 }}
       />
 
       {/* Content Layer */}

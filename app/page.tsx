@@ -38,7 +38,7 @@ const FEATURED_ITEMS = [
     category: "Dining",
     description: "Hand-finished surfaces and sculpted lines that elevate every meal into an experience.",
     image:
-      "https://images.unsplash.com/photo-1617806118233-18e1de247200?q=100&w=2400&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1615873968403-89e068629265?q=100&w=2400&auto=format&fit=crop",
   },
 ];
 
@@ -167,15 +167,7 @@ export default function Home() {
             className="relative"
           >
             <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-              <motion.div
-                style={{ y: orbOneY }}
-                className="animate-breathe absolute -left-20 top-24 h-80 w-80 rounded-full bg-[#D4AF37]/18 blur-3xl"
-              />
-              <motion.div
-                style={{ y: orbTwoY }}
-                className="animate-breathe absolute -right-24 top-72 h-96 w-96 rounded-full bg-[#E9F0FF]/70 blur-3xl"
-              />
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(255,255,255,0.95),rgba(250,249,246,0.75),rgba(245,245,245,0.9))]" />
+              <div className="absolute inset-0 bg-[#0A0B0F]" />
             </div>
 
             <motion.nav
@@ -187,21 +179,21 @@ export default function Home() {
               <div
                 className={`mx-auto mt-4 flex w-[94%] max-w-7xl items-center justify-between rounded-2xl border px-5 py-3 transition-all duration-700 ease-out md:px-8 ${
                   scrolled
-                    ? "border-white/70 bg-white/80 shadow-[0_8px_40px_rgba(0,0,0,0.08),0_1px_3px_rgba(212,175,55,0.1)] backdrop-blur-2xl"
-                    : "border-white/30 bg-white/20 backdrop-blur-sm"
+                    ? "border-white/15 bg-[rgba(10,11,15,0.82)] shadow-[0_8px_40px_rgba(0,0,0,0.4),0_1px_3px_rgba(212,175,55,0.1)] backdrop-blur-2xl"
+                    : "border-white/10 bg-[rgba(10,11,15,0.4)] backdrop-blur-md"
                 }`}
               >
                 {/* Brand */}
                 <Link href="/" className="group flex items-center gap-2 sm:gap-2.5">
-                  <div className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#2C2C2C] transition-all duration-300 group-hover:bg-[#D4AF37]">
-                    <span className="font-[Cormorant_Garamond] text-lg font-bold text-white">CF</span>
+                  <div className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[linear-gradient(135deg,#0f0f13_0%,#1a1a1f_100%)] border border-[#D4AF37]/25 shadow-[0_4px_14px_rgba(212,175,55,0.2)] transition-all duration-300 group-hover:shadow-[0_6px_22px_rgba(212,175,55,0.4)]">
+                    <span className="font-[Cormorant_Garamond] text-lg font-bold text-[#D4AF37]">CF</span>
                   </div>
                   <div className="hidden flex-col sm:flex">
-                    <span className="font-[Cormorant_Garamond] text-xl leading-none tracking-[0.04em] md:text-2xl">
+                    <span className="font-[Cormorant_Garamond] text-xl leading-none tracking-[0.04em] text-white/90 md:text-2xl">
                       Classic Furniture
                     </span>
                     <span
-                      className={`text-[9px] tracking-[0.3em] text-[#D4AF37] transition-opacity duration-500 ${
+                      className={`text-[9px] tracking-[0.3em] text-[#D4AF37]/70 transition-opacity duration-500 ${
                         scrolled ? "opacity-100" : "opacity-0"
                       }`}
                     >
@@ -215,7 +207,7 @@ export default function Home() {
                   {["Collections", "Craftsmanship", "Stories"].map((item) => (
                     <button
                       key={item}
-                      className="group relative text-[11px] tracking-[0.18em] text-[#2C2C2C]/65 transition-colors duration-300 hover:text-[#2C2C2C]"
+                      className="group relative text-[11px] tracking-[0.18em] text-white/65 transition-colors duration-300 hover:text-white"
                       onClick={() => {
                         const sectionMap: Record<string, string> = {
                           Collections: "featured",
@@ -237,7 +229,7 @@ export default function Home() {
                 <div className="flex items-center gap-2 md:gap-3">
                   <Dialog>
                     <DialogTrigger asChild>
-                      <button className="relative overflow-hidden rounded-full border border-[#2C2C2C]/15 px-4 py-2 text-[11px] tracking-[0.18em] text-[#2C2C2C]/80 transition-all duration-300 hover:border-[#D4AF37]/40 hover:text-[#2C2C2C] md:px-6">
+                      <button className="relative overflow-hidden rounded-full border border-white/20 px-4 py-2 text-[11px] tracking-[0.18em] text-white/80 transition-all duration-300 hover:border-[#D4AF37]/40 hover:text-white md:px-6">
                         LOGIN
                       </button>
                     </DialogTrigger>
@@ -284,54 +276,46 @@ export default function Home() {
 
             {/* ═══════════════ HERO — FULL-WIDTH IMMERSIVE ═══════════════ */}
             <section className="relative min-h-screen w-full overflow-hidden">
-              {/* Background image with parallax - Ultra HQ crisp image */}
-              <motion.div
-                style={{ y: heroY }}
-                className="absolute inset-0 -top-20 bottom-0"
-              >
+              {/* Background image - Ultra HQ crisp image, static for max sharpness */}
+              <div className="absolute inset-0">
                 <Image
-                  src="https://images.unsplash.com/photo-1540932239986-30128078f3c5?q=95&w=2800&auto=format&fit=crop"
-                  alt="Luxury designer living room with premium furniture"
+                  src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=100&w=3200&auto=format&fit=crop"
+                  alt="Dark luxury modern interior with premium furniture"
                   fill
                   priority
-                  quality={95}
-                  className="object-cover object-center"
+                  quality={100}
+                  className="object-cover object-center brightness-[0.7] contrast-[1.2] saturate-[1.1]"
                   sizes="100vw"
                 />
-              </motion.div>
-
-              {/* Crisp oily glass overlay - minimal, sharp gradient */}
-              <div className="absolute inset-0 bg-[linear-gradient(125deg,rgba(250,249,246,0.25)_0%,transparent_40%,rgba(212,175,55,0.06)_75%)]" />
-
-              {/* Vignette — softer edges */}
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(0,0,0,0.25)_100%)]" />
-
-              {/* Primary prismatic oil sweep — sharp, crisp rainbow shimmer */}
-              <div className="animate-hero-prismatic absolute inset-0 bg-[linear-gradient(125deg,transparent_0%,rgba(255,255,255,0.08)_20%,rgba(212,175,55,0.12)_35%,rgba(255,255,255,0.06)_50%,rgba(212,175,55,0.08)_65%,transparent_100%)] pointer-events-none mix-blend-overlay" />
-
-              {/* Secondary oil-sheen sweep — crisp metallic highlight */}
-              <div className="animate-oil-sheen absolute inset-0 bg-[linear-gradient(115deg,transparent_25%,rgba(255,255,255,0.35)_42%,rgba(212,175,55,0.15)_50%,rgba(255,255,255,0.2)_58%,transparent_75%)] pointer-events-none" />
-
-              {/* Floating liquid orbs — crisp depth accents */}
-              <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                {/* Large gold orb — top left */}
-                <div className="animate-liquid-float absolute -left-20 top-1/4 h-96 w-96 rounded-full bg-[radial-gradient(circle,rgba(212,175,55,0.12)_0%,transparent_65%)] blur-2xl" />
-                
-                {/* Warm orb — center */}
-                <div className="animate-liquid-float-slow absolute left-1/2 top-1/2 h-120 w-120 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,230,200,0.08)_0%,transparent_60%)] blur-2xl" />
-                
-                {/* Small accent orb — bottom right */}
-                <div className="animate-liquid-float absolute bottom-1/4 right-1/4 h-64 w-64 rounded-full bg-[radial-gradient(circle,rgba(212,175,55,0.1)_0%,transparent_70%)] blur-xl" />
               </div>
 
-              {/* Crisp wet highlight line — sharp horizontal accent */}
-              <div className="absolute left-0 right-0 top-1/3 h-[1.5px] bg-linear-to-r from-transparent via-white/30 to-transparent pointer-events-none shadow-[0_0_8px_rgba(255,255,255,0.3)]" />
+              {/* Dark oily glass overlay — deep moody tones */}
+              <div className="absolute inset-0 bg-[linear-gradient(125deg,rgba(0,0,0,0.45)_0%,transparent_45%,rgba(212,175,55,0.15)_80%)] mix-blend-multiply" />
+
+              {/* Deep vignette — dramatic dark edges */}
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,rgba(0,0,0,0.85)_100%)]" />
+
+              {/* Sharp Oily prismatic sweep — extremely crisp gloss */}
+              <div className="animate-hero-prismatic absolute inset-0 bg-[linear-gradient(125deg,transparent_0%,rgba(255,255,255,0.15)_15%,rgba(212,175,55,0.25)_30%,rgba(255,255,255,0.1)_45%,rgba(212,175,55,0.2)_60%,transparent_100%)] pointer-events-none mix-blend-color-dodge transition-opacity duration-1000" />
+
+              {/* Wet glass sheen — intense sharp lighting */}
+              <div className="animate-oil-sheen absolute inset-0 bg-[linear-gradient(115deg,transparent_20%,rgba(255,255,255,0.5)_35%,rgba(212,175,55,0.3)_45%,rgba(255,255,255,0.3)_55%,transparent_75%)] pointer-events-none mix-blend-overlay" />
+
+              {/* Sharp lighting flares — no blur, pure glass reflection */}
+              <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                <div className="absolute -left-[10%] top-1/4 h-[1px] w-[50%] rotate-45 bg-linear-to-r from-transparent via-white/40 to-transparent shadow-[0_0_15px_rgba(255,255,255,0.6)] mix-blend-screen" />
+                <div className="absolute left-[30%] top-[40%] h-[2px] w-[30%] -rotate-12 bg-linear-to-r from-transparent via-[#D4AF37]/50 to-transparent shadow-[0_0_20px_rgba(212,175,55,0.8)] mix-blend-color-dodge" />
+                <div className="absolute -right-[5%] bottom-1/3 h-[1px] w-[40%] -rotate-45 bg-linear-to-r from-transparent via-white/30 to-transparent shadow-[0_0_15px_rgba(255,255,255,0.5)] mix-blend-screen" />
+              </div>
+
+              {/* Wet highlight line */}
+              <div className="absolute left-0 right-0 top-1/3 h-[0.5px] bg-linear-to-r from-transparent via-white/50 to-transparent pointer-events-none shadow-[0_0_8px_rgba(212,175,55,0.6),0_0_2px_rgba(255,255,255,0.8)] mix-blend-screen" />
 
               {/* Subtle film grain for texture */}
               <div className="absolute inset-0 opacity-[0.015] mix-blend-overlay bg-[url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E')] pointer-events-none" />
 
               {/* Bottom fade into page background */}
-              <div className="absolute inset-x-0 bottom-0 h-48 bg-linear-to-t from-[#FAF9F6] via-[#FAF9F6]/80 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 h-48 bg-linear-to-t from-[#0A0B0F] via-[#0A0B0F]/80 to-transparent" />
 
               {/* Hero content — centered */}
               <motion.div
@@ -343,7 +327,7 @@ export default function Home() {
                   initial={{ opacity: 0, y: 16, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{ duration: 0.6, delay: 0.1, type: "spring", stiffness: 100 }}
-                  className="mb-6 inline-flex items-center gap-1.5 rounded-full border border-white/60 bg-white/45 px-3 py-1.5 text-[9px] tracking-[0.18em] text-white backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.1),inset_0_1px_0_rgba(255,255,255,0.4)] sm:gap-2 sm:px-5 sm:text-[10px] sm:tracking-[0.28em]"
+                  className="mb-6 inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/8 px-3 py-1.5 text-[9px] tracking-[0.18em] text-white/90 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.15)] sm:gap-2 sm:px-5 sm:text-[10px] sm:tracking-[0.28em]"
                 >
                   <Sparkles className="h-3 w-3 text-[#D4AF37] drop-shadow-[0_0_6px_rgba(212,175,55,0.5)] sm:h-3.5 sm:w-3.5" />
                   PREMIUM HANDCRAFTED FURNITURE

@@ -42,21 +42,21 @@ export default function Navbar() {
   const navY = useTransform(scrollY, [0, 400], [-20, 0]);
   const navPointerEvents = useTransform(scrollY, (y: number) => y < 200 ? "none" : "auto");
 
-  // Show nav links only if we are user OR if we are NOT on the landing page
-  const showNavLinks = !isLandingPage || !!user;
-
-  if (isLandingPage && !user) {
-    return null;
-  }
+  // Show nav links always (all pages)
+  const showNavLinks = true;
 
   return (
     <motion.header 
       style={{ 
-        opacity: isLandingPage ? navOpacity : 1, 
-        y: isLandingPage ? navY : 0,
-        pointerEvents: isLandingPage ? navPointerEvents : "auto"
+        opacity: isLandingPage && !user ? 1 : (isLandingPage ? navOpacity : 1), 
+        y: isLandingPage && !user ? 0 : (isLandingPage ? navY : 0),
+        pointerEvents: isLandingPage && !user ? "auto" : (isLandingPage ? navPointerEvents : "auto")
       }}
-      className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[linear-gradient(180deg,rgba(10,10,12,0.86)_0%,rgba(12,12,16,0.72)_100%)] backdrop-blur-xl shadow-[0_10px_40px_rgba(0,0,0,0.45)]"
+      className={`fixed inset-x-0 top-0 z-50 backdrop-blur-xl ${
+        isLandingPage && !user
+          ? "border-b border-white/8 bg-transparent shadow-none"
+          : "border-b border-white/10 bg-[linear-gradient(180deg,rgba(10,10,12,0.86)_0%,rgba(12,12,16,0.72)_100%)] shadow-[0_10px_40px_rgba(0,0,0,0.45)]"
+      }`}
     >
       <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-6">
         <Link href="/" className="group relative flex items-center gap-2.5">
