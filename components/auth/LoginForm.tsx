@@ -148,9 +148,15 @@ export default function LoginForm() {
 
       <div className="text-center text-xs tracking-wider text-[#2C2C2C]/50">
         Don&apos;t have an account?{" "}
-        <Link href="/register" className="font-medium text-[#D4AF37] hover:text-[#C5A028] transition-colors">
+        <button 
+          onClick={(e) => {
+            e.preventDefault();
+            window.location.href = "/register";
+          }} 
+          className="font-medium text-[#D4AF37] hover:text-[#C5A028] transition-colors"
+        >
           Create Account
-        </Link>
+        </button>
       </div>
     </div>
     </>
