@@ -38,7 +38,7 @@ const FEATURED_ITEMS = [
     category: "Dining",
     description: "Hand-finished surfaces and sculpted lines that elevate every meal into an experience.",
     image:
-      "https://images.unsplash.com/photo-1615873968403-89e068629265?q=100&w=2400&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1596205593845-a7b6cf3c1def?q=100&w=2400&auto=format&fit=crop",
   },
 ];
 
@@ -276,7 +276,7 @@ export default function Home() {
 
             {/* ═══════════════ HERO — FULL-WIDTH IMMERSIVE ═══════════════ */}
             <section className="relative min-h-screen w-full overflow-hidden">
-              {/* Background image - Ultra HQ crisp image, static for max sharpness */}
+              {/* Background image - Natural, high quality, unaltered to preserve originality */}
               <div className="absolute inset-0">
                 <Image
                   src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=100&w=3200&auto=format&fit=crop"
@@ -284,32 +284,16 @@ export default function Home() {
                   fill
                   priority
                   quality={100}
-                  className="object-cover object-center brightness-[0.7] contrast-[1.2] saturate-[1.1]"
+                  className="object-cover object-center brightness-[0.8]"
                   sizes="100vw"
                 />
               </div>
 
-              {/* Dark oily glass overlay — deep moody tones */}
-              <div className="absolute inset-0 bg-[linear-gradient(125deg,rgba(0,0,0,0.45)_0%,transparent_45%,rgba(212,175,55,0.15)_80%)] mix-blend-multiply" />
+              {/* Soft, natural gradient overlay to ensure text readability without ruining the image */}
+              <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(10,11,15,0.1)_0%,rgba(10,11,15,0.3)_60%,rgba(10,11,15,0.8)_100%)]" />
 
-              {/* Deep vignette — dramatic dark edges */}
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,rgba(0,0,0,0.85)_100%)]" />
-
-              {/* Sharp Oily prismatic sweep — extremely crisp gloss */}
-              <div className="animate-hero-prismatic absolute inset-0 bg-[linear-gradient(125deg,transparent_0%,rgba(255,255,255,0.15)_15%,rgba(212,175,55,0.25)_30%,rgba(255,255,255,0.1)_45%,rgba(212,175,55,0.2)_60%,transparent_100%)] pointer-events-none mix-blend-color-dodge transition-opacity duration-1000" />
-
-              {/* Wet glass sheen — intense sharp lighting */}
-              <div className="animate-oil-sheen absolute inset-0 bg-[linear-gradient(115deg,transparent_20%,rgba(255,255,255,0.5)_35%,rgba(212,175,55,0.3)_45%,rgba(255,255,255,0.3)_55%,transparent_75%)] pointer-events-none mix-blend-overlay" />
-
-              {/* Sharp lighting flares — no blur, pure glass reflection */}
-              <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                <div className="absolute -left-[10%] top-1/4 h-[1px] w-[50%] rotate-45 bg-linear-to-r from-transparent via-white/40 to-transparent shadow-[0_0_15px_rgba(255,255,255,0.6)] mix-blend-screen" />
-                <div className="absolute left-[30%] top-[40%] h-[2px] w-[30%] -rotate-12 bg-linear-to-r from-transparent via-[#D4AF37]/50 to-transparent shadow-[0_0_20px_rgba(212,175,55,0.8)] mix-blend-color-dodge" />
-                <div className="absolute -right-[5%] bottom-1/3 h-[1px] w-[40%] -rotate-45 bg-linear-to-r from-transparent via-white/30 to-transparent shadow-[0_0_15px_rgba(255,255,255,0.5)] mix-blend-screen" />
-              </div>
-
-              {/* Wet highlight line */}
-              <div className="absolute left-0 right-0 top-1/3 h-[0.5px] bg-linear-to-r from-transparent via-white/50 to-transparent pointer-events-none shadow-[0_0_8px_rgba(212,175,55,0.6),0_0_2px_rgba(255,255,255,0.8)] mix-blend-screen" />
+              {/* Subtle natural vignette */}
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(0,0,0,0.5)_100%)] pointer-events-none" />
 
               {/* Subtle film grain for texture */}
               <div className="absolute inset-0 opacity-[0.015] mix-blend-overlay bg-[url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E')] pointer-events-none" />
