@@ -22,15 +22,15 @@ const FEATURED_ITEMS = [
     category: "Living Room",
     description: "Curved silhouette, buttery upholstery, and cloud-like comfort for modern gatherings.",
     image:
-      "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?q=95&w=2000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1550254478-ead40cc54513?q=100&w=2400&auto=format&fit=crop",
   },
   {
     id: 2,
     title: "Ivory Crest Bed",
-    category: "Bedroom",
+    category: "Bedroom", 
     description: "Soft panel detailing and premium wood framing designed for serene, elegant nights.",
     image:
-      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=95&w=2000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1556020685-ae41abfc9365?q=100&w=2400&auto=format&fit=crop",
   },
   {
     id: 3,
@@ -38,7 +38,7 @@ const FEATURED_ITEMS = [
     category: "Dining",
     description: "Hand-finished surfaces and sculpted lines that elevate every meal into an experience.",
     image:
-      "https://images.unsplash.com/photo-1617806118233-18e1de247200?q=95&w=2000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1617806118233-18e1de247200?q=100&w=2400&auto=format&fit=crop",
   },
 ];
 
