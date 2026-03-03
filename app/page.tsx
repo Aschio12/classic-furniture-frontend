@@ -22,7 +22,7 @@ const FEATURED_ITEMS = [
     category: "Living Room",
     description: "Curved silhouette, buttery upholstery, and cloud-like comfort for modern gatherings.",
     image:
-      "https://images.unsplash.com/photo-1550254478-ead40cc54513?q=100&w=2400&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1550254478-ead40cc54513?q=75&w=800&auto=format&fit=crop",
   },
   {
     id: 2,
@@ -30,7 +30,7 @@ const FEATURED_ITEMS = [
     category: "Bedroom", 
     description: "Soft panel detailing and premium wood framing designed for serene, elegant nights.",
     image:
-      "https://images.unsplash.com/photo-1556020685-ae41abfc9365?q=100&w=2400&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1556020685-ae41abfc9365?q=75&w=800&auto=format&fit=crop",
   },
   {
     id: 3,
@@ -38,7 +38,7 @@ const FEATURED_ITEMS = [
     category: "Dining",
     description: "Hand-finished surfaces and sculpted lines that elevate every meal into an experience.",
     image:
-      "https://images.unsplash.com/photo-1617806118233-18e1de247200?q=100&w=2400&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1617806118233-18e1de247200?q=75&w=800&auto=format&fit=crop",
   },
 ];
 
@@ -166,15 +166,11 @@ export default function Home() {
             exit={{ opacity: 0 }}
             className="relative"
           >
-            <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-              <div className="absolute inset-0 bg-[#0A0B0F]" />
-            </div>
+            <div className="pointer-events-none fixed inset-0 -z-10 bg-[#0A0B0F]" />
 
-            <motion.nav
-              className="fixed inset-x-0 top-0 z-50"
-              initial={{ y: -100, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            <nav
+              className="fixed inset-x-0 top-0 z-50 transition-all duration-700 ease-out"
+              style={{ padding: scrolled ? "12px 20px" : "16px 20px" }}
             >
               <div
                 className={`mx-auto mt-4 flex w-[94%] max-w-7xl items-center justify-between rounded-2xl border px-5 py-3 transition-all duration-700 ease-out md:px-8 ${
@@ -264,26 +260,28 @@ export default function Home() {
 
               {/* Gold accent line on scroll */}
               <motion.div
-                className="mx-auto mt-1 h-px w-[90%] max-w-6xl bg-linear-to-r from-transparent via-[#D4AF37]/40 to-transparent"
-                initial={{ scaleX: 0, opacity: 0 }}
-                animate={{
-                  scaleX: scrolled ? 1 : 0,
+                className="mx-auto mt-1 h-px w-[90%] max-w-6xl"
+                style={{
+                  background: scrolled
+                    ? "linear-gradient(to right, transparent, rgba(212,175,55,0.4), transparent)"
+                    : "transparent",
+                  transform: scrolled ? "scaleX(1)" : "scaleX(0)",
                   opacity: scrolled ? 1 : 0,
+                  transition: "transform 0.6s, opacity 0.6s",
                 }}
-                transition={{ duration: 0.6 }}
               />
-            </motion.nav>
+            </nav>
 
             {/* ═══════════════ HERO — FULL-WIDTH IMMERSIVE ═══════════════ */}
-            <section className="group relative min-h-screen w-full overflow-hidden cursor-default">
+            <section className="group relative min-h-screen w-full overflow-hidden cursor-default bg-[#0A0B0F]">
               {/* Background image - Natural, high quality, unaltered to preserve originality */}
               <div className="absolute inset-0 transition-transform duration-[2000ms] ease-out group-hover:scale-105">
                 <Image
-                  src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=100&w=3200&auto=format&fit=crop"
+                  src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=1920&auto=format&fit=crop"
                   alt="Dark luxury modern interior with premium furniture"
                   fill
                   priority
-                  quality={100}
+                  quality={85}
                   className="object-cover object-center"
                   sizes="100vw"
                 />
@@ -433,13 +431,15 @@ export default function Home() {
                     className="glass oil-slick wet-shine group relative overflow-hidden rounded-2xl border border-white/50 shadow-[0_15px_45px_rgba(0,0,0,0.07)] transition-shadow duration-500 hover:shadow-[0_25px_65px_rgba(0,0,0,0.13)] sm:rounded-[1.6rem]"
                   >
                     {/* Image area */}
-                    <div className="relative aspect-4/5 overflow-hidden">
+                    <div className="relative aspect-4/5 overflow-hidden bg-gray-100">
                       <Image
                         src={item.image}
                         alt={item.title}
                         fill
+                        loading={index === 0 ? "eager" : "lazy"}
                         className="object-cover transition-transform duration-800 ease-out group-hover:scale-[1.07]"
                         sizes="(max-width: 768px) 100vw, 33vw"
+                        quality={75}
                       />
 
                       {/* Image bottom fade */}
@@ -589,11 +589,12 @@ export default function Home() {
             {/* ═══════════════ TESTIMONIALS ═══════════════ */}
             <section id="testimonials" className="relative mx-auto w-[94%] max-w-7xl py-16 md:py-28">
               {/* Background image strip */}
-              <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden rounded-[2.5rem]">
+              <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden rounded-[2.5rem] bg-gray-50">
                 <Image
-                  src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=80&w=2000"
+                  src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=60&w=1200"
                   alt=""
                   fill
+                  loading="lazy"
                   className="object-cover opacity-[0.04] saturate-0"
                   sizes="100vw"
                 />
@@ -683,11 +684,12 @@ export default function Home() {
 
                 <div className="relative z-20 grid md:grid-cols-[1fr_1fr]">
                   {/* Left — Image */}
-                  <div className="relative min-h-56 overflow-hidden sm:min-h-80 md:min-h-120">
+                  <div className="relative min-h-56 overflow-hidden sm:min-h-80 md:min-h-120 bg-gray-100">
                     <Image
-                      src="https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&q=85&w=1200"
+                      src="https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&q=75&w=800"
                       alt="Beautifully styled furniture showroom"
                       fill
+                      loading="lazy"
                       className="object-cover"
                       sizes="(max-width: 768px) 100vw, 50vw"
                     />
