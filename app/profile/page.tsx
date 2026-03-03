@@ -55,9 +55,10 @@ export default function ProfilePage() {
           <div className="pt-6">
             <button
               onClick={handleSignOut}
-              className="inline-flex items-center gap-2 rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-500"
+              className="group relative inline-flex w-full sm:w-auto items-center justify-center gap-2 overflow-hidden rounded-full border border-red-200 bg-white px-8 py-3 text-[11px] font-semibold tracking-[0.2em] text-red-600 shadow-sm transition-all hover:border-red-300 hover:bg-red-50 hover:shadow-md"
             >
-              Sign Out
+              <span className="relative z-10 transition-transform group-hover:scale-105">SIGN OUT</span>
+              <span className="absolute inset-x-0 bottom-0 h-0.5 bg-red-600 transition-all group-hover:h-full group-hover:opacity-5" />
             </button>
           </div>
         </div>

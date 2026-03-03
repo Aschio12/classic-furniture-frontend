@@ -48,13 +48,13 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
             </Link>
           </nav>
 
-          <button
-            type="button"
-            className="flex items-center justify-center rounded-full border border-primary/10 bg-white/60 p-2 text-primary/70 transition hover:text-primary"
+          <Link
+            href="/profile"
+            className="flex items-center justify-center rounded-full border border-primary/10 bg-white/60 p-2 text-primary/70 transition hover:text-primary hover:bg-white hover:shadow-sm"
             aria-label="Profile"
           >
             <UserCircle className="h-5 w-5" />
-          </button>
+          </Link>
         </div>
       </motion.header>
 
