@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/useAuthStore";
 import { Loader2 } from "lucide-react";
@@ -12,13 +12,21 @@ interface ProtectedRouteProps {
 
 export default function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
     const router = useRouter();
-    const { user, isAuthenticated, isLoading: authLoading } = useAuthStore();
+    const { user, isAuthenticated, isLoading: authLoading, _hasHydrated } = useAuthStore();
+    const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
-        // If still loading auth state from persistence, wait
+        setMounted(true);
+    }, []);
+
+    useEffect(() => {
+        // 0. Wait for Zustand to load from localStorage (hydration)
+        if (!_hasHydrated) return;
+
+        // If still loading auth state from API login, wait
         if (authLoading) return;
 
-        // 1. Check Authentication
+        // 1. Check Authentication (Hydration complete, user is not logged in)
         if (!isAuthenticated || !user) {
             router.push("/"); // Redirect to landing (login)
             return;
@@ -34,17 +42,20 @@ export default function ProtectedRoute({ children, allowedRoles }: ProtectedRout
                 return;
             }
         }
-    }, [user, isAuthenticated, authLoading, allowedRoles, router]);
+    }, [user, isAuthenticated, authLoading, _hasHydrated, allowedRoles, router]);
 
-    // Derived authorization state (avoiding useState/useEffect sync issues)
-    const isAuthorized = !authLoading && isAuthenticated && user && 
+    // Derived authorization state
+    const isAuthorized = _hasHydrated && !authLoading && isAuthenticated && user && 
         (!allowedRoles || allowedRoles.length === 0 || allowedRoles.includes(user.role));
 
-    // Show loading state while checking
-    if (!isAuthorized) {
+    // Show loading state while checking / hydrating
+    if (!mounted || !_hasHydrated || !isAuthorized) {
         return (
-            <div className="flex h-screen w-full items-center justify-center bg-black text-white">
-                <Loader2 className="h-10 w-10 animate-spin text-[#d4af37]" />
+            <div className="flex h-screen w-full items-center justify-center bg-[#FAFAFA] text-[#2C2C2C]">
+                <div className="flex flex-col items-center gap-4">
+                    <Loader2 className="h-10 w-10 animate-spin text-[#d4af37]" strokeWidth={1.5} />
+                    <p className="text-[10px] tracking-[0.25em] font-light text-[#2C2C2C]/50 uppercase">Restoring Session...</p>
+                </div>
             </div>
         );
     }
