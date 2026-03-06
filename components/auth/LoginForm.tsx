@@ -55,7 +55,7 @@ export default function LoginForm() {
       <div className="w-full max-w-md space-y-8 p-4">
 
       <div className="text-center relative">
-        <h2 className="font-[Cormorant_Garamond] text-4xl font-semibold tracking-tight text-[#2C2C2C]">Welcome Back</h2>
+        <h2 className="font-serif tracking-wide text-4xl font-semibold tracking-tight text-[#2C2C2C]">Welcome Back</h2>
         {/* Gold Shiny Underline */}
         <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-16 h-0.5 bg-linear-to-r from-transparent via-[#D4AF37] to-transparent rounded-full shadow-[0_0_12px_rgba(212,175,55,0.5)]" />
       </div>
@@ -64,13 +64,13 @@ export default function LoginForm() {
         <div className="space-y-5">
             {/* Email Field - Glass Effect with Gold Accent */}
             <div className="group relative">
-                <div className="relative overflow-hidden rounded-2xl bg-white/80 backdrop-blur-sm shadow-[0_4px_20px_rgba(0,0,0,0.04),inset_0_1px_0_rgba(255,255,255,0.8)] transition-all duration-300 group-hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] border border-white/60 group-focus-within:border-[#D4AF37]/40 group-focus-within:shadow-[0_8px_30px_rgba(212,175,55,0.08)]">
+                <div className="relative overflow-hidden rounded-none border border-white/80 bg-transparent transition-all duration-300 focus-within:border-white focus-within:shadow-[0_0_10px_rgba(255,255,255,0.5)]">
                     <input
                         id="email"
                         type="email"
                         required
                         disabled={isSubmitting}
-                        className="peer block w-full bg-transparent px-4 pt-6 pb-2 text-[#2C2C2C] outline-none placeholder:text-transparent transition-all"
+                        className="peer block w-full bg-transparent font-serif font-serif px-4 pt-6 pb-2 text-[#2C2C2C] outline-none placeholder:text-transparent transition-all"
                         placeholder="you@example.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -94,13 +94,13 @@ export default function LoginForm() {
 
             {/* Password Field - Glass Effect with Gold Accent */}
             <div className="group relative">
-                <div className="relative overflow-hidden rounded-2xl bg-white/80 backdrop-blur-sm shadow-[0_4px_20px_rgba(0,0,0,0.04),inset_0_1px_0_rgba(255,255,255,0.8)] transition-all duration-300 group-hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] border border-white/60 group-focus-within:border-[#D4AF37]/40 group-focus-within:shadow-[0_8px_30px_rgba(212,175,55,0.08)]">
+                <div className="relative overflow-hidden rounded-none border border-white/80 bg-transparent transition-all duration-300 focus-within:border-white focus-within:shadow-[0_0_10px_rgba(255,255,255,0.5)]">
                     <input
                         id="password"
                         type="password"
                         required
                         disabled={isSubmitting}
-                        className="peer block w-full bg-transparent px-4 pt-6 pb-2 text-[#2C2C2C] outline-none placeholder:text-transparent transition-all"
+                        className="peer block w-full bg-transparent font-serif font-serif px-4 pt-6 pb-2 text-[#2C2C2C] outline-none placeholder:text-transparent transition-all"
                         placeholder="Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
