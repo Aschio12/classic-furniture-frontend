@@ -25,9 +25,13 @@ export default function LoginForm() {
       const role = currentUser?.role ?? "user";
 
       // Smart redirect similar to register flow
-      if (role === "hub_manager") router.push("/dashboard/hub");
-      else if (role === "admin") router.push("/admin");
-      else router.push("/shop");
+      if (role === "hub_manager") {
+        router.push("/dashboard/hub");
+      } else if (role === "admin") {
+        router.push("/admin");
+      } else {
+        router.push("/shop");
+      }
     } catch (err: unknown) {
       const message =
         err instanceof Error && err.message
