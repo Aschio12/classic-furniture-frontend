@@ -2,172 +2,147 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { useFurnitureProducts } from "@/hooks/useFurnitureProducts";
+import { useFurnitureProducts, Product } from "@/hooks/useFurnitureProducts";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 
-const containerVariants = {
-  hidden: { opacity: 0, y: 30 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      staggerChildren: 0.1,
-      duration: 0.8,
-      ease: [0.16, 1, 0.3, 1],
-    },
-  },
-};
+function ProductCard({ product }: { product: Product }) {
+  // Validate Image Source to prevent Next.js Image component crashing on invalid URLs
+  let imageUrl = null;
+  const imgSrc = (product.images && product.images.length > 0) ? product.images[0] : product.imageUrl;
+  
+  if (typeof imgSrc === 'string' && (imgSrc.startsWith('http://') || imgSrc.startsWith('https://') || imgSrc.startsWith('/'))) {
+    imageUrl = imgSrc;
+  }
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  show: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { type: "spring", stiffness: 60, damping: 15 } 
-  },
-};
+  return (
+    <motion.div
+      whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
+      className="group relative overflow-hidden rounded-2xl bg-white border border-gray-100 p-4 flex flex-col justify-between"
+      style={{ boxShadow: "none" }}
+    >
+      <div className="oily-shine absolute inset-0 z-10 pointer-events-none rounded-2xl"></div>
+      
+      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-gray-50 mb-4">
+        {imageUrl ? (
+          <Image
+            src={imageUrl}
+            alt={product.name || "Product Image"}
+            fill
+            className="object-cover transition-transform duration-700"
+            sizes="(max-width: 768px) 100vw, 33vw"
+          />
+        ) : (
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-100 text-gray-400">
+            <span className="text-xl mb-2">📸</span>
+            <span className="text-xs tracking-wider">NO IMAGE</span>
+          </div>
+        )}
+      </div>
+
+      <div className="space-y-1 z-20 pb-1">
+        <h3 className="font-serif text-lg text-gray-900 line-clamp-1">{product.name}</h3>
+        <p className="text-sm text-gray-500 line-clamp-2">{product.description}</p>
+        <p className="text-base font-medium text-[#D4AF37] mt-2">
+          ${typeof product.price === 'number' ? product.price.toFixed(2) : "0.00"}
+        </p>
+      </div>
+    </motion.div>
+  );
+}
 
 export default function ShopPage() {
   const { data: products, isLoading, error } = useFurnitureProducts();
 
   return (
-    <ProtectedRoute allowedRoles={['user', 'admin', 'hub_manager']}>
-      <div className="mx-auto max-w-7xl">
-        {/* Loading State */}
-        {isLoading && (
-          <div className="columns-1 gap-6 space-y-6 sm:columns-2 md:columns-3">
+    <ProtectedRoute allowedRoles={['user', 'admin', 'hub_manager', 'seller']}>
+      <div className="min-h-screen pt-32 pb-16 px-6 md:px-12 mx-auto max-w-7xl">
+        <div className="mb-12">
+          <h1 className="font-serif text-4xl text-gray-900 mb-2">Our Collection</h1>
+          <p className="text-gray-500 text-sm max-w-xl">
+            Explore our meticulously curated pieces, designed to bring timeless elegance and modern luxury to your space.
+          </p>
+        </div>
+
+        {error && (
+          <div className="p-4 bg-red-50 text-red-600 rounded-xl mb-8 border border-red-100">
+            <p>Failed to load products: {error}</p>
+          </div>
+        )}
+
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {Array.from({ length: 6 }).map((_, i) => (
               <div
                 key={i}
-                className={`relative break-inside-avoid overflow-hidden rounded-2xl border border-black/10 bg-white/50 backdrop-blur-md ${
-                  i % 2 === 0 ? "h-[22rem]" : "h-[28rem]"
-                }`}
+                className="relative overflow-hidden rounded-2xl border border-gray-100 bg-white flex flex-col p-4 h-[24rem]"
+                style={{ boxShadow: "none" }}
               >
-                {/* Liquid Shimmer Skeleton Effect */}
+                <div className="h-56 w-full rounded-xl bg-gray-100 mb-4"></div>
+                <div className="space-y-3 mt-auto mb-2">
+                  <div className="h-5 w-2/3 rounded-md bg-gray-100"></div>
+                  <div className="h-4 w-full rounded-md bg-gray-100"></div>
+                  <div className="h-4 w-5/6 rounded-md bg-gray-100"></div>
+                  <div className="h-5 w-1/4 rounded-md bg-gray-200 mt-2"></div>
+                </div>
+
+                {/* Shimmer Effect */}
                 <motion.div
                   animate={{ x: ["-200%", "200%"] }}
-                  transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-                  className="absolute inset-0 bg-[linear-gradient(115deg,transparent_20%,rgba(255,255,255,0.8)_35%,rgba(212,175,55,0.15)_45%,rgba(255,255,255,0.8)_55%,transparent_75%)]"
+                  transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
+                  className="absolute inset-0 z-10 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.7),transparent)] skew-x-[-20deg]"
                 />
               </div>
             ))}
           </div>
-        )}
-
-        {/* Error State */}
-        {error && (
-          <div className="flex flex-col items-center justify-center py-32 text-center">
-            <p className="text-sm font-light tracking-widest text-red-500/80 uppercase">
-              Temporary Interruption
-            </p>
-            <p className="mt-3 text-xs font-light text-[#2C2C2C]/50">
-              {error}
-            </p>
-          </div>
-        )}
-
-        {/* Empty State */}
-        {!isLoading && !error && (!products || products.length === 0) && (
-          <div className="flex flex-col items-center justify-center py-40 text-center">
-            <motion.div 
-              initial={{ opacity: 0, y: 10 }} 
-              animate={{ opacity: 1, y: 0 }} 
-              transition={{ duration: 0.8 }}
-            >
-              <h2 className="font-serif text-2xl md:text-3xl font-light text-[#2C2C2C]">
-                Our current collection is being prepared for you.
-              </h2>
-              <p className="mt-5 text-[10px] font-light uppercase tracking-[0.3em] text-[#2C2C2C]/50">
-                Please check back shortly
-              </p>
-            </motion.div>
-          </div>
-        )}
-
-        {/* Loaded State */}
-        {!isLoading && !error && products && products.length > 0 && (
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="show"
-            className="columns-1 gap-6 space-y-6 sm:columns-2 md:columns-3"
-          >
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {products.map((product) => (
-              <motion.article
-                key={product._id}
-                variants={itemVariants}
-                className="group relative break-inside-avoid overflow-hidden rounded-2xl border border-white/60 bg-white/40 shadow-[0_15px_40px_-15px_rgba(0,0,0,0.05)] backdrop-blur-[10px] saturate-[1.2] transition-all duration-500 hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] hover:-translate-y-1"
-              >
-                {/* Subtle 'Light Sweep' repeating every 5s */}
-                <motion.div
-                  animate={{ x: ["-200%", "200%"] }}
-                  transition={{
-                    duration: 1.5,
-                    ease: "easeInOut",
-                    repeat: Infinity,
-                    repeatDelay: 3.5,
-                  }}
-                  className="pointer-events-none absolute inset-0 z-20 mix-blend-overlay bg-[linear-gradient(115deg,transparent_30%,rgba(255,255,255,0.7)_45%,rgba(255,255,255,0.2)_55%,transparent_70%)]"
-                />
-
-                {/* Product Image Area */}
-                <div className="relative aspect-[4/5] w-full overflow-hidden bg-[#F2F2F2]">
-                  <Image
-                    src={
-                      product.images?.[0] ||
-                      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=800"
-                    }
-                    alt={product.name}
-                    fill
-                    className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.07]"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  />
-                  {/* Overlay Gradient */}
-                  <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.3)_0%,transparent_40%)] transition-opacity duration-500 group-hover:opacity-20" />
-
-                  {/* Quick View Button */}
-                  <div className="absolute inset-0 z-30 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="rounded-full border border-white/50 bg-white/30 px-6 py-2.5 text-[10px] tracking-[0.2em] text-[#2C2C2C] font-medium shadow-[0_8px_32px_rgba(0,0,0,0.1)] backdrop-blur-md backdrop-saturate-150 transition-colors hover:bg-white/50"
-                    >
-                      QUICK VIEW
-                    </motion.button>
-                  </div>
-
-                  {/* Category Tag */}
-                  {product.category && (
-                    <span className="absolute left-4 top-4 z-10 rounded-full border border-white/30 bg-white/20 px-3 py-1 text-[8px] font-light uppercase tracking-[0.2em] text-[#2C2C2C] backdrop-blur-md">
-                      {product.category}
-                    </span>
-                  )}
-                </div>
-
-                {/* Product Details */}
-                <div className="relative z-10 p-5">
-                  <h3 className="font-serif text-lg tracking-wide text-[#2C2C2C]">
-                    {product.name}
-                  </h3>
-                  <p className="mt-1 line-clamp-2 text-[11px] font-light leading-relaxed text-[#2C2C2C]/60">
-                    {product.description}
-                  </p>
-                  
-                  {/* Price & Action */}
-                  <div className="mt-4 flex items-center justify-between border-t border-black/5 pt-3">
-                    <span className="font-serif text-[15px] text-[#2C2C2C]">
-                      ${product.price?.toLocaleString()}
-                    </span>
-                    <button className="text-[9px] uppercase tracking-[0.2em] text-[#D4AF37] transition-colors hover:text-[#C5A028]">
-                      Explore →
-                    </button>
-                  </div>
-                </div>
-              </motion.article>
+              <ProductCard key={product._id} product={product} />
             ))}
-          </motion.div>
+          </div>
+        )}
+
+        {!isLoading && !error && products.length === 0 && (
+          <div className="flex flex-col items-center justify-center py-20 text-center rounded-2xl border border-dashed border-gray-200 bg-gray-50/50">
+            <h3 className="text-xl font-serif text-gray-800">No products found</h3>
+            <p className="text-gray-500 mt-2">Check back later for new arrivals.</p>
+          </div>
         )}
       </div>
+
+      <style>{`
+        .oily-shine {
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+        .group:hover .oily-shine {
+          opacity: 1;
+        }
+        .oily-shine::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -150%;
+          width: 60%;
+          height: 100%;
+          background: linear-gradient(
+            to right,
+            transparent,
+            rgba(255, 255, 255, 0.4),
+            rgba(255, 255, 255, 0.6),
+            rgba(255, 255, 255, 0.4),
+            transparent
+          );
+          transform: skewX(-25deg);
+          animation: sweep 4s infinite cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes sweep {
+          0% { left: -150%; }
+          40% { left: 200%; }
+          100% { left: 200%; }
+        }
+      `}</style>
     </ProtectedRoute>
   );
 }
