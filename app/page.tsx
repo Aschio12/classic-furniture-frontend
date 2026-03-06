@@ -209,17 +209,14 @@ export default function Home() {
                       </button>
                     </DialogTrigger>
                     <DialogContent className="w-full border-0 bg-transparent p-0 shadow-none sm:max-w-md">
-<motion.div initial={{ opacity: 0, y: 100, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ type: "spring", stiffness: 60, damping: 15 }}>
-<motion.div initial={{ opacity: 0, y: 100, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ type: "spring", stiffness: 60, damping: 15 }}>
-<motion.div initial={{ opacity: 0, y: 100, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ type: "spring", stiffness: 60, damping: 15 }}>
-<motion.div initial={{ opacity: 0, y: 100, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ type: "spring", stiffness: 60, damping: 15 }}>
-                      <VisuallyHidden>
-                        <DialogTitle>Login</DialogTitle>
-                      </VisuallyHidden>
-                      <div className="glass-oily backdrop-blur-[12px] saturate-[1.8] backdrop-blur-[12px] saturate-[1.8] oil-slick-animated relative overflow-hidden rounded-2xl p-8 shadow-[0_30px_80px_rgba(0,0,0,0.12),0_0_0_1px_rgba(255,255,255,0.2)]">
-                        <LoginForm />
-                      </div>
-                    </motion.div>
+                      <motion.div initial={{ opacity: 0, y: 100, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ type: "spring", stiffness: 60, damping: 15 }}>
+                        <VisuallyHidden>
+                          <DialogTitle>Login</DialogTitle>
+                        </VisuallyHidden>
+                        <div className="glass-oily backdrop-blur-[12px] saturate-[1.8] oil-slick-animated relative overflow-hidden rounded-2xl p-8 shadow-[0_30px_80px_rgba(0,0,0,0.12),0_0_0_1px_rgba(255,255,255,0.2)]">
+                          <LoginForm />
+                        </div>
+                      </motion.div>
                     </DialogContent>
                   </Dialog>
 
@@ -231,13 +228,14 @@ export default function Home() {
                       </button>
                     </DialogTrigger>
                     <DialogContent className="w-full border-0 bg-transparent p-0 shadow-none sm:max-w-md">
-                      <VisuallyHidden>
-                        <DialogTitle>Register</DialogTitle>
-                      </VisuallyHidden>
-                      <div className="glass-oily backdrop-blur-[12px] saturate-[1.8] backdrop-blur-[12px] saturate-[1.8] oil-slick-animated relative overflow-hidden rounded-2xl p-8 shadow-[0_30px_80px_rgba(0,0,0,0.12),0_0_0_1px_rgba(255,255,255,0.2)]">
-                        <RegisterForm />
-                      </div>
-                    </motion.div>
+                      <motion.div initial={{ opacity: 0, y: 100, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ type: "spring", stiffness: 60, damping: 15 }}>
+                        <VisuallyHidden>
+                          <DialogTitle>Register</DialogTitle>
+                        </VisuallyHidden>
+                        <div className="glass-oily backdrop-blur-[12px] saturate-[1.8] oil-slick-animated relative overflow-hidden rounded-2xl p-8 shadow-[0_30px_80px_rgba(0,0,0,0.12),0_0_0_1px_rgba(255,255,255,0.2)]">
+                          <RegisterForm />
+                        </div>
+                      </motion.div>
                     </DialogContent>
                   </Dialog>
                 </div>
