@@ -27,8 +27,10 @@ export default function ProtectedRoute({ children, allowedRoles }: ProtectedRout
         // 2. Check Role (if restricted)
         if (allowedRoles && allowedRoles.length > 0) {
             if (!allowedRoles.includes(user.role)) {
-                // If logged in but wrong role, redirect to appropriate home
-                router.push("/unauthorized"); // Or fallback to '/shop'
+                // Smart redirect based on their actual role
+                if (user.role === 'admin') router.push("/admin");
+                else if (user.role === 'hub_manager') router.push("/dashboard/hub");
+                else router.push("/shop"); 
                 return;
             }
         }

@@ -1,148 +1,100 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { SlidersHorizontal, Loader2 } from "lucide-react";
+import { useFurnitureProducts } from '@/hooks/useFurnitureProducts';
+import { ShopProductCard } from '@/components/shop/ShopProductCard';
+import { motion } from 'framer-motion';
+import ProtectedRoute from '@/components/auth/ProtectedRoute';
 
-import api from "@/lib/axios";
-import MainLayout from "@/components/shared/MainLayout";
-import ProductGrid from "@/components/shared/ProductGrid";
-import { type Product } from "@/components/shared/ProductCard";
 
-const categories = ["All", "Living Room", "Bedroom", "Dining", "Office"];
-
-type ProductWithCategory = Product & {
-  category?: string;
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.2
+    }
+  }
 };
 
-function ShopContent() {
-  const [products, setProducts] = useState<ProductWithCategory[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<ProductWithCategory[]>([]);
-  const [activeCategory, setActiveCategory] = useState("All");
-  const [loading, setLoading] = useState(true);
+export default function ShopPage() {
+  const { data: products, isLoading, error } = useFurnitureProducts();
 
-  useEffect(() => {
-    async function fetchProducts() {
-      try {
-        const { data } = await api.get("/products");
-        setProducts(data);
-        setFilteredProducts(data);
-      } catch (error) {
-        console.error("Failed to fetch products:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchProducts();
-  }, []);
-
-  useEffect(() => {
-    if (activeCategory === "All") {
-      setFilteredProducts(products);
-    } else {
-      setFilteredProducts(
-        products.filter(
-          (product) =>
-            product.category?.toLowerCase() === activeCategory.toLowerCase()
-        )
-      );
-    }
-  }, [activeCategory, products]);
-
-  return (
-    <main className="min-h-screen bg-[#F9F9FB] pb-24 pt-24">
-      {/* Header Section */}
-      <section className="mx-auto max-w-6xl px-4 text-center sm:px-6">
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="text-4xl font-thin tracking-widest text-primary md:text-5xl"
-        >
-          Curated Collections
-        </motion.h1>
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.6 }}
-          transition={{ delay: 0.3, duration: 1 }}
-          className="mt-4 font-light text-primary/60"
-        >
-          Timeless pieces for the modern connoisseur
-        </motion.p>
-      </section>
-
-      {/* Sticky Filter Bar */}
-      <div className="sticky top-16 z-40 mt-12 border-b border-primary/5 bg-[#F9F9FB]/95 px-4 py-4 backdrop-blur-sm sm:px-6">
-        <div className="mx-auto flex max-w-6xl items-center justify-between">
-          <div className="no-scrollbar flex gap-2 overflow-x-auto pb-1 sm:pb-0">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setActiveCategory(category)}
-                className={`relative whitespace-nowrap rounded-full px-5 py-2 text-sm transition-all ${
-                  activeCategory === category
-                    ? "font-medium text-white"
-                    : "text-primary/60 hover:bg-primary/5 hover:text-primary"
-                }`}
-              >
-                {activeCategory === category && (
-                  <motion.div
-                    layoutId="activeCategory"
-                    className="absolute inset-0 rounded-full bg-primary"
-                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                  />
-                )}
-                <span className="relative z-10">{category}</span>
-              </button>
-            ))}
-          </div>
-
-          <button className="hidden items-center gap-2 text-sm text-primary/60 hover:text-primary sm:flex">
-            <SlidersHorizontal className="h-4 w-4" />
-            <span>Filters</span>
-          </button>
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#faf9f6] px-4">
+        <div className="text-center space-y-4 max-w-md">
+          <h2 className="text-2xl font-serif text-gray-900 tracking-tight">Connectivity Issue</h2>
+          <div className="w-8 h-[1px] bg-red-200 mx-auto my-4"></div>
+          <p className="text-gray-500 font-light leading-relaxed">
+            We are unable to reach the gallery at this moment. Please try refreshing the page or come back later.
+          </p>
         </div>
       </div>
+    );
+  }
 
-      {/* Product Grid */}
-      <div className="mx-auto max-w-6xl px-4 pt-10 sm:px-6">
-        {loading ? (
-          <div className="flex min-h-[40vh] items-center justify-center">
-            <Loader2 className="h-8 w-8 animate-spin text-primary/20" />
+  return (
+    <ProtectedRoute allowedRoles={['user']}>
+      <div className="min-h-screen bg-[#faf9f6] pt-32 pb-24 px-4 sm:px-6 lg:px-8">
+      <style jsx global>{`
+        .oily-shine {
+          background: radial-gradient(
+            circle 400px at var(--x, 50%) var(--y, 50%), 
+            rgba(255, 255, 255, 0.7), 
+            transparent 50%
+          );
+          mix-blend-mode: soft-light;
+        }
+      `}</style>
+      
+      <div className="max-w-7xl mx-auto mb-20 text-center">
+        <motion.h1 
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+          className="text-4xl md:text-5xl font-serif text-gray-900 tracking-tight"
+        >
+          The Collection
+        </motion.h1>
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.3, duration: 0.8 }}
+          className="w-12 h-[1px] bg-gray-300 mx-auto mt-8"
+        />
+      </div>
+
+      <div className="max-w-7xl mx-auto">
+        {isLoading ? (
+          <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="break-inside-avoid bg-white border border-[#eaeaea] p-4 mb-6 shadow-sm">
+                <div className="w-full bg-gray-100 mb-6 aspect-[3/4] animate-pulse rounded-sm"></div>
+                <div className="flex flex-col gap-3 px-2 pb-2">
+                  <div className="h-5 bg-gray-100 w-3/4 animate-pulse rounded-sm"></div>
+                  <div className="h-4 bg-gray-50 w-full animate-pulse rounded-sm mt-2"></div>
+                  <div className="h-4 bg-gray-50 w-2/3 animate-pulse rounded-sm"></div>
+                  <div className="h-5 bg-gray-100 w-1/4 animate-pulse rounded-sm mt-6"></div>
+                </div>
+              </div>
+            ))}
           </div>
         ) : (
-          <AnimatePresence mode="wait">
-            {filteredProducts.length > 0 ? (
-              <ProductGrid key={activeCategory} products={filteredProducts} />
-            ) : (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="flex min-h-[30vh] flex-col items-center justify-center text-center"
-              >
-                <p className="text-lg font-light text-primary/60">
-                  No items found in this collection.
-                </p>
-                <button
-                  onClick={() => setActiveCategory("All")}
-                  className="mt-4 text-sm font-medium text-accent hover:underline"
-                >
-                  View all collections
-                </button>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6"
+          >
+            {products.map((product) => (
+              <ShopProductCard key={product._id} product={product} />
+            ))}
+          </motion.div>
         )}
       </div>
-    </main>
+    </div>
   );
-}
-
-export default function ShopPage() {
-  return (
-    <MainLayout>
-      <ShopContent />
-    </MainLayout>
+  </ProtectedRoute>
   );
 }
