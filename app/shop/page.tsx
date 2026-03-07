@@ -5,7 +5,7 @@ import api from "@/lib/axios";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, Search, SlidersHorizontal } from "lucide-react";
 import Footer from "@/components/shared/Footer";
 
 interface Product {
@@ -43,6 +43,15 @@ const PREMIUM_DUMMY_DATA: Product[] = [
 export default function ShopPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [priceFilter, setPriceFilter] = useState("all");
+
+  const getImageUrl = (url: string) => {
+    if (!url) return '';
+    if (url.startsWith('http')) return url;
+    if (url.startsWith('/')) return `https://classic-furniture-backend.onrender.com${url}`;
+    return `https://classic-furniture-backend.onrender.com/${url}`;
+  };
 
   const handleMouseMove = (e: MouseEvent<HTMLElement>) => {
     const target = e.currentTarget;
@@ -53,7 +62,17 @@ export default function ShopPage() {
     target.style.setProperty('--y', `${y}%`);
   };
 
+  
+  const filteredProducts = products
+    .filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()))
+    .sort((a, b) => {
+      if (priceFilter === "low") return a.price - b.price;
+      if (priceFilter === "high") return b.price - a.price;
+      return 0;
+    });
+
   useEffect(() => {
+
     const fetchProducts = async () => {
       try {
         const res = await api.get("/products");
@@ -87,21 +106,45 @@ export default function ShopPage() {
       />
 
       <div className="w-full max-w-[2200px] mx-auto relative z-10 px-4 sm:px-8 lg:px-12 xl:px-20 pt-32 pb-20 flex-grow">
-        <header className="mb-12 text-center flex flex-col items-center">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
+        <header className="relative z-20 pt-8 pb-12 flex flex-col items-center justify-center text-center w-full max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
+            className="w-full flex flex-col sm:flex-row gap-4 px-4 relative z-40"
           >
-            <h1 
-              className="text-4xl md:text-6xl font-light tracking-tight text-[#2C2C2C] mb-4 drop-shadow-sm font-serif"
-              style={{ fontFamily: "'Playfair Display', 'Cormorant Garamond', serif" }}
-            >
-              The Main Gallery
-            </h1>
-            <p className="text-[#2C2C2C]/60 max-w-2xl mx-auto text-lg font-light leading-relaxed">
-              Timeless elegance encased in clarity. Flow through our curated pieces.
-            </p>
+            {/* Search Input */}
+            <div className="relative w-full flex-1 group">
+              <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-[#D4AF37] group-focus-within:text-[#B8860B] transition-colors">
+                <Search size={18} strokeWidth={2.5} />
+              </div>
+              <input 
+                type="text"
+                placeholder="SEARCH COLLECTION..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-14 pr-6 py-4 rounded-2xl bg-white/70 backdrop-blur-2xl border border-white/50 border-b-[#D4AF37]/30 border-r-[#D4AF37]/30 text-gray-900 placeholder:text-gray-400 placeholder:tracking-widest focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/40 shadow-[0_8px_30px_rgba(0,0,0,0.04)] focus:shadow-[0_8px_30px_rgba(212,175,55,0.15)] transition-all text-sm tracking-[0.1em] font-semibold"
+              />
+            </div>
+            
+            {/* Filter Dropdown */}
+            <div className="relative min-w-[240px] group">
+              <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-[#D4AF37]">
+                <SlidersHorizontal size={18} strokeWidth={2.5} />
+              </div>
+              <select
+                value={priceFilter}
+                onChange={(e) => setPriceFilter(e.target.value)}
+                className="w-full pl-14 pr-10 py-4 rounded-2xl bg-white/70 backdrop-blur-2xl border border-white/50 border-b-[#D4AF37]/30 border-r-[#D4AF37]/30 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/40 shadow-[0_8px_30px_rgba(0,0,0,0.04)] focus:shadow-[0_8px_30px_rgba(212,175,55,0.15)] transition-all text-[11px] tracking-widest font-bold appearance-none cursor-pointer"
+              >
+                <option value="all">ALL PRICES</option>
+                <option value="low">PRICE: LOW - HIGH</option>
+                <option value="high">PRICE: HIGH - LOW</option>
+              </select>
+              <div className="absolute inset-y-0 right-0 pr-5 flex items-center pointer-events-none text-[#D4AF37]">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+            </div>
           </motion.div>
         </header>
 
@@ -118,7 +161,7 @@ export default function ShopPage() {
           </div>
         ) : (
           <div className="grid gap-6 sm:gap-10 lg:gap-12 xl:gap-14 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full">
-            {products.map((product, index) => (
+            {filteredProducts.map((product, index) => (
               <motion.article
                 key={product._id}
                 initial={{ opacity: 0, y: 40, scale: 0.97 }}
@@ -128,9 +171,9 @@ export default function ShopPage() {
                 className="glass oil-slick wet-shine group relative overflow-hidden rounded-[1.6rem] border border-white/80 bg-white/50 shadow-[0_12px_45px_rgba(0,0,0,0.04)] transition-all duration-500 hover:shadow-[0_25px_65px_rgba(0,0,0,0.08)] hover:bg-white w-full flex flex-col"
               >
                 <div className="relative aspect-square sm:aspect-[4/3] w-full overflow-hidden bg-[#F9F9FB]">
-                  {product.images?.[0] ? (
+                  {(product.images?.[0] || (product as any).imageUrl) ? (
                     <Image
-                      src={product.images[0]}
+                      src={getImageUrl(product.images?.[0] || (product as any).imageUrl)}
                       alt={product.name}
                       fill
                       loading={index < 6 ? "eager" : "lazy"}
@@ -158,7 +201,6 @@ export default function ShopPage() {
                   
                   <div className="flex items-center justify-between gap-4">
                     <div className="flex flex-col min-w-0 flex-1">
-                      <h2 className="text-[1.35rem] font-semibold text-[#2C2C2C] truncate pr-2">{product.name}</h2>
                       <p className="text-xl font-medium text-[#D4AF37]">${product.price.toLocaleString()}</p>
                     </div>
 

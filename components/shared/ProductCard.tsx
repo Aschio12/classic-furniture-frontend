@@ -15,15 +15,23 @@ type ProductCardProps = {
 };
 
 export default function ProductCard({ product }: ProductCardProps) {
-  // Ensure we have a valid image source or fallback
-  // Handle "example.com" from seed data forcefully by swapping it with a niceUnsplash image
-  const isValidUrl = product.imageUrl && 
-                     product.imageUrl.trim().startsWith("http") && 
-                     !product.imageUrl.includes("example.com");
+  const getImageUrl = (url: string | undefined): string => {
+    if (!url) return '';
+    if (url.startsWith('http')) return url;
+    if (url.startsWith('/')) return `https://classic-furniture-backend.onrender.com${url}`;
+    return `https://classic-furniture-backend.onrender.com/${url}`;
+  };
+
+  const rawUrl = (product as any).images?.[0] || product.imageUrl;
+  const resolvedUrl = getImageUrl(rawUrl);
+
+  const isValidUrl = resolvedUrl && 
+                     resolvedUrl.trim().startsWith("http") && 
+                     !resolvedUrl.includes("example.com");
 
   const imageSrc = isValidUrl 
-      ? product.imageUrl! 
-      : "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=800&auto=format&fit=crop"; 
+      ? resolvedUrl 
+      : "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=800&auto=format&fit=crop";
 
   return (
     <motion.article
@@ -49,7 +57,6 @@ export default function ProductCard({ product }: ProductCardProps) {
           </span>
           <span className="text-sm font-semibold text-primary">ETB {product.price.toFixed(2)}</span>
         </div>
-        <h3 className="text-base font-medium text-primary">{product.name}</h3>
       </div>
     </motion.article>
   );
