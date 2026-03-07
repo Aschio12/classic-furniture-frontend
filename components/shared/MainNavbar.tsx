@@ -11,6 +11,7 @@ export default function MainNavbar() {
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
   const [isVisible, setIsVisible] = useState(true);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
@@ -111,8 +112,8 @@ export default function MainNavbar() {
                         className="absolute inset-0 rounded-full bg-[#D4AF37]/25 pointer-events-none"
                       />
                       
-                      <span className={`relative z-10 text-[11px] tracking-[0.25em] font-medium transition-colors duration-300 ${
-                        isActive ? "text-[#8B6508]" : "text-gray-700 group-hover/link:text-[#8B6508]"
+                      <span className={`relative z-10 text-[12px] tracking-[0.2em] font-bold transition-colors duration-300 ${
+                        isActive ? "text-black font-bold drop-shadow-md" : "text-gray-900 font-semibold group-hover/link:text-black drop-shadow-md"
                       }`}>
                         {item.name.toUpperCase()}
                       </span>
@@ -122,14 +123,59 @@ export default function MainNavbar() {
               })}
             </div>
 
-            {/* Mobile Nav Fallback Placeholder */}
-            <div className="lg:hidden flex items-center relative z-10 text-gray-700 font-bold tracking-widest text-xs">
-                 MENU
+            
+            {/* Mobile Nav Button */}
+            <div className="lg:hidden flex items-center relative z-10">
+              <button 
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="text-gray-900 font-bold tracking-widest text-xs bg-[#D4AF37]/20 px-4 py-2 rounded-full border border-[rgba(212,175,55,0.4)]"
+              >
+                {isMobileMenuOpen ? "CLOSE" : "MENU"}
+              </button>
             </div>
             
           </div>
 
-          <style dangerouslySetInnerHTML={{__html: `
+          {/* Mobile Dropdown Menu */}
+          <AnimatePresence>
+            {isMobileMenuOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="absolute top-full left-0 right-0 mt-2 p-4 rounded-3xl z-40 lg:hidden"
+                style={{
+                  backgroundColor: "rgba(255, 255, 255, 0.95)",
+                  backdropFilter: "blur(20px)",
+                  boxShadow: "0 10px 40px rgba(0, 0, 0, 0.15)",
+                  border: "1px solid rgba(212, 175, 55, 0.3)"
+                }}
+              >
+                <div className="flex flex-col gap-2">
+                  {[
+                    { name: "Collections", path: "/shop" },
+                    { name: "My Orders", path: "/orders" },
+                    { name: "Profile", path: "/profile" },
+                  ].map((item) => (
+                    <Link
+                      key={item.name}
+                      href={item.path}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={`px-6 py-3 rounded-2xl text-center text-xs tracking-widest font-bold ${
+                        pathname === item.path 
+                          ? "bg-[#D4AF37]/20 text-black" 
+                          : "text-gray-700 hover:bg-[#D4AF37]/10"
+                      }`}
+                    >
+                      {item.name.toUpperCase()}
+                    </Link>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+          
+    <style dangerouslySetInnerHTML={{__html: `
             @keyframes navbar-shine {
               0%, 75% { transform: translateX(-250%) skewX(12deg); opacity: 0; }
               80% { opacity: 1; }
