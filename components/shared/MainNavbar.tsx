@@ -10,10 +10,34 @@ export default function MainNavbar() {
   const { isAuthenticated, _hasHydrated } = useAuthStore();
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Always show at the very top
+      if (currentScrollY < 20) {
+        setIsVisible(true);
+      } else if (currentScrollY > lastScrollY) {
+        // Scrolling down
+        setIsVisible(false);
+      } else {
+        // Scrolling up
+        setIsVisible(true);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
 
   if (!mounted || !_hasHydrated) return null;
 
@@ -21,9 +45,9 @@ export default function MainNavbar() {
     <AnimatePresence>
       {isAuthenticated && (
         <motion.nav
-          initial={{ y: -100 }}
-          animate={{ y: 0 }}
-          transition={{ type: "spring", damping: 20 }}
+          initial={{ y: -100, opacity: 0 }}
+          animate={{ y: isVisible ? 0 : -100, opacity: isVisible ? 1 : 0 }}
+          transition={{ type: "spring", stiffness: 260, damping: 20, mass: 1 }}
           className="fixed inset-x-0 top-6 z-50 flex justify-center px-4 md:px-8"
         >
           <div

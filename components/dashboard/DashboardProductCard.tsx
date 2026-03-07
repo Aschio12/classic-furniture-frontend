@@ -43,9 +43,7 @@ export const DashboardProductCard = ({ product }: { product: any }) => {
         {/* Product Details */}
         <div className="p-6 flex flex-col flex-grow bg-white">
           <h3 className="font-serif font-medium text-xl text-gray-900 truncate">{product.name}</h3>
-          <p className="text-gray-500 mt-2 text-sm line-clamp-2 font-light leading-relaxed">
-            {product.description || "Luxurious crafted piece for your home."}
-          </p>
+          
           
           <div className="mt-auto pt-6 flex justify-between items-end">
             <span className="font-medium text-lg text-gray-900 tracking-tight">

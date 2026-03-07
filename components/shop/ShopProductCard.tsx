@@ -63,9 +63,7 @@ export const ShopProductCard = ({ product }: ShopProductCardProps) => {
       {/* Product Details */}
       <div className="p-5 flex flex-col z-10 relative bg-white">
         <h3 className="font-serif text-lg text-gray-900 leading-tight truncate">{product.name}</h3>
-        <p className="text-gray-500 mt-2 text-sm font-light line-clamp-2 leading-relaxed">
-          {product.description || "Refined aesthetics crafted for timeless elegance."}
-        </p>
+        
 
         <div className="mt-6 flex justify-between items-end">
           <span className="text-gray-900 font-medium tracking-tight">
