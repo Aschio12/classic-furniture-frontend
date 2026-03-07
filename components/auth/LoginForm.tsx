@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
 import { useAuthStore } from "@/store/useAuthStore";
 
-export default function LoginForm() {
+export default function LoginForm({ onSwitchToRegister }: { onSwitchToRegister?: () => void }) {
   const router = useRouter();
   const { login } = useAuthStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -154,7 +154,7 @@ export default function LoginForm() {
         <button 
           onClick={(e) => {
             e.preventDefault();
-            window.location.href = "/register";
+            if (onSwitchToRegister) { onSwitchToRegister(); } else { window.location.href = "/register"; }
           }} 
           className="font-medium text-[#D4AF37] hover:text-[#C5A028] transition-colors"
         >

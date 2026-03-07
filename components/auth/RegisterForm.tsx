@@ -7,7 +7,7 @@ import { Loader2 } from "lucide-react";
 import api from "@/lib/axios";
 import { useAuthStore } from "@/store/useAuthStore";
 
-export default function RegisterForm() {
+export default function RegisterForm({ onSwitchToLogin }: { onSwitchToLogin?: () => void }) {
   const router = useRouter();
   const { login, setUser, setToken } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
@@ -227,7 +227,7 @@ export default function RegisterForm() {
         <button 
             onClick={(e) => {
               e.preventDefault();
-              window.location.href = "/login";
+              if (onSwitchToLogin) { onSwitchToLogin(); } else { window.location.href = "/login"; }
             }}
             className="font-medium text-[#D4AF37] hover:text-[#C5A028] transition-colors"
         >
