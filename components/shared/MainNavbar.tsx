@@ -27,7 +27,7 @@ export default function MainNavbar() {
           className="fixed inset-x-0 top-6 z-50 flex justify-center px-4 md:px-8"
         >
           <div
-            className="relative flex w-full max-w-4xl items-center justify-between rounded-full px-6 py-3.5 sm:px-8 sm:py-4 transition-all duration-700 ease-out"
+            className="relative flex w-[94%] max-w-7xl items-center justify-between rounded-full px-6 py-3.5 sm:px-8 sm:py-4 transition-all duration-700 ease-out"
             style={{
               backgroundColor: "rgba(184, 134, 11, 0.15)", // Light brown / goldenrod tint
               backdropFilter: "blur(25px) saturate(2)",

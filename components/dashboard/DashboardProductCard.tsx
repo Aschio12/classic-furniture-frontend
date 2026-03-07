@@ -16,7 +16,7 @@ export const DashboardProductCard = ({ product }: { product: any }) => {
       >
         {/* CSS Shine Effect Overlay */}
         <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden rounded-2xl">
-          <div className="absolute top-0 bottom-0 left-[-100%] w-1/2 z-20 transform -skew-x-12 bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-0 group-hover:opacity-100 animate-[shine-sweep_3s_infinite_ease-in-out]" />
+          <div className="absolute top-0 bottom-0 left-[-100%] w-1/2 z-20 transform -skew-x-12 bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-0 group-hover:opacity-100 animate-[shine-sweep_40s_infinite_ease-in-out]" />
         </div>
 
         {/* Product Image Wrapper */}
@@ -51,7 +51,7 @@ export const DashboardProductCard = ({ product }: { product: any }) => {
             <span className="font-medium text-lg text-gray-900 tracking-tight">
               ${parseFloat(product.price?.toString() || '0').toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </span>
-            <span className="text-xs uppercase tracking-widest font-semibold text-gray-400 group-hover:text-gray-900 transition-colors duration-300">
+            <span className="text-xs uppercase tracking-widest font-semibold text-gray-400 text-[#D4AF37] group-hover:text-[#B8860B] transition-colors duration-300">
               View Item
             </span>
           </div>
@@ -62,8 +62,8 @@ export const DashboardProductCard = ({ product }: { product: any }) => {
       <style jsx global>{`
         @keyframes shine-sweep {
           0% { left: -100%; top: -50%; }
-          20% { left: 200%; top: 50%; }
-          100% { left: 200%; top: 50%; } /* wait for the remainder of 3 seconds */
+          5% { left: 200%; top: 50%; }
+          100% { left: 200%; top: 50%; } /* wait for the remainder of 40 seconds */
         }
       `}</style>
     </>

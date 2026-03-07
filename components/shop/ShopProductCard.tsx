@@ -71,7 +71,7 @@ export const ShopProductCard = ({ product }: ShopProductCardProps) => {
           <span className="text-gray-900 font-medium tracking-tight">
             ${parseFloat(product.price?.toString() || '0').toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </span>
-          <span className="text-[10px] tracking-[0.2em] uppercase text-gray-400 font-semibold group-hover:text-gray-900 transition-colors duration-300">
+          <span className="text-[10px] tracking-[0.2em] uppercase text-gray-400 font-semibold text-[#D4AF37] group-hover:text-[#B8860B] transition-colors duration-300">
             Details
           </span>
         </div>

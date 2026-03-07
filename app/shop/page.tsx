@@ -149,7 +149,7 @@ export default function ShopPage() {
                     Also sweeps on hover via group-hover for immediate response.
                   */}
                   <div className="pointer-events-none absolute inset-0 z-10 transition-opacity duration-500 opacity-70 group-hover:opacity-100">
-                    <div className="absolute inset-y-0 -left-[160%] w-[75%] bg-gradient-to-r from-transparent via-white/50 to-transparent animate-[continuous-shine_40s_ease-in-out_infinite] group-hover:animate-none group-hover:translate-x-[450%] transition-transform duration-[1200ms]" />
+                    <div className="absolute inset-y-0 -left-[160%] w-[75%] bg-gradient-to-r from-transparent via-white/50 to-transparent group-hover:animate-none group-hover:translate-x-[450%] transition-transform duration-[1200ms]" style={{ animation: "continuous-shine 40s ease-in-out infinite" }} />
                   </div>
                 </div>
 
@@ -172,7 +172,7 @@ export default function ShopPage() {
                         </button>
                         
                         {/* Golden Details Button */}
-                        <Link href={`/product/${product._id}`} className="group/link flex items-center justify-center p-3 sm:p-3.5 rounded-[1rem] bg-[#D4AF37] shadow-[0_4px_12px_rgba(212,175,55,0.2)] border border-transparent text-white transition-all duration-300 hover:bg-[#C9A961] hover:scale-105" title="View Details">
+                        <Link href={`/product/${product._id}`} className="group/link flex items-center justify-center p-3 sm:p-3.5 rounded-[1rem] bg-transparent border border-[#D4AF37]/30 text-[#B8860B] transition-all duration-300 hover:bg-[#D4AF37]/10 hover:text-[#8B6508] hover:border-[#D4AF37]/50 hover:scale-105 hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)]" title="View Details">
                             <span className="font-semibold text-sm tracking-widest pl-2 pr-1">DETAILS</span>
                             <span className="inline-block transition-transform duration-300 font-bold group-hover/link:translate-x-1 pr-1">
                                 →
@@ -196,8 +196,9 @@ export default function ShopPage() {
           100% { transform: translateX(100%); }
         }
         @keyframes continuous-shine {
-          0%, 20% { transform: translateX(0); opacity: 0; }
-          40%, 60% { opacity: 1; }
+          0% { transform: translateX(0); opacity: 0; }
+          2.5% { opacity: 1; }
+          5% { transform: translateX(450%); opacity: 0; }
           100% { transform: translateX(450%); opacity: 0; }
         }
       `}} />
