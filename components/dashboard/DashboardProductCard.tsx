@@ -4,6 +4,13 @@ import { motion } from 'framer-motion';
 
 // Use same standard export but unique component name to not conflict with shared ones
 export const DashboardProductCard = ({ product }: { product: any }) => {
+  const getImageUrl = (url: string) => {
+    if (!url) return '';
+    if (url.startsWith('http')) return url;
+    if (url.startsWith('/')) return `https://classic-furniture-backend.onrender.com${url}`;
+    return `https://classic-furniture-backend.onrender.com/${url}`;
+  };
+
   return (
     <>
       <motion.div
@@ -23,15 +30,15 @@ export const DashboardProductCard = ({ product }: { product: any }) => {
         <div className="relative w-full aspect-[4/3] bg-[#f9f9f9] overflow-hidden">
           {product.images && product.images[0] ? (
             <img 
-              src={product.images[0]} 
+              src={getImageUrl(product.images[0])} 
               alt={product.name} 
-              className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700 ease-in-out" 
+              className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700 ease-in-out"
             />
           ) : product.imageUrl ? (
             <img 
-              src={product.imageUrl} 
+              src={getImageUrl(product.imageUrl)} 
               alt={product.name} 
-              className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700 ease-in-out" 
+              className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700 ease-in-out"
             />
           ) : (
              <div className="w-full h-full flex items-center justify-center text-gray-300 font-light tracking-widest text-sm">
@@ -42,9 +49,6 @@ export const DashboardProductCard = ({ product }: { product: any }) => {
 
         {/* Product Details */}
         <div className="p-6 flex flex-col flex-grow bg-white">
-          <h3 className="font-serif font-medium text-xl text-gray-900 truncate">{product.name}</h3>
-          
-          
           <div className="mt-auto pt-6 flex justify-between items-end">
             <span className="font-medium text-lg text-gray-900 tracking-tight">
               ${parseFloat(product.price?.toString() || '0').toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}

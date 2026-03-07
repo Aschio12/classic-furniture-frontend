@@ -31,7 +31,15 @@ export const ShopProductCard = ({ product }: ShopProductCardProps) => {
     cardRef.current.style.setProperty('--y', `${y}px`);
   };
 
-  const imageUrl = (product.images && product.images[0]) || product.imageUrl || '';
+  const getImageUrl = (url: string) => {
+    if (!url) return '';
+    if (url.startsWith('http')) return url;
+    if (url.startsWith('/')) return `https://classic-furniture-backend.onrender.com${url}`;
+    return `https://classic-furniture-backend.onrender.com/${url}`;
+  };
+
+  const rawImageUrl = (product.images && product.images[0]) || product.imageUrl || '';
+  const imageUrl = getImageUrl(rawImageUrl);
 
   return (
     <motion.div
@@ -62,9 +70,7 @@ export const ShopProductCard = ({ product }: ShopProductCardProps) => {
 
       {/* Product Details */}
       <div className="p-5 flex flex-col z-10 relative bg-white">
-        <h3 className="font-serif text-lg text-gray-900 leading-tight truncate">{product.name}</h3>
         
-
         <div className="mt-6 flex justify-between items-end">
           <span className="text-gray-900 font-medium tracking-tight">
             ${parseFloat(product.price?.toString() || '0').toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
