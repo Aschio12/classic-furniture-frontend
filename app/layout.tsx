@@ -31,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} bg-surface text-primary antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} text-primary antialiased`}
       >
         <ServerAwakeLoader>
           {children}
