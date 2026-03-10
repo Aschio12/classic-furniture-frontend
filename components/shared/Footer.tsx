@@ -44,7 +44,7 @@ export default function Footer() {
         <div className="absolute left-1/2 top-1/2 h-80 w-80 -translate-x-1/2 -translate-y-1/2 rounded-full bg-linear-to-tr from-[#D4AF37]/26 via-white/10 to-[#D4AF37]/14 blur-[90px] animate-prismatic" />
       </div>
 
-      <div className="relative mx-auto w-[94%] max-w-7xl z-10">
+      <div className="relative mx-auto w-full max-w-none px-6 sm:px-10 lg:px-16 xl:px-24 z-10">
         {/* ── Upper section: Brand + Newsletter ── */}
         <div className="flex flex-col items-start justify-between gap-8 border-b-2 border-[#D4AF37]/10 py-12 sm:gap-10 md:flex-row md:items-end md:py-16">
           {/* Brand block */}

@@ -52,14 +52,14 @@ export const ShopProductCard = ({ product }: ShopProductCardProps) => {
       {/* Oily Shine Radial Gradient Overlay */}
       {/* Follows mouse via CSS variables --x and --y updated in onMouseMove */}
       <div className="absolute inset-0 pointer-events-none z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 oily-shine" />
-      
+
       {/* Image Container */}
       <div className="relative aspect-[3/4] bg-[#f9f9f9] overflow-hidden">
         {imageUrl ? (
-          <img 
-            src={imageUrl} 
-            alt={product.name} 
-            className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700 ease-out" 
+          <img
+            src={imageUrl}
+            alt={product.name}
+            className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700 ease-out"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-gray-300 font-light text-xs tracking-widest uppercase">
@@ -70,7 +70,7 @@ export const ShopProductCard = ({ product }: ShopProductCardProps) => {
 
       {/* Product Details */}
       <div className="p-5 flex flex-col z-10 relative bg-white">
-        
+
         <div className="mt-6 flex justify-between items-end">
           <span className="text-gray-900 font-medium tracking-tight">
             ${parseFloat(product.price?.toString() || '0').toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}

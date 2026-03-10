@@ -70,13 +70,12 @@ export default function LoginForm({ onSwitchToRegister }: { onSwitchToRegister?:
                         type="email"
                         required
                         disabled={isSubmitting}
-                        className="peer block w-full bg-transparent font-serif font-serif px-4 pt-6 pb-2 text-[#2C2C2C] outline-none placeholder:text-transparent transition-all"
-                        placeholder="you@example.com"
+                        className="peer relative z-10 block w-full bg-transparent font-serif px-4 pt-6 pb-2 text-[#1A1A1A] outline-none placeholder:text-transparent transition-all"
+                        placeholder=" "
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
-                    {/* Liquid Highlight Overlay */}
-                    <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-white/60 to-transparent opacity-50" />
+                    <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-white/40 to-transparent opacity-40" />
                     
                     <label 
                         htmlFor="email" 
@@ -100,12 +99,12 @@ export default function LoginForm({ onSwitchToRegister }: { onSwitchToRegister?:
                         type="password"
                         required
                         disabled={isSubmitting}
-                        className="peer block w-full bg-transparent font-serif font-serif px-4 pt-6 pb-2 text-[#2C2C2C] outline-none placeholder:text-transparent transition-all"
-                        placeholder="Password"
+                        className="peer relative z-10 block w-full bg-transparent font-serif px-4 pt-6 pb-2 text-[#1A1A1A] outline-none placeholder:text-transparent transition-all"
+                        placeholder=" "
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
-                    <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-white/60 to-transparent opacity-50" />
+                    <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-white/40 to-transparent opacity-40" />
                     
                     <label 
                         htmlFor="password" 

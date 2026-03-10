@@ -1,195 +1,148 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuthStore } from "@/store/useAuthStore";
 
 export default function MainNavbar() {
-  const { isAuthenticated, _hasHydrated } = useAuthStore();
+  const { isAuthenticated, _hasHydrated, logout } = useAuthStore();
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
-  const [isVisible, setIsVisible] = useState(true);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const [navVisible, setNavVisible] = useState(true);
+  const [navScrolled, setNavScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const lastScrollY = useRef(0);
 
-  useEffect(() => {
-    setMounted(true);
+  useEffect(() => { setMounted(true); }, []);
+
+  const handleScroll = useCallback(() => {
+    const y = window.scrollY;
+    setNavScrolled(y > 60);
+    if (y < 100) setNavVisible(true);
+    else if (y > lastScrollY.current + 5) setNavVisible(false);
+    else if (y < lastScrollY.current - 5) setNavVisible(true);
+    lastScrollY.current = y;
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      // Always show at the very top
-      if (currentScrollY < 20) {
-        setIsVisible(true);
-      } else if (currentScrollY > lastScrollY) {
-        // Scrolling down
-        setIsVisible(false);
-      } else {
-        // Scrolling up
-        setIsVisible(true);
-      }
-      
-      setLastScrollY(currentScrollY);
-    };
-
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+  }, [handleScroll]);
 
-  if (!mounted || !_hasHydrated) return null;
+  if (!mounted || !_hasHydrated || !isAuthenticated) return null;
+
+  const NAV_ITEMS = [
+    { name: "Collections", path: "/shop" },
+    { name: "My Orders", path: "/orders" },
+    { name: "Profile", path: "/profile" },
+  ];
 
   return (
-    <AnimatePresence>
-      {isAuthenticated && (
-        <motion.nav
-          initial={{ y: -100, opacity: 0 }}
-          animate={{ y: isVisible ? 0 : -100, opacity: isVisible ? 1 : 0 }}
-          transition={{ type: "spring", stiffness: 260, damping: 20, mass: 1 }}
-          className="fixed inset-x-0 top-6 z-50 flex justify-center px-4 md:px-8"
+    <>
+      <motion.nav
+        initial={{ y: -100 }}
+        animate={{ y: navVisible ? 0 : -100 }}
+        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+        className="fixed inset-x-0 top-0 z-50 px-4 sm:px-6"
+      >
+        <div
+          className={`mx-auto mt-3 flex max-w-[90rem] items-center justify-between rounded-full px-5 py-2.5 transition-all duration-500 md:px-7 ${
+            navScrolled
+              ? "border border-white/[0.08] bg-[#0C0D11]/90 shadow-[0_4px_30px_rgba(0,0,0,0.25),inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-sm"
+              : "border border-transparent bg-[#0C0D11]/60 backdrop-blur-[2px]"
+          }`}
         >
-          <div
-            className="relative flex w-[94%] max-w-7xl items-center justify-between rounded-full px-6 py-3.5 sm:px-8 sm:py-4 transition-all duration-700 ease-out"
-            style={{
-              backgroundColor: "rgba(184, 134, 11, 0.15)", // Light brown / goldenrod tint
-              backdropFilter: "blur(25px) saturate(2)",
-              WebkitBackdropFilter: "blur(25px) saturate(2)",
-              boxShadow: "0 8px 32px 0 rgba(0, 0, 0, 0.3)",
-              border: "1px solid rgba(212, 175, 55, 0.3)" // Light brown / gold border
-            }}
-          >
-            {/* Shine Sweep for the Oily/Glassy effect across the entire navbar */}
-            <div className="absolute inset-0 z-0 overflow-hidden rounded-full pointer-events-none">
-              <div 
-                className="absolute inset-y-0 w-1/2 bg-gradient-to-r from-transparent via-[#D4AF37]/30 to-transparent skew-x-12" 
-                style={{ animation: "navbar-shine 8s infinite ease-in-out" }}
-              />
-            </div>
+          <Link href="/" className="group flex items-center gap-2.5">
+            <span className="font-serif text-xl font-bold text-[#D4AF37] transition-all duration-300 group-hover:drop-shadow-[0_0_8px_rgba(212,175,55,0.5)]">
+              CF
+            </span>
+            <span className="hidden font-serif text-lg tracking-[0.06em] text-white/90 sm:inline">
+              Classic Furniture
+            </span>
+          </Link>
 
-            {/* Brand Logo - Light Brown/Gold Text */}
-            <Link href="/" className="relative z-10 group flex items-center gap-3">
-              <div className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[linear-gradient(135deg,#e0e0e0_0%,#ffffff_50%,#e0e0e0_100%)] shadow-[0_4px_14px_rgba(212,175,55,0.4)] transition-all duration-300 group-hover:shadow-[0_6px_22px_rgba(212,175,55,0.6)]">
-                <span className="font-serif tracking-wide text-lg font-bold text-gray-900">CF</span>
-              </div>
-              <div className="hidden flex-col sm:flex">
-                <span 
-                  className="font-serif tracking-widest text-lg sm:text-xl font-bold bg-clip-text text-transparent drop-shadow-sm"
-                  style={{
-                    backgroundImage: "linear-gradient(to right, #B8860B, #D4AF37, #B8860B)",
-                    backgroundSize: "200% auto",
-                    animation: "shine 4s linear infinite"
-                  }}
+          <div className="hidden items-center gap-7 lg:flex">
+            {NAV_ITEMS.map((item) => {
+              const isActive = pathname === item.path;
+              return (
+                <Link
+                  key={item.name}
+                  href={item.path}
+                  className={`group relative py-1 text-[11px] tracking-[0.16em] transition-colors duration-300 ${
+                    isActive ? "text-white" : "text-white/50 hover:text-white/90"
+                  }`}
                 >
-                  CLASSIC FURNITURE
-                </span>
-              </div>
-            </Link>
-
-            {/* Nav Links */}
-            <div className="hidden items-center gap-2 lg:flex relative z-10">
-              {[
-                { name: "Collections", path: "/shop" },
-                { name: "My Orders", path: "/orders" },
-                { name: "Profile", path: "/profile" },
-              ].map((item) => {
-                const isActive = pathname === item.path;
-                return (
-                  <motion.div key={item.name} whileHover="hover" initial="initial">
-                    <Link
-                      href={item.path}
-                      className="relative px-4 py-2.5 flex items-center justify-center group/link"
-                    >
-                      {/* Soft Glow Liquid Blob Hover Effect via Framer Motion */}
-                      <motion.div
-                        variants={{
-                          initial: { opacity: 0, scale: 0.8, filter: "blur(4px)" },
-                          hover: { opacity: 1, scale: 1.1, filter: "blur(12px)" }
-                        }}
-                        transition={{ duration: 0.4, ease: "easeOut" }}
-                        className="absolute inset-0 rounded-full bg-[#D4AF37]/25 pointer-events-none"
-                      />
-                      
-                      <span className={`relative z-10 text-[12px] tracking-[0.2em] font-bold transition-colors duration-300 ${
-                        isActive ? "text-black font-bold drop-shadow-md" : "text-gray-900 font-semibold group-hover/link:text-black drop-shadow-md"
-                      }`}>
-                        {item.name.toUpperCase()}
-                      </span>
-                    </Link>
-                  </motion.div>
-                );
-              })}
-            </div>
-
-            
-            {/* Mobile Nav Button */}
-            <div className="lg:hidden flex items-center relative z-10">
-              <button 
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="text-gray-900 font-bold tracking-widest text-xs bg-[#D4AF37]/20 px-4 py-2 rounded-full border border-[rgba(212,175,55,0.4)]"
-              >
-                {isMobileMenuOpen ? "CLOSE" : "MENU"}
-              </button>
-            </div>
-            
+                  {item.name.toUpperCase()}
+                  <span
+                    className={`absolute -bottom-0.5 left-0 h-px bg-[#D4AF37] transition-all duration-300 ${
+                      isActive ? "w-full" : "w-0 group-hover:w-full"
+                    }`}
+                  />
+                </Link>
+              );
+            })}
           </div>
 
-          {/* Mobile Dropdown Menu */}
-          <AnimatePresence>
-            {isMobileMenuOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className="absolute top-full left-0 right-0 mt-2 p-4 rounded-3xl z-40 lg:hidden"
-                style={{
-                  backgroundColor: "rgba(255, 255, 255, 0.95)",
-                  backdropFilter: "blur(20px)",
-                  boxShadow: "0 10px 40px rgba(0, 0, 0, 0.15)",
-                  border: "1px solid rgba(212, 175, 55, 0.3)"
-                }}
+          <div className="flex items-center gap-2">
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => logout()}
+              className="hidden rounded-full px-4 py-1.5 text-[10px] tracking-[0.16em] text-white/50 transition-colors duration-300 hover:text-white md:block md:px-5"
+            >
+              LOGOUT
+            </motion.button>
+
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="flex h-8 w-8 items-center justify-center rounded-full text-white/60 transition-colors hover:text-white lg:hidden"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                {mobileOpen ? (
+                  <><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></>
+                ) : (
+                  <><line x1="4" y1="8" x2="20" y2="8" /><line x1="4" y1="16" x2="20" y2="16" /></>
+                )}
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <AnimatePresence>
+          {mobileOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -8, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -8, scale: 0.97 }}
+              transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              className="mx-auto mt-2 max-w-[90rem] overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0C0D11]/95 p-2 backdrop-blur-sm lg:hidden"
+            >
+              {NAV_ITEMS.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.path}
+                  onClick={() => setMobileOpen(false)}
+                  className={`block rounded-xl px-4 py-3 text-[11px] tracking-[0.16em] transition-colors duration-200 ${
+                    pathname === item.path
+                      ? "bg-white/[0.06] text-white"
+                      : "text-white/50 hover:bg-white/[0.04] hover:text-white/80"
+                  }`}
+                >
+                  {item.name.toUpperCase()}
+                </Link>
+              ))}
+              <button
+                onClick={() => { logout(); setMobileOpen(false); }}
+                className="mt-1 block w-full rounded-xl px-4 py-3 text-left text-[11px] tracking-[0.16em] text-white/40 transition-colors duration-200 hover:bg-white/[0.04] hover:text-white/60"
               >
-                <div className="flex flex-col gap-2">
-                  {[
-                    { name: "Collections", path: "/shop" },
-                    { name: "My Orders", path: "/orders" },
-                    { name: "Profile", path: "/profile" },
-                  ].map((item) => (
-                    <Link
-                      key={item.name}
-                      href={item.path}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className={`px-6 py-3 rounded-2xl text-center text-xs tracking-widest font-bold ${
-                        pathname === item.path 
-                          ? "bg-[#D4AF37]/20 text-black" 
-                          : "text-gray-700 hover:bg-[#D4AF37]/10"
-                      }`}
-                    >
-                      {item.name.toUpperCase()}
-                    </Link>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-          
-    <style dangerouslySetInnerHTML={{__html: `
-            @keyframes navbar-shine {
-              0%, 75% { transform: translateX(-250%) skewX(12deg); opacity: 0; }
-              80% { opacity: 1; }
-              90% { opacity: 1; }
-              100% { transform: translateX(350%) skewX(12deg); opacity: 0; }
-            }
-            @keyframes shine {
-              to {
-                background-position: 200% center;
-              }
-            }
-          `}} />
-        </motion.nav>
-      )}
-    </AnimatePresence>
+                LOGOUT
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.nav>
+    </>
   );
 }

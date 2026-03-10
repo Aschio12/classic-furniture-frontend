@@ -8,6 +8,7 @@ import { Check, X, Loader2, ArrowRight } from "lucide-react";
 
 import api from "@/lib/axios";
 import { useCartStore } from "@/store/cartStore";
+import ProtectedRoute from "@/components/auth/ProtectedRoute";
 
 const triggerCelebration = () => {
   const duration = 3 * 1000;
@@ -191,6 +192,7 @@ function PaymentStatusContent() {
 
 export default function PaymentSuccessPage() {
   return (
+    <ProtectedRoute>
     <main className="flex min-h-screen w-full items-center justify-center bg-[#F9F9FB] px-4">
       <Suspense
         fallback={
@@ -202,5 +204,6 @@ export default function PaymentSuccessPage() {
         <PaymentStatusContent />
       </Suspense>
     </main>
+    </ProtectedRoute>
   );
 }

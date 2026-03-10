@@ -6,6 +6,7 @@ import { CheckCircle2, ShieldCheck, Truck } from "lucide-react";
 
 import api from "@/lib/axios";
 import { useCartStore } from "@/store/cartStore";
+import ProtectedRoute from "@/components/auth/ProtectedRoute";
 
 const hubs = [
   { name: "Addis Ababa", label: "Central Hub", tag: "Fastest Pickup" },
@@ -67,6 +68,7 @@ export default function CheckoutPage() {
   };
 
   return (
+    <ProtectedRoute>
     <section className="bg-background pt-24 pb-16 px-6 sm:px-10 lg:px-16">
       <div className="mx-auto grid max-w-6xl gap-16 lg:grid-cols-2">
         {/* Order Summary */}
@@ -175,5 +177,6 @@ export default function CheckoutPage() {
         </div>
       </div>
     </section>
+    </ProtectedRoute>
   );
 }

@@ -111,15 +111,14 @@ export default function RegisterForm({ onSwitchToLogin }: { onSwitchToLogin?: ()
                         type="text"
                         name="name"
                         id="name"
-                        className="peer block w-full bg-transparent font-serif font-serif px-4 pt-6 pb-2 text-[#2C2C2C] outline-none placeholder:text-transparent transition-all"
-                        placeholder="Full Name"
+                        className="peer relative z-10 block w-full bg-transparent font-serif px-4 pt-6 pb-2 text-[#1A1A1A] outline-none placeholder:text-transparent transition-all"
+                        placeholder=" "
                         required
                         disabled={isLoading}
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     />
-                    {/* Liquid Highlight Overlay */}
-                    <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-white/60 to-transparent opacity-50" />
+                    <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-white/40 to-transparent opacity-40" />
                     
                     <label
                         htmlFor="name"
@@ -142,14 +141,14 @@ export default function RegisterForm({ onSwitchToLogin }: { onSwitchToLogin?: ()
                         type="email"
                         name="email"
                         id="email"
-                        className="peer block w-full bg-transparent font-serif font-serif px-4 pt-6 pb-2 text-[#2C2C2C] outline-none placeholder:text-transparent transition-all"
-                        placeholder="Email Address"
+                        className="peer relative z-10 block w-full bg-transparent font-serif px-4 pt-6 pb-2 text-[#1A1A1A] outline-none placeholder:text-transparent transition-all"
+                        placeholder=" "
                         required
                         disabled={isLoading}
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     />
-                    <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-white/60 to-transparent opacity-50" />
+                    <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-white/40 to-transparent opacity-40" />
                     
                     <label
                         htmlFor="email"
@@ -171,14 +170,14 @@ export default function RegisterForm({ onSwitchToLogin }: { onSwitchToLogin?: ()
                         type="password"
                         name="password"
                         id="password"
-                        className="peer block w-full bg-transparent font-serif font-serif px-4 pt-6 pb-2 text-[#2C2C2C] outline-none placeholder:text-transparent transition-all"
-                        placeholder="Password"
+                        className="peer relative z-10 block w-full bg-transparent font-serif px-4 pt-6 pb-2 text-[#1A1A1A] outline-none placeholder:text-transparent transition-all"
+                        placeholder=" "
                         required
                         disabled={isLoading}
                         value={formData.password}
                         onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                     />
-                    <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-white/60 to-transparent opacity-50" />
+                    <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-white/40 to-transparent opacity-40" />
                     
                     <label
                         htmlFor="password"

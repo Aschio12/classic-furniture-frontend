@@ -28,7 +28,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
   }
 
   return (
-    <div className="min-h-screen bg-[#F9F9FB]">
+    <div className="min-h-screen bg-transparent">
       <MainNavbar />
 
       <motion.main

@@ -4,6 +4,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useAuthStore } from "@/store/useAuthStore";
+import ProtectedRoute from "@/components/auth/ProtectedRoute";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -30,6 +31,7 @@ export default function ProfilePage() {
   }
 
   return (
+    <ProtectedRoute>
     <main className="min-h-screen bg-[#F9F9FB] py-12">
       <div className="mx-auto max-w-3xl rounded-lg border border-primary/10 bg-white p-8 shadow">
         <motion.h1 className="mb-4 text-2xl font-semibold text-neutral-900" initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}>
@@ -64,5 +66,6 @@ export default function ProfilePage() {
         </div>
       </div>
     </main>
+    </ProtectedRoute>
   );
 }
