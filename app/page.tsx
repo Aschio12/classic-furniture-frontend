@@ -227,7 +227,7 @@ export default function Home() {
             className="fixed inset-x-0 top-0 z-50 px-4 sm:px-6"
           >
             <div
-              className={`mx-auto mt-3 flex max-w-[90rem] items-center justify-between rounded-full px-5 py-2.5 transition-all duration-500 md:px-7 ${
+              className={`mx-auto mt-3 flex max-w-[96rem] items-center justify-between rounded-full px-5 py-2.5 transition-all duration-500 md:px-7 ${
                 navScrolled
                   ? "border border-white/[0.08] bg-[#0C0D11]/90 shadow-[0_4px_30px_rgba(0,0,0,0.25),inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-sm"
                   : "border border-transparent bg-white/[0.03] backdrop-blur-[2px]"
@@ -636,7 +636,7 @@ export default function Home() {
 
           {/* ═══════════════ FEATURED PRODUCTS SHOWCASE ═══════════════ */}
           <section id="featured" className="relative bg-[#FAFAF8] mx-auto w-full">
-          <div className="mx-auto w-full max-w-[90rem] px-5 py-20 sm:px-8 md:py-36 lg:px-12">
+          <div className="mx-auto w-full max-w-[96rem] px-5 py-20 sm:px-8 md:py-36 lg:px-12">
             <motion.div
               initial="hidden"
               whileInView="visible"
@@ -768,7 +768,7 @@ export default function Home() {
 
           {/* ═══════════════ WHY CHOOSE US ═══════════════ */}
           <section id="why-us" className="relative w-full bg-[#F5F4F0]">
-          <div className="relative mx-auto w-full max-w-[90rem] px-5 py-20 sm:px-8 md:py-32 lg:px-12">
+          <div className="relative mx-auto w-full max-w-[96rem] px-5 py-20 sm:px-8 md:py-32 lg:px-12">
             <div className="animate-breathe pointer-events-none absolute left-1/2 top-1/2 -z-10 h-125 w-125 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#D4AF37]/8 blur-[60px]" />
 
             <motion.div
@@ -874,7 +874,7 @@ export default function Home() {
 
           {/* ═══════════════ TESTIMONIALS ═══════════════ */}
           <section id="testimonials" className="relative w-full bg-[#FAFAF8]">
-          <div className="relative mx-auto w-full max-w-[90rem] px-5 py-20 sm:px-8 md:py-32 lg:px-12">
+          <div className="relative mx-auto w-full max-w-[96rem] px-5 py-20 sm:px-8 md:py-32 lg:px-12">
 
             <motion.div
               initial="hidden"
@@ -982,7 +982,7 @@ export default function Home() {
 
           {/* ═══════════════ ABOUT / CTA BANNER ═══════════════ */}
           <section className="relative w-full bg-[#F3F1EC]">
-          <div className="relative mx-auto w-full max-w-[90rem] px-5 pb-20 pt-12 sm:px-8 md:pb-36 md:pt-16 lg:px-12">
+          <div className="relative mx-auto w-full max-w-[96rem] px-5 pb-20 pt-12 sm:px-8 md:pb-36 md:pt-16 lg:px-12">
             <motion.div
               initial={{ opacity: 0, y: 50, scale: 0.97 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}

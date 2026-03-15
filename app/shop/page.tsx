@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import api from "@/lib/axios";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { motion, useMotionValue, useSpring, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -163,6 +163,7 @@ function normalizeProduct(raw: ApiProduct, index: number): Product {
 function ProductCard({ product, index }: { product: Product; index: number }) {
   const [currentImage, setCurrentImage] = useState(product.image);
   const [retried, setRetried] = useState(false);
+  const cardRef = useRef<HTMLElement>(null);
 
   const handleImageError = useCallback(() => {
     if (!retried) {
@@ -171,36 +172,48 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
     }
   }, [retried, index]);
 
-  const rotateX = useSpring(0, { stiffness: 180, damping: 22 });
-  const rotateY = useSpring(0, { stiffness: 180, damping: 22 });
-  const glareX = useMotionValue(50);
-  const glareY = useMotionValue(50);
+  const { scrollYProgress } = useScroll({
+    target: cardRef,
+    offset: ["start end", "end start"],
+  });
+
+  const scrollY = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [40, 0, 0, -40]);
+  const scrollOpacity = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0, 1, 1, 0]);
+  const scrollScale = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.94, 1, 1, 0.94]);
+
+  const hoverRotateX = useSpring(0, { stiffness: 180, damping: 22 });
+  const hoverRotateY = useSpring(0, { stiffness: 180, damping: 22 });
 
   const handleMouse = useCallback(
     (e: React.MouseEvent<HTMLElement>) => {
       const rect = e.currentTarget.getBoundingClientRect();
       const px = (e.clientX - rect.left) / rect.width - 0.5;
       const py = (e.clientY - rect.top) / rect.height - 0.5;
-      rotateX.set(py * -6);
-      rotateY.set(px * 6);
-      glareX.set((px + 0.5) * 100);
-      glareY.set((py + 0.5) * 100);
+      hoverRotateX.set(py * -6);
+      hoverRotateY.set(px * 6);
     },
-    [rotateX, rotateY, glareX, glareY]
+    [hoverRotateX, hoverRotateY]
   );
 
   const handleMouseLeave = useCallback(() => {
-    rotateX.set(0);
-    rotateY.set(0);
-  }, [rotateX, rotateY]);
+    hoverRotateX.set(0);
+    hoverRotateY.set(0);
+  }, [hoverRotateX, hoverRotateY]);
 
   return (
     <motion.article
-      variants={FADE_UP}
+      ref={cardRef}
+      style={{
+        y: scrollY,
+        opacity: scrollOpacity,
+        scale: scrollScale,
+        rotateX: hoverRotateX,
+        rotateY: hoverRotateY,
+        transformPerspective: 1000,
+      }}
       whileHover={{ y: -12, transition: { duration: 0.4, ease: "easeOut" } }}
       onMouseMove={handleMouse}
       onMouseLeave={handleMouseLeave}
-      style={{ rotateX, rotateY, transformPerspective: 1000 }}
       className="group relative flex flex-col overflow-hidden rounded-[1.5rem] border border-black/[0.04] bg-white shadow-[0_2px_24px_rgba(0,0,0,0.03)] transition-shadow duration-600 hover:shadow-[0_32px_80px_rgba(0,0,0,0.13)]"
     >
       {/* Category badge */}
@@ -218,7 +231,7 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
       )}
 
       {/* Image */}
-      <div className="relative aspect-[3/4] overflow-hidden bg-[#F0EFEB]">
+      <div className="relative aspect-[5/4] overflow-hidden bg-[#F0EFEB]">
         <Image
           src={currentImage}
           alt={product.name}
@@ -439,7 +452,7 @@ export default function ShopPage() {
 
       {/* ═══ CATEGORY TABS ═══ */}
       <section className="bg-[#FAFAF8]">
-        <div className="mx-auto w-full max-w-[90rem] px-5 pt-10 sm:px-8 lg:px-12 xl:px-16">
+        <div className="mx-auto w-full max-w-[96rem] px-5 pt-10 sm:px-6 lg:px-10 xl:px-12">
           <motion.div
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
@@ -473,29 +486,24 @@ export default function ShopPage() {
         </div>
 
         {/* ═══ PRODUCT GRID ═══ */}
-        <div className="mx-auto w-full max-w-[90rem] px-5 pb-24 pt-10 sm:px-8 sm:pb-32 lg:px-12 xl:px-16">
+        <div className="mx-auto w-full max-w-[96rem] px-5 pb-24 pt-10 sm:px-6 sm:pb-32 lg:px-10 xl:px-12">
           {loading ? (
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
                 <div
                   key={i}
-                  className="relative aspect-[3/4] overflow-hidden rounded-[1.5rem] border border-black/[0.03] bg-white"
+                  className="relative aspect-[5/4] overflow-hidden rounded-[1.5rem] border border-black/[0.03] bg-white"
                 >
                   <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-black/[0.02] to-transparent" />
                 </div>
               ))}
             </div>
           ) : (
-            <motion.div
-              variants={STAGGER}
-              initial="hidden"
-              animate="visible"
-              className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-            >
+            <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {filteredProducts.map((product, index) => (
                 <ProductCard key={product._id} product={product} index={index} />
               ))}
-            </motion.div>
+            </div>
           )}
 
           {!loading && filteredProducts.length === 0 && (

@@ -48,7 +48,7 @@ export default function MainNavbar() {
         className="fixed inset-x-0 top-0 z-50 px-4 sm:px-6"
       >
         <div
-          className={`mx-auto mt-3 flex max-w-[90rem] items-center justify-between rounded-full px-5 py-2.5 transition-all duration-500 md:px-7 ${
+          className={`mx-auto mt-3 flex max-w-[96rem] items-center justify-between rounded-full px-5 py-2.5 transition-all duration-500 md:px-7 ${
             navScrolled
               ? "border border-white/[0.08] bg-[#0C0D11]/90 shadow-[0_4px_30px_rgba(0,0,0,0.25),inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-sm"
               : "border border-transparent bg-[#0C0D11]/60 backdrop-blur-[2px]"
@@ -117,7 +117,7 @@ export default function MainNavbar() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -8, scale: 0.97 }}
               transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-              className="mx-auto mt-2 max-w-[90rem] overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0C0D11]/95 p-2 backdrop-blur-sm lg:hidden"
+              className="mx-auto mt-2 max-w-[96rem] overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0C0D11]/95 p-2 backdrop-blur-sm lg:hidden"
             >
               {NAV_ITEMS.map((item) => (
                 <Link
