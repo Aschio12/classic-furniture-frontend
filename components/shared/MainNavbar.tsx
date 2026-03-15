@@ -45,7 +45,7 @@ export default function MainNavbar() {
         initial={{ y: -100 }}
         animate={{ y: navVisible ? 0 : -100 }}
         transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed inset-x-0 top-0 z-50 px-4 sm:px-6"
+        className="fixed inset-x-0 top-0 z-50 px-3 sm:px-4"
       >
         <div
           className={`mx-auto mt-3 flex max-w-[96rem] items-center justify-between rounded-full px-5 py-2.5 transition-all duration-500 md:px-7 ${
